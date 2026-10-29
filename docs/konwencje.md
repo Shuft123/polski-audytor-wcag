@@ -21,3 +21,5 @@ Dokument zawiera ustalenia zespołu z dnia .................... [Termin: do 02.1
 ## 5. Język
 - Kod i zmienne: (np. angielski)
 - Komentarze i dokumentacja w repozytorium: (np. polski)
+
+<--Test-->
