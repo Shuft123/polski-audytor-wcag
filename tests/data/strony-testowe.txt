@@ -1,0 +1,14 @@
+# Strony do migawek testowych (sprint 1, osoba 1).
+# Odtworzenie migawek:  python -m audytor.crawler --urls-file tests/data/strony-testowe.txt --jpeg --no-mhtml
+# Jeden adres w linii; linie zaczynające się od # są pomijane.
+
+# uczelnia
+https://pb.edu.pl/
+# miasto (duży portal samorządowy)
+https://www.bialystok.pl/
+# administracja centralna, dużo JS
+https://www.gov.pl/
+# sklep internetowy, ciężki JS
+https://www.x-kom.pl/
+# mała gmina
+https://www.wasilkow.pl/
