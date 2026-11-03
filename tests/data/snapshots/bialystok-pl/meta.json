@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "requested_url": "https://www.bialystok.pl/",
+  "final_url": "https://www.bialystok.pl/",
+  "http_status": 200,
+  "fetched_at": "2026-11-03T12:14:40+00:00",
+  "title": "Strona Główna Białegostoku - Białystok - Oficjalny Portal Miasta",
+  "lang": "pl",
+  "viewport": {
+    "width": 1366,
+    "height": 768
+  },
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36 PolskiAudytorWCAG/0.1.0 (+https://github.com/Shuft123/polski-audytor-wcag)",
+  "render_ms": 5303,
+  "robots": {
+    "robots_url": "https://www.bialystok.pl/robots.txt",
+    "status": "ok",
+    "crawl_delay": null,
+    "error": null
+  },
+  "links": {
+    "internal": [
+      "https://www.bialystok.pl/pl/mapa-serwisu.html",
+      "https://www.bialystok.pl/pl/o-nas.html",
+      "https://www.bialystok.pl/pl/media.html",
+      "https://www.bialystok.pl/pl/nasze-strony.html",
+      "https://www.bialystok.pl/pl/pomocnik.html",
+      "https://www.bialystok.pl/pl/dane-kontaktowe.html",
+      "https://www.bialystok.pl/pl/dla_biznesu/",
+      "https://www.bialystok.pl/pl/dla_turystow/",
+      "https://www.bialystok.pl/pl/dla_mieszkancow/",
+      "https://www.bialystok.pl/pl/komunikaty/zolta-kanapa-4.html",
+      "https://www.bialystok.pl/pl/komunikaty/faq-cieply-guzik-i-przystanki-na-zadanie.html",
+      "https://www.bialystok.pl/pl/komunikaty/medale-urbi-meritus-wreczone.html",
+      "https://www.bialystok.pl/pl/komunikaty/poradnik-bezpieczenstwa.html",
+      "https://www.bialystok.pl/pl/komunikaty/jak-zalatwic-sprawe-w-departamencie-obslugi-mieszkancow-.html",
+      "https://www.bialystok.pl/pl/komunikaty/aplikacja-bialystok.html",
+      "https://www.bialystok.pl/pl/komunikaty/targowisko-na-kawaleryjskiej.html",
+      "https://www.bialystok.pl/pl/komunikaty/punkt-informacji-turystycznej.html",
+      "https://www.bialystok.pl/pl/komunikaty/muzeum-pamieci-sybiru.html",
+      "https://www.bialystok.pl/pl/komunikaty/epi-centrum-nauki-1.html",
+      "https://www.bialystok.pl/pl/aktualnosci/polska-niemcy-u20-w-bialymstoku.html",
+      "https://www.bialystok.pl/pl/aktualnosci/18-edycja-podlaskiego-uniwersytetu-dzieciecego.html",
+      "https://www.bialystok.pl/pl/aktualnosci/swiatlo-pamieci-na-grobach-zasluzonych-bialostoczan-1.html",
+      "https://www.bialystok.pl/pl/aktualnosci/a-to-my-po-raz-czwarty.html",
+      "https://www.bialystok.pl/pl/aktualnosci/final-13-sezonu-bikera.html",
+      "https://www.bialystok.pl/pl/aktualnosci",
+      "https://www.bialystok.pl/pl/wazne_informacje/zolta-kanapa.html",
+      "https://www.bialystok.pl/pl/wazne_informacje/bialostocka-karta-duzej-rodziny.html",
+      "https://www.bialystok.pl/pl/wazne_informacje/utrudnienia-drogowe.html",
+      "https://www.bialystok.pl/pl/wazne_informacje/przetargi.html",
+      "https://www.bialystok.pl/pl/wazne_informacje/budzet_obywatelski_2026.html",
+      "https://www.bialystok.pl/pl/wazne_informacje/biuletyn-bialystokpl.html",
+      "https://www.bialystok.pl/pl/wazne_informacje/jak-zalatwic-sprawy.html",
+      "https://www.bialystok.pl/pl/wazne_informacje/karta-aktywnego-seniora.html",
+      "https://www.bialystok.pl/pl/wazne_informacje/czyste-powietrze.html",
+      "https://www.bialystok.pl/pl/polityka-prywatnosci.html",
+      "https://www.bialystok.pl/pl/polityka-cookies.html",
+      "https://www.bialystok.pl/pl/redakcja-1.html",
+      "https://www.bialystok.pl/cms/deklaracja",
+      "https://www.bialystok.pl/pl/kanaly-rss.html",
+      "https://www.bialystok.pl/decoy.html"
+    ],
+    "blocked_by_robots": [
+      "http://www.bialystok.pl/pl/dla_mieszkancow/fundusze_unijne/"
+    ],
+    "documents": [],
+    "external_count": 5
+  },
+  "cookie_banner": {
+    "checked": true,
+    "detected": true,
+    "dismissed": true,
+    "method": "text",
+    "button_text": "akceptuję wymagane",
+    "frame_url": null
+  },
+  "files": {
+    "dom": "dom.html",
+    "screenshot": "screenshot.jpg",
+    "cookie_banner_screenshot": "screenshot-baner.jpg"
+  },
+  "warnings": []
+}

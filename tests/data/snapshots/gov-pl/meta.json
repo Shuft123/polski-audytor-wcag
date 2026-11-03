@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "requested_url": "https://www.gov.pl/",
+  "final_url": "https://www.gov.pl/",
+  "http_status": 200,
+  "fetched_at": "2026-11-03T12:14:46+00:00",
+  "title": "Portal Gov.pl",
+  "lang": "pl-PL",
+  "viewport": {
+    "width": 1366,
+    "height": 768
+  },
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36 PolskiAudytorWCAG/0.1.0 (+https://github.com/Shuft123/polski-audytor-wcag)",
+  "render_ms": 7900,
+  "robots": {
+    "robots_url": "https://www.gov.pl/robots.txt",
+    "status": "ok",
+    "crawl_delay": null,
+    "error": null
+  },
+  "links": {
+    "internal": [
+      "https://www.gov.pl/web/premier/sklad-rady-ministrow",
+      "https://www.gov.pl/web/premier",
+      "https://www.gov.pl/web/gov/ministerstwa",
+      "https://www.gov.pl/web/gov/katalog-jednostek",
+      "https://www.gov.pl/web/gov/uslugi-dla-obywatela",
+      "https://www.gov.pl/web/gov/uslugi-dla-przedsiebiorcy",
+      "https://www.gov.pl/web/gov/uslugi-dla-urzednika",
+      "https://www.gov.pl/web/gov/uslugi-dla-rolnika",
+      "https://www.gov.pl/web/profilzaufany",
+      "https://www.gov.pl/web/baza-wiedzy",
+      "https://www.gov.pl/web/sluzbacywilna",
+      "https://www.gov.pl/web/ua",
+      "https://www.gov.pl/web/gov/szukaj",
+      "https://www.gov.pl/web/poradnikbezpieczenstwa",
+      "https://www.gov.pl/web/gov/podpisz-dokument-elektronicznie-wykorzystaj-podpis-zaufany",
+      "https://www.gov.pl/web/szczepimysie",
+      "https://www.gov.pl/ua",
+      "https://www.gov.pl/web/gov/uslugi-dla-obywatela/",
+      "https://www.gov.pl/web/gov/uslugi-dla-przedsiebiorcy/",
+      "https://www.gov.pl/web/gov/uslugi-dla-urzednika/",
+      "https://www.gov.pl/web/gov/uslugi-dla-rolnika/",
+      "https://www.gov.pl/web/premier/wiecej-polski-wiecej-mocy-terminal-t5-oficjalnie-oddany-do-uzytku",
+      "https://www.gov.pl/web/premier/polska-wspiera-dzialania-na-rzecz-przerwania-ognia-i-zakonczenia-wojny",
+      "https://www.gov.pl/web/premier/premier-w-wietnamie-jestesmy-rownoprawnymi-zaprzyjaznionymi-partnerami-gospodarczymi",
+      "https://www.gov.pl/web/obrona-narodowa/systemy-bezzalogowe-to-priorytet-w-procesie-modernizacji-wojska-polskiego",
+      "https://www.gov.pl/web/cyfryzacja/Polska-energetyka-wzmacnia-ochrone-przed-cyberzagrozeniami-powstaje-pierwszy-w-historii-csirt-energia",
+      "https://www.gov.pl/web/sprawiedliwosc/zmiany-w-kodeksie-spolek-handlowych-niebawem-wejda-w-zycie",
+      "https://www.gov.pl/web/mswia/szef-mswia-marcin-kierwinski-zapowiedzial-dalszy-rozwoj-gfff---wyspecjalizowanych-strazakow-zwalczajacych-pozary-lasow-w-trudno-dostepnym-terenie",
+      "https://www.gov.pl/web/gov/zaloz-profil-zaufany",
+      "https://www.gov.pl/web/gov/polityka-dotyczaca-cookies",
+      "https://www.gov.pl/bip",
+      "https://www.gov.pl/web/gov/prawa-autorskie",
+      "https://www.gov.pl/web/gov/warunki-korzystania",
+      "https://www.gov.pl/web/gov/deklaracja-dostepnosci-serwisu-govpl"
+    ],
+    "blocked_by_robots": [],
+    "documents": [],
+    "external_count": 3
+  },
+  "cookie_banner": {
+    "checked": true,
+    "detected": true,
+    "dismissed": true,
+    "method": "text",
+    "button_text": "odrzuć",
+    "frame_url": null
+  },
+  "files": {
+    "dom": "dom.html",
+    "screenshot": "screenshot.jpg",
+    "cookie_banner_screenshot": "screenshot-baner.jpg"
+  },
+  "warnings": [
+    "Sieć nie ucichła (networkidle) – możliwe doładowywane elementy"
+  ]
+}
