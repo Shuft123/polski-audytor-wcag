@@ -224,3 +224,7 @@ __marimo__/
 
 # Wyniki pokazu sprintu (scripts\demo_sprint1.bat)
 demo-wyniki/
+
+# Wyniki skanów i lokalne bazy (audytor-scan)
+/wyniki/
+/*.db

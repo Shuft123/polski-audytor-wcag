@@ -10,6 +10,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "playwright>=1.45",
+    "axe-playwright-python>=0.1.8",
+    "sqlalchemy>=2.0",
 ]
 
 [project.optional-dependencies]
@@ -19,9 +21,13 @@ dev = [
 
 [project.scripts]
 audytor-crawl = "audytor.crawler.cli:main"
+audytor-scan = "audytor.skan.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"audytor.axe" = ["locales/*.json"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

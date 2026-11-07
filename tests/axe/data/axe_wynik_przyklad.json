@@ -1,0 +1,396 @@
+{
+ "testEngine": {
+  "name": "axe-core",
+  "version": "4.12.1"
+ },
+ "testRunner": {
+  "name": "axe"
+ },
+ "testEnvironment": {
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.8010.12 Safari/537.36 PolskiAudytorWCAG/0.1.0 (+https://github.com/Shuft123/polski-audytor-wcag)",
+  "windowWidth": 1366,
+  "windowHeight": 768,
+  "orientationAngle": 0,
+  "orientationType": "landscape-primary"
+ },
+ "timestamp": "2026-11-07T12:04:04.987Z",
+ "url": "https://gmina-testowa.pl/",
+ "toolOptions": {
+  "runOnly": {
+   "type": "tag",
+   "values": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa"
+   ]
+  },
+  "resultTypes": [
+   "violations",
+   "incomplete"
+  ],
+  "reporter": "v1"
+ },
+ "incomplete": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "tags": [
+    "cat.color",
+    "wcag2aa",
+    "wcag143",
+    "TTv5",
+    "TT13.c",
+    "EN-301-549",
+    "EN-9.1.4.3",
+    "ACT",
+    "RGAAv4",
+    "RGAA-3.2.1"
+   ],
+   "description": "Kontrast między kolorami pierwszego planu i tła spełnia progi kontrastu WCAG 2 AA.",
+   "help": "Elementy muszą mieć wystarczający kontrast kolorów.",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=axeAPI&lang=pl",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "color-contrast",
+       "data": {
+        "fgColor": null,
+        "bgColor": null,
+        "contrastRatio": 0,
+        "fontSize": "12.0pt (16px)",
+        "fontWeight": "normal",
+        "messageKey": "bgImage",
+        "expectedContrastRatio": "4.5:1",
+        "shadowColor": null,
+        "colorParse": null
+       },
+       "impact": "serious",
+       "message": "Nie można określić koloru tła elementu, ponieważ element ma obraz tła."
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "serious",
+     "html": "<p style=\"color:#777;background:url(t.png)\">Tekst na obrazie</p>",
+     "target": [
+      "p:nth-child(7)"
+     ],
+     "failureSummary": "Napraw następujące elementy: \n Nie można określić koloru tła elementu, ponieważ element ma obraz tła."
+    }
+   ]
+  }
+ ],
+ "violations": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "tags": [
+    "cat.color",
+    "wcag2aa",
+    "wcag143",
+    "TTv5",
+    "TT13.c",
+    "EN-301-549",
+    "EN-9.1.4.3",
+    "ACT",
+    "RGAAv4",
+    "RGAA-3.2.1"
+   ],
+   "description": "Kontrast między kolorami pierwszego planu i tła spełnia progi kontrastu WCAG 2 AA.",
+   "help": "Elementy muszą mieć wystarczający kontrast kolorów.",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=axeAPI&lang=pl",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "color-contrast",
+       "data": {
+        "fgColor": "#aaaaaa",
+        "bgColor": "#ffffff",
+        "contrastRatio": 2.32,
+        "fontSize": "12.0pt (16px)",
+        "fontWeight": "normal",
+        "messageKey": null,
+        "expectedContrastRatio": "4.5:1",
+        "shadowColor": null,
+        "colorParse": null
+       },
+       "impact": "serious",
+       "message": "Element ma niewystarczający kontrast kolorów 2.32 (kolor pierwszego planu: #aaaaaa, kolor tła: #ffffff, rozmiar czcionki: 12.0pt (16px), waga czcionki: normal). Oczekiwany współczynnik kontrastu: 4.5:1"
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "serious",
+     "html": "<p style=\"color:#aaa;background:#fff\">Słaby kontrast</p>",
+     "target": [
+      "p:nth-child(5)"
+     ],
+     "failureSummary": "Napraw następujące elementy: \n Element ma niewystarczający kontrast kolorów 2.32 (kolor pierwszego planu: #aaaaaa, kolor tła: #ffffff, rozmiar czcionki: 12.0pt (16px), waga czcionki: normal). Oczekiwany współczynnik kontrastu: 4.5:1"
+    }
+   ]
+  },
+  {
+   "id": "html-has-lang",
+   "impact": "serious",
+   "tags": [
+    "cat.language",
+    "wcag2a",
+    "wcag311",
+    "TTv5",
+    "TT11.a",
+    "EN-301-549",
+    "EN-9.3.1.1",
+    "ACT",
+    "RGAAv4",
+    "RGAA-8.3.1"
+   ],
+   "description": "Każdy dokument HTML ma atrybut lang.",
+   "help": "Element <html> musi mieć atrybut lang.",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/html-has-lang?application=axeAPI&lang=pl",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "has-lang",
+       "data": {
+        "messageKey": "noLang"
+       },
+       "impact": "serious",
+       "message": "Element <html> nie ma atrybutu lang."
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "serious",
+     "html": "<html>",
+     "target": [
+      "html"
+     ],
+     "failureSummary": "Napraw następujące elementy: \n Element <html> nie ma atrybutu lang."
+    }
+   ]
+  },
+  {
+   "id": "image-alt",
+   "impact": "critical",
+   "tags": [
+    "cat.text-alternatives",
+    "wcag2a",
+    "wcag111",
+    "section508",
+    "section508.22.a",
+    "TTv5",
+    "TT7.a",
+    "TT7.b",
+    "EN-301-549",
+    "EN-9.1.1.1",
+    "ACT",
+    "RGAAv4",
+    "RGAA-1.1.1"
+   ],
+   "description": "Elementy <img> mają atrybut alt lub rolę none albo presentation.",
+   "help": "Obrazy muszą mieć tekst alternatywny.",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/image-alt?application=axeAPI&lang=pl",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "impact": "critical",
+       "message": "Element nie ma atrybutu alt."
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "impact": "critical",
+       "message": "Atrybut aria-label nie istnieje lub jest pusty."
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "impact": "critical",
+       "message": "Atrybut aria-labelledby nie istnieje albo  elementy, do których odwołuje atrybut aria-labelledby, nie istnieją lub są puste."
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "impact": "critical",
+       "message": "Element nie ma atrybutu title."
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "impact": "critical",
+       "message": "Domyślna semantyka elementu nie została nadpisana przez role=\"none\" ani role=\"presentation\"."
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"a.png\">",
+     "target": [
+      "img[src=\"a.png\"]"
+     ],
+     "failureSummary": "Napraw następujące elementy: \n Element nie ma atrybutu alt.\n Atrybut aria-label nie istnieje lub jest pusty.\n Atrybut aria-labelledby nie istnieje albo  elementy, do których odwołuje atrybut aria-labelledby, nie istnieją lub są puste.\n Element nie ma atrybutu title.\n Domyślna semantyka elementu nie została nadpisana przez role=\"none\" ani role=\"presentation\"."
+    }
+   ]
+  },
+  {
+   "id": "label",
+   "impact": "critical",
+   "tags": [
+    "cat.forms",
+    "wcag2a",
+    "wcag412",
+    "section508",
+    "section508.22.n",
+    "TTv5",
+    "TT5.c",
+    "EN-301-549",
+    "EN-9.4.1.2",
+    "ACT",
+    "RGAAv4",
+    "RGAA-11.1.1"
+   ],
+   "description": "Każdy element formularza ma etykietę.",
+   "help": "Element formularza musi mieć etykietę.",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/label?application=axeAPI&lang=pl",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "impact": "critical",
+       "message": "Element formularza nie ma dorozumianej etykiety (nie jest owinięty w label)."
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "impact": "critical",
+       "message": "Element formularza nie ma jawnie określonej label."
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "impact": "critical",
+       "message": "Atrybut aria-label nie istnieje lub jest pusty."
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "impact": "critical",
+       "message": "Atrybut aria-labelledby nie istnieje albo  elementy, do których odwołuje atrybut aria-labelledby, nie istnieją lub są puste."
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "impact": "critical",
+       "message": "Element nie ma atrybutu title."
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "impact": "critical",
+       "message": "Element nie ma atrybutu placeholder."
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "impact": "critical",
+       "message": "Domyślna semantyka elementu nie została nadpisana przez role=\"none\" ani role=\"presentation\"."
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input type=\"text\">",
+     "target": [
+      "input"
+     ],
+     "failureSummary": "Napraw następujące elementy: \n Element formularza nie ma dorozumianej etykiety (nie jest owinięty w label).\n Element formularza nie ma jawnie określonej label.\n Atrybut aria-label nie istnieje lub jest pusty.\n Atrybut aria-labelledby nie istnieje albo  elementy, do których odwołuje atrybut aria-labelledby, nie istnieją lub są puste.\n Element nie ma atrybutu title.\n Element nie ma atrybutu placeholder.\n Domyślna semantyka elementu nie została nadpisana przez role=\"none\" ani role=\"presentation\"."
+    }
+   ]
+  },
+  {
+   "id": "link-name",
+   "impact": "serious",
+   "tags": [
+    "cat.name-role-value",
+    "wcag2a",
+    "wcag244",
+    "wcag412",
+    "section508",
+    "section508.22.a",
+    "TTv5",
+    "TT6.a",
+    "EN-301-549",
+    "EN-9.2.4.4",
+    "EN-9.4.1.2",
+    "ACT",
+    "RGAAv4",
+    "RGAA-6.2.1"
+   ],
+   "description": "Łącza mają odróżniający je tekst.",
+   "help": "Łącza muszą mieć odróżniający je tekst.",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/link-name?application=axeAPI&lang=pl",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "has-visible-text",
+       "data": null,
+       "impact": "serious",
+       "message": "Element nie ma tekstu, który jest widoczny dla czytników ekranu."
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "impact": "serious",
+       "message": "Atrybut aria-label nie istnieje lub jest pusty."
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "impact": "serious",
+       "message": "Atrybut aria-labelledby nie istnieje albo  elementy, do których odwołuje atrybut aria-labelledby, nie istnieją lub są puste."
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "impact": "serious",
+       "message": "Element nie ma atrybutu title."
+      }
+     ],
+     "all": [],
+     "none": [
+      {
+       "id": "focusable-no-name",
+       "data": null,
+       "impact": "serious",
+       "message": "Element znajduje się w porządku tabulacji i nie ma dostępnego tekstu."
+      }
+     ],
+     "impact": "serious",
+     "html": "<a href=\"/x\"></a>",
+     "target": [
+      "a"
+     ],
+     "failureSummary": "Napraw wszystkie poniższe: \n Element znajduje się w porządku tabulacji i nie ma dostępnego tekstu.\n\nNapraw następujące elementy: \n Element nie ma tekstu, który jest widoczny dla czytników ekranu.\n Atrybut aria-label nie istnieje lub jest pusty.\n Atrybut aria-labelledby nie istnieje albo  elementy, do których odwołuje atrybut aria-labelledby, nie istnieją lub są puste.\n Element nie ma atrybutu title."
+    }
+   ]
+  }
+ ]
+}
