@@ -224,3 +224,6 @@ __marimo__/
 
 # Wyniki pokazu sprintu (scripts\demo_sprint1.bat)
 demo-wyniki/
+
+# Wyniki lokalnych uruchomień (test fokusu, model wizyjny)
+wyniki/
