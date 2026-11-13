@@ -117,6 +117,26 @@ def zapytaj(base_url: str, model: str, klucz: str | None, obraz_url: str, polece
     return dane["choices"][0]["message"]["content"], dane.get("usage", {})
 
 
+def zapytaj_ollama(base_url: str, model: str, obraz_url: str, polecenie: str, timeout: float,
+                   opcje: dict) -> tuple[str, dict]:
+    """Natywne API Ollamy (/api/chat) – pozwala przekazać opcje, np. {"num_gpu": 0} (tylko CPU)."""
+    tresc = {
+        "model": model,
+        "stream": False,
+        "options": {"temperature": 0.1, **opcje},
+        "messages": [
+            {"role": "system", "content": SYSTEM},
+            {"role": "user", "content": polecenie, "images": [obraz_url.split(",", 1)[1]]},
+        ],
+    }
+    adres = re.sub(r"/v1/?$", "", base_url.rstrip("/")) + "/api/chat"
+    zadanie = urllib.request.Request(adres, data=json.dumps(tresc).encode(), headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(zadanie, timeout=timeout) as odp:
+        dane = json.load(odp)
+    uzycie = {"total_tokens": dane.get("prompt_eval_count", 0) + dane.get("eval_count", 0)}
+    return dane["message"]["content"], uzycie
+
+
 def parsuj_json(tekst: str) -> dict | None:
     tekst = re.sub(r"^```(?:json)?|```$", "", tekst.strip(), flags=re.MULTILINE).strip()
     try:
@@ -138,7 +158,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--base-url", default="http://localhost:11434/v1", help="API zgodne z OpenAI (domyślnie Ollama)")
     parser.add_argument("--zadania", default=",".join(ZADANIA), help="lista zadań, domyślnie wszystkie")
     parser.add_argument("--timeout", type=float, default=300, help="limit na jedno zapytanie w sekundach")
+    parser.add_argument("--ollama-opcje", type=json.loads, default=None,
+                        help='użyj natywnego API Ollamy z opcjami, np. \'{"num_gpu": 0}\' = tylko CPU')
+    parser.add_argument("--cpu", action="store_true",
+                        help="Ollama liczy tylko na CPU (gdy model na GPU zwraca śmieci, np. RTX 20xx); dodaje sufiks _cpu")
+    parser.add_argument("--sufiks", default="", help="dopisek do nazwy pliku wyników, np. _cpu")
     args = parser.parse_args(argv)
+    if args.cpu:
+        args.ollama_opcje = {**(args.ollama_opcje or {}), "num_gpu": 0}
+        args.sufiks = args.sufiks or "_cpu"
 
     klucz = os.environ.get("AUDYTOR_API_KEY")
     zadania = [z.strip() for z in args.zadania.split(",") if z.strip()]
@@ -147,15 +175,22 @@ def main(argv: list[str] | None = None) -> int:
         parser.error(f"nieznane zadania: {', '.join(sorted(nieznane))}")
 
     WYJSCIE.mkdir(parents=True, exist_ok=True)
-    nazwa = re.sub(r"[^A-Za-z0-9._-]+", "_", args.model)
+    nazwa = re.sub(r"[^A-Za-z0-9._-]+", "_", args.model) + args.sufiks
     wiersze, surowe = [], []
     for zrzut in zrzuty():
         obraz_url = jako_data_url(zrzut["obraz"])
         for zadanie in zadania:
             start = time.monotonic()
             try:
-                odpowiedz, uzycie = zapytaj(args.base_url, args.model, klucz, obraz_url, ZADANIA[zadanie], args.timeout)
+                if args.ollama_opcje is not None:
+                    odpowiedz, uzycie = zapytaj_ollama(args.base_url, args.model, obraz_url, ZADANIA[zadanie],
+                                                       args.timeout, args.ollama_opcje)
+                else:
+                    odpowiedz, uzycie = zapytaj(args.base_url, args.model, klucz, obraz_url, ZADANIA[zadanie], args.timeout)
                 blad = ""
+            except urllib.error.HTTPError as exc:
+                tresc_bledu = exc.read().decode(errors="replace")[:200]
+                odpowiedz, uzycie, blad = "", {}, f"HTTP {exc.code}: {tresc_bledu}"
             except (urllib.error.URLError, TimeoutError, KeyError) as exc:
                 odpowiedz, uzycie, blad = "", {}, str(exc)
             czas = time.monotonic() - start

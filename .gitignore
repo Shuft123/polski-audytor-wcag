@@ -226,4 +226,4 @@ __marimo__/
 demo-wyniki/
 
 # Wyniki lokalnych uruchomień (test fokusu, model wizyjny)
-wyniki/
+/wyniki/

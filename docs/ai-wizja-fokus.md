@@ -90,7 +90,7 @@ Czas: ok. 0,9 s na element (dwa zrzuty + pauzy na animacje) plus renderowanie st
 3. **Pomocniczo:** baner cookies, mapa fokusu (2.4.3), ogólny opis strony do raportu.
 
 ### Kandydaci
-Ograniczenie sprzętowe: lokalny GPU RTX 2060 6 GB; Colab T4 15 GB (jak Bielik u osoby 3).
+Ograniczenie sprzętowe: lokalny GPU RTX 2060 6 GB (Qwen2.5-VL nie działa na nim poprawnie – patrz wyniki); Colab T4 15 GB (jak Bielik u osoby 3).
 
 | Model | Uruchomienie | Rozmiar (Q4) | Uwagi |
 |---|---|---|---|
@@ -105,9 +105,34 @@ Zrzuty: 5 migawek zespołu × (pierwszy ekran po zamknięciu banera + ekran z ba
 ```powershell
 ollama pull qwen2.5vl:3b
 python scripts/test_modelu_wizyjnego.py --model qwen2.5vl:3b
+# tylko CPU (np. gdy model zwraca śmieci na GPU):
+python scripts/test_modelu_wizyjnego.py --model qwen2.5vl:3b --cpu --timeout 600
 ```
 
-**Wyniki:** _do uzupełnienia po uruchomieniu testu (tabela: model, poprawny JSON, baner zgodny z meta, trafność opisu/tekstu, średni czas, VRAM)._
+### Wyniki: Qwen2.5-VL 3B (14.11.2026)
+Szczegóły z oceną ręczną: [`docs/wyniki/wizja_qwen2.5vl_3b_cpu.csv`](wyniki/wizja_qwen2.5vl_3b_cpu.csv).
+
+**Na GPU (RTX 2060) model nie działa:** przy każdym zrzucie zwraca ciąg „@@@@…”, a Ollama przerywa generowanie („token repeat limit reached”). Sam tekst bez obrazu działa, wyłączenie flash attention nie pomaga. Najpewniej to problem obliczeń fp16 na kartach serii RTX 20xx (Turing). Test przeprowadziliśmy więc na **CPU** (`--cpu`).
+
+| Zadanie | Wynik | Komentarz |
+|---|---|---|
+| `opis` | **9/10** trafnych | rozpoznaje stronę i jej główną treść; 1 opis ze zmyśleniem („Biały Stok”, „deportacje”); w 2 przypadkach przepisał z promptu `typ_strony: "urząd\|uczelnia"` |
+| `tekst` (tekst na obrazach) | **0/10** | zawsze pusta lista, choć w zadaniu `opis` sam cytuje napisy z grafik (np. „Black Weeks … -70%” na x-kom.pl) – nie radzi sobie z zadaniem, a nie z odczytem |
+| `baner` (baner cookies) | **6/10** = tylko przypadki z banerem | zawsze odpowiada „jest baner” i przepisuje przykładowe napisy przycisków z promptu; prawdziwe napisy odczytał tylko raz (x-kom.pl) |
+| poprawny JSON | 20/30 | `tekst` zwraca listę zamiast obiektu; część odpowiedzi w bloku \`\`\`json (parser to obsługuje) |
+
+| Parametr | Wartość |
+|---|---|
+| Rozmiar modelu | 3,2 GB (Q4), w pamięci ok. 2,8 GB |
+| Czas na CPU | ok. 65 s na pierwsze zapytanie do zrzutu (kodowanie obrazu), 3–5 s na kolejne pytania o ten sam zrzut |
+| Koszt | 0 zł (lokalnie); na CPU za wolno do skanowania wielu podstron |
+
+### Wnioski i decyzja wstępna
+- **Qwen2.5-VL 3B odrzucamy jako model docelowy:** opis strony jest użyteczny, ale model nie wykonuje zadań wymagających precyzji (teksty na obrazach, odpowiedź „nie” przy braku banera), a na naszym GPU nie działa.
+- **Model wizyjny używamy tylko do opisu obrazu**, np. jako `obraz_opis` w ocenie altu (F9). Tu nawet 3B daje sensowne wyniki.
+- **Tekst na obrazach (F13) nie może zależeć od samego modelu wizyjnego.** Do znajdowania i odczytu napisów sprawdzimy OCR z językiem polskim (np. Tesseract, PaddleOCR, EasyOCR), a model wizyjny zostawimy do oceny przypadków spornych.
+- **Prompty nie mogą zawierać przykładowych odpowiedzi** („Odrzuć”, „urząd|uczelnia”) – mały model je przepisuje. To ta sama lekcja co u osoby 3 (v2 promptu altu).
+- **Sprint 2:** ten sam skrypt na Colab T4 dla Qwen2.5-VL 7B (tak jak Bielik u osoby 3) oraz Gemma 3 4B lokalnie; model komercyjny przez API jako punkt odniesienia.
 
 ## 3. Kontrast tekstu na obrazach (F13) – decyzja wstępna
 Modele wizyjne źle podają liczby (np. współczynnik kontrastu), za to dobrze czytają tekst i wskazują jego położenie. Dlatego dzielimy pracę:
