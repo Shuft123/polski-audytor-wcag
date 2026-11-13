@@ -90,7 +90,7 @@ Czas: ok. 0,9 s na element (dwa zrzuty + pauzy na animacje) plus renderowanie st
 3. **Pomocniczo:** baner cookies, mapa fokusu (2.4.3), ogólny opis strony do raportu.
 
 ### Kandydaci
-Ograniczenie sprzętowe: lokalny GPU RTX 2060 6 GB (Qwen2.5-VL nie działa na nim poprawnie – patrz wyniki); Colab T4 15 GB (jak Bielik u osoby 3).
+Ograniczenie sprzętowe: lokalny GPU RTX 2060 6 GB (Gemma 3 4B działa, Qwen2.5-VL nie – patrz wyniki); Colab T4 15 GB (jak Bielik u osoby 3).
 
 | Model | Uruchomienie | Rozmiar (Q4) | Uwagi |
 |---|---|---|---|
@@ -103,8 +103,8 @@ Ograniczenie sprzętowe: lokalny GPU RTX 2060 6 GB (Qwen2.5-VL nie działa na ni
 Zrzuty: 5 migawek zespołu × (pierwszy ekran po zamknięciu banera + ekran z banerem cookies). Każdy zrzut dostaje 3 zadania (prompty po polsku, odpowiedź w JSON): `opis`, `tekst` (teksty na obrazach + czytelność), `baner` (czy jest baner cookies i czy ma przycisk odrzucenia). Zadanie `baner` sprawdzamy automatycznie z `meta.json`, `opis` i `tekst` oceniamy ręcznie w kolumnie `ocena_reczna`.
 
 ```powershell
-ollama pull qwen2.5vl:3b
-python scripts/test_modelu_wizyjnego.py --model qwen2.5vl:3b
+ollama pull gemma3:4b
+python scripts/test_modelu_wizyjnego.py --model gemma3:4b
 # tylko CPU (np. gdy model zwraca śmieci na GPU):
 python scripts/test_modelu_wizyjnego.py --model qwen2.5vl:3b --cpu --timeout 600
 ```
@@ -127,12 +127,38 @@ Szczegóły z oceną ręczną: [`docs/wyniki/wizja_qwen2.5vl_3b_cpu.csv`](wyniki
 | Czas na CPU | ok. 65 s na pierwsze zapytanie do zrzutu (kodowanie obrazu), 3–5 s na kolejne pytania o ten sam zrzut |
 | Koszt | 0 zł (lokalnie); na CPU za wolno do skanowania wielu podstron |
 
-### Wnioski i decyzja wstępna
-- **Qwen2.5-VL 3B odrzucamy jako model docelowy:** opis strony jest użyteczny, ale model nie wykonuje zadań wymagających precyzji (teksty na obrazach, odpowiedź „nie” przy braku banera), a na naszym GPU nie działa.
-- **Model wizyjny używamy tylko do opisu obrazu**, np. jako `obraz_opis` w ocenie altu (F9). Tu nawet 3B daje sensowne wyniki.
-- **Tekst na obrazach (F13) nie może zależeć od samego modelu wizyjnego.** Do znajdowania i odczytu napisów sprawdzimy OCR z językiem polskim (np. Tesseract, PaddleOCR, EasyOCR), a model wizyjny zostawimy do oceny przypadków spornych.
+### Wyniki: Gemma 3 4B (14.11.2026)
+Szczegóły z oceną ręczną: [`docs/wyniki/wizja_gemma3_4b.csv`](wyniki/wizja_gemma3_4b.csv). Te same prompty, te same zrzuty, **na GPU** (RTX 2060) bez problemów.
+
+| Zadanie | Wynik | Komentarz |
+|---|---|---|
+| `opis` | **7/10** | rozpoznaje typ strony i treść, ale przekręca nazwy własne: „Gmina Wiszków” (2×), zmyślony „Serwis Przyszłości Polski” na gov.pl |
+| `tekst` (tekst na obrazach) | **8/10** | znajduje napisy z grafik (plakat na pb.edu.pl, banery x-kom.pl i wasilkow.pl, zdjęcie na bialystok.pl); błędy OCR („Raby do -70%”, „60 UU ZU Z”) i mieszanie z tekstem HTML (menu, treść banera cookies) |
+| ocena czytelności | **niespójna** | ten sam napis na bialystok.pl raz „nieczytelny – niski kontrast”, raz „czytelny” |
+| `baner` (baner cookies) | **9/10** | poprawnie mówi „nie ma banera” na 4 z 5 ekranów bez banera; poprawnie wykrywa brak przycisku odrzucenia na wasilkow.pl; 1 fałszywy alarm (x-kom.pl, zmyślone przyciski) |
+| poprawny JSON | **30/30** | odpowiedzi w bloku \`\`\`json – parser to obsługuje |
+
+| Parametr | Wartość |
+|---|---|
+| Rozmiar modelu | 3,4 GB (Q4), w pamięci GPU ok. 4,0 GB (kontekst 4096) |
+| Czas na GPU | średnio **5,4 s** na zapytanie (4,2–8,7 s); strona z 30 obrazami ≈ 3 min na jedno pytanie na obraz |
+| Koszt | 0 zł (lokalnie, karta 6 GB wystarcza) |
+
+### Porównanie i decyzja wstępna
+| | Qwen2.5-VL 3B | Gemma 3 4B |
+|---|---|---|
+| działa na RTX 2060 | nie (tylko CPU, ~65 s) | tak (~5 s) |
+| opis strony | 9/10 | 7/10 (przekręca nazwy własne) |
+| tekst na obrazach | 0/10 | 8/10 |
+| baner cookies | 6/10 (zawsze „tak”) | 9/10 |
+| poprawny JSON | 20/30 | 30/30 |
+
+- **Wybór na sprint 2: Gemma 3 4B lokalnie przez Ollamę** – jedyny z testowanych, który działa na naszym sprzęcie i wykonuje wszystkie 3 zadania. Do sprawdzenia w sprincie 2 na Colab T4: Qwen2.5-VL 7B, oraz model komercyjny przez API jako punkt odniesienia (skrypt obsługuje oba bez zmian).
+- **Qwen2.5-VL 3B odrzucamy:** nie działa na RTX 2060, a na CPU nie wykonuje zadań wymagających precyzji (pusta lista tekstów, zawsze „jest baner”).
+- **Opis obrazu (`obraz_opis` dla F9):** Gemma się nadaje, ale nazw własnych z jej opisu nie wolno traktować jako pewnych („Wiszków”). Ocena altu powinna porównywać treść obrazu, a nie nazwy.
+- **Tekst na obrazach (F13): model znajduje napisy, ale kontrastu nie liczy.** Ten sam napis raz uznał za czytelny, raz nie, a odczyt bywa przekręcony. Model wskazuje kandydatów, kontrast liczy kod (sekcja 3), a do odczytu napisów porównamy jeszcze OCR z językiem polskim (np. Tesseract, PaddleOCR).
+- **Model miesza tekst z obrazów ze zwykłym tekstem HTML.** W F13 trzeba podawać mu wycinki samych obrazów z DOM (`<img>`, `background-image`), a nie cały zrzut.
 - **Prompty nie mogą zawierać przykładowych odpowiedzi** („Odrzuć”, „urząd|uczelnia”) – mały model je przepisuje. To ta sama lekcja co u osoby 3 (v2 promptu altu).
-- **Sprint 2:** ten sam skrypt na Colab T4 dla Qwen2.5-VL 7B (tak jak Bielik u osoby 3) oraz Gemma 3 4B lokalnie; model komercyjny przez API jako punkt odniesienia.
 
 ## 3. Kontrast tekstu na obrazach (F13) – decyzja wstępna
 Modele wizyjne źle podają liczby (np. współczynnik kontrastu), za to dobrze czytają tekst i wskazują jego położenie. Dlatego dzielimy pracę:
