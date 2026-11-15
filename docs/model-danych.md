@@ -91,8 +91,11 @@ with sesje() as sesja:
 
 Z wiersza poleceń: `audytor-scan https://www.gov.pl/ --db sqlite:///audytor.db`.
 
-## Do zrobienia z osobą 6
+## Migracje (z osobą 6)
 
-- **Migracje Alembic.** Do tego czasu tabele tworzy `otworz_baze()` (`Base.metadata.create_all`).
-  Pierwsza migracja powinna odtworzyć dokładnie te tabele; potem `create_all` usuwamy.
-- **Sterownik PostgreSQL** (np. `psycopg[binary]`) w zależnościach i adres bazy z docker-compose.
+- **Migracje Alembic** – `migrations/versions/0001_model_danych_v1.py` odtwarza dokładnie te tabele
+  (sprawdza to `alembic check` w CI na PostgreSQL). Tabele w PostgreSQL tworzy `alembic upgrade head`
+  (w docker-compose – usługa `migracje`); API i worker nie wywołują `create_all`. `otworz_baze()` z
+  `utworz=True` zostaje dla `audytor-scan --db` i testów na SQLite. Jak dodać migrację: [backend.md](backend.md#migracje-bazy-alembic).
+- **Sterownik PostgreSQL** – `psycopg[binary]` w zależnościach, adres bazy z docker-compose:
+  `postgresql+psycopg://audytor:audytor@localhost:5432/audytor`.

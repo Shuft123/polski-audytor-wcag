@@ -1,0 +1,80 @@
+# Cała usługa jedną komendą:   docker compose up --build
+#   API + Swagger:   http://localhost:8000/docs
+#   Zatrzymanie:     docker compose down        (z usunięciem danych: docker compose down -v)
+# Porty można zmienić w pliku .env (wzór: .env.example).
+
+x-audytor: &audytor
+  build: .
+  image: polski-audytor-wcag:dev
+  environment:
+    AUDYTOR_DB_URL: postgresql+psycopg://audytor:audytor@postgres:5432/audytor
+    AUDYTOR_REDIS_URL: redis://redis:6379/0
+    AUDYTOR_WYNIKI_DIR: /app/wyniki
+  volumes:
+    - wyniki:/app/wyniki
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: audytor
+      POSTGRES_PASSWORD: audytor
+      POSTGRES_DB: audytor
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"     # np. dla: audytor-scan URL --db postgresql+psycopg://audytor:audytor@localhost/audytor
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U audytor -d audytor"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  # Jednorazowo przy starcie: tworzy / aktualizuje tabele, potem się kończy.
+  migracje:
+    <<: *audytor
+    command: ["alembic", "upgrade", "head"]
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    <<: *audytor
+    command: ["audytor-api", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      migracje:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  worker:
+    <<: *audytor
+    command: ["celery", "-A", "audytor.worker", "worker", "--loglevel=info", "--concurrency=2"]
+    shm_size: 1gb                          # Chromium potrzebuje więcej niż domyślne 64 MB /dev/shm
+    depends_on:
+      migracje:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  wyniki:

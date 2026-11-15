@@ -39,7 +39,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--timeout", type=float, default=30.0, help="limit wczytania strony w sekundach (domyślnie 30)")
     parser.add_argument("--png", action="store_true", help="zrzut jako PNG (domyślnie JPEG – mniejszy plik)")
     parser.add_argument("--mhtml", action="store_true", help="zapisz też kopię MHTML strony (duży plik)")
-    parser.add_argument("--ignore-robots", action="store_true", help="NIE sprawdzaj robots.txt (tylko do testów własnych stron)")
+    parser.add_argument("--ignore-robots", action="store_true",
+                        help="NIE sprawdzaj robots.txt (tylko do testów własnych stron)")
     parser.add_argument("--keep-cookie-banner", action="store_true",
                         help="nie zamykaj banera cookies (axe sprawdzi stronę razem z banerem)")
     parser.add_argument("--headed", action="store_true", help="pokaż okno przeglądarki")
