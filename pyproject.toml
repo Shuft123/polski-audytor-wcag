@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "playwright>=1.45",
+    "truststore>=0.9",  # SSL przez magazyn certyfikatów systemu (niepełne łańcuchy na stronach urzędów)
     "pillow>=10",
 ]
 
