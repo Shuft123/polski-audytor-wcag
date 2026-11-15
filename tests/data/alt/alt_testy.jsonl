@@ -1,0 +1,18 @@
+{"alt": null, "kontekst": "Aktualności gminy", "src": "news.jpg", "w_linku": false, "oczekiwany": "blad"}
+{"alt": "IMG_0423.jpg", "kontekst": "Dożynki gminne 2026", "src": "IMG_0423.jpg", "w_linku": false, "oczekiwany": "blad"}
+{"alt": "zdjęcie", "kontekst": "Nowy budynek przedszkola", "src": "p1.jpg", "w_linku": false, "oczekiwany": "blad"}
+{"alt": "", "kontekst": "Ozdobny szlaczek oddzielający sekcje strony", "src": "separator.png", "w_linku": false, "oczekiwany": "ok"}
+{"alt": "", "kontekst": "(obraz jest jedyną zawartością linku do strony głównej)", "src": "logo-gmina.png", "w_linku": true, "oczekiwany": "blad"}
+{"alt": "Urząd Gminy Supraśl – strona główna", "kontekst": "Nagłówek strony", "src": "logo.png", "w_linku": true, "oczekiwany": "ok"}
+{"alt": "Wykres", "kontekst": "Liczba mieszkańców gminy w latach 2015–2025 spadła z 15 200 do 14 100", "src": "wykres.png", "w_linku": false, "oczekiwany": "blad"}
+{"alt": "Wójt gminy wręcza nagrodę laureatce konkursu plastycznego", "kontekst": "Rozstrzygnięcie konkursu plastycznego", "src": "konkurs.jpg", "w_linku": false, "oczekiwany": "ok"}
+{"alt": "Rekrutacja do przedszkoli 2026/2027", "kontekst": "Rekrutacja do przedszkoli 2026/2027", "src": "rekrutacja.jpg", "w_linku": false, "oczekiwany": "do_weryfikacji"}
+{"alt": "Lupa", "kontekst": "(ikona w przycisku wysyłającym formularz wyszukiwania)", "src": "search.svg", "w_linku": true, "oczekiwany": "blad"}
+{"alt": "Szkło powiększające", "kontekst": "(ikona w przycisku formularza wyszukiwania)", "src": "szukaj.svg", "w_linku": true, "oczekiwany": "blad"}
+{"alt": "Ikona strzałki w prawo", "kontekst": "(przycisk przewijający karuzelę aktualności do następnego slajdu)", "src": "arrow-right.svg", "w_linku": true, "oczekiwany": "blad"}
+{"alt": "Symbol drukarki", "kontekst": "(link otwierający wersję strony do druku)", "src": "print.png", "w_linku": true, "oczekiwany": "blad"}
+{"alt": "Następny slajd", "kontekst": "(przycisk przewijający karuzelę aktualności)", "src": "next.svg", "w_linku": true, "oczekiwany": "ok"}
+{"alt": "Poprzednie zdjęcie", "kontekst": "(przycisk w galerii zdjęć z dożynek)", "src": "prev.svg", "w_linku": true, "oczekiwany": "ok"}
+{"alt": "Facebook gminy", "kontekst": "(ikona w stopce prowadząca do profilu gminy na Facebooku)", "src": "fb.svg", "w_linku": true, "oczekiwany": "ok"}
+{"alt": "Niebieskie logo Facebooka", "kontekst": "(ikona w stopce prowadząca do profilu gminy na Facebooku)", "src": "fb.svg", "w_linku": true, "oczekiwany": "blad"}
+{"alt": "Zamknij", "kontekst": "(przycisk w rogu okna z komunikatem o cookies)", "src": "close.svg", "w_linku": true, "oczekiwany": "ok"}

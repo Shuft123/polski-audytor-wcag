@@ -11,6 +11,7 @@ requires-python = ">=3.11"
 dependencies = [
     "playwright>=1.45",
     "truststore>=0.9",  # SSL przez magazyn certyfikatów systemu (niepełne łańcuchy na stronach urzędów)
+    "pillow>=10",
 ]
 
 [project.optional-dependencies]
@@ -20,9 +21,13 @@ dev = [
 
 [project.scripts]
 audytor-crawl = "audytor.crawler.cli:main"
+audytor-fokus = "audytor.fokus.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"audytor.axe" = ["locales/*.json"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
