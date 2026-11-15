@@ -18,10 +18,7 @@ Wszystkie opcje: `audytor-scan --help`.
 ## Moduły
 
 - **Crawler** (`src/audytor/crawler`) – renderowanie stron, migawki, linki wewnętrzne, robots.txt. Instrukcja: [docs/crawler.md](docs/crawler.md).
-- **Audyt axe-core** (`src/audytor/axe`) – uruchomienie axe-core na stronie i zamiana wyników na wspólny format. Instrukcja: [docs/audyt-axe.md](docs/audyt-axe.md).
-- **Format wyników** (`src/audytor/wyniki`) – wspólny format problemu dla axe i AI, plik `wynik.json`.
-- **Baza danych** (`src/audytor/db`) – model danych v1 (skan, podstrona, problem). Opis: [docs/model-danych.md](docs/model-danych.md).
-- **Skan** (`src/audytor/skan`) – komenda `audytor-scan`: render → axe-core → zapis wyniku.
+- **Test fokusu** (`src/audytor/fokus`) – przejście stroną klawiszem Tab i ocena widoczności fokusu (WCAG 2.4.7). Instrukcja i wybór modelu wizyjnego: [docs/ai-wizja-fokus.md](docs/ai-wizja-fokus.md).
 
 ## Dokumentacja
 
