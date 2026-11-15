@@ -17,6 +17,7 @@ dependencies = [
     "fastapi>=0.115",             # REST API (F21)
     "uvicorn[standard]>=0.30",
     "celery[redis]>=5.4",         # kolejka skanów (F4)
+    "truststore>=0.9",  # SSL przez magazyn certyfikatów systemu (niepełne łańcuchy na stronach urzędów)
     "pillow>=10",
 ]
 
