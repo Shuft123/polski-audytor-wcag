@@ -61,6 +61,7 @@ Pull request można zmergować dopiero, gdy CI przejdzie i ktoś z zespołu zatw
 - **Skan** (`src/audytor/skan`) – komenda `audytor-scan`: render → axe-core → zapis wyniku.
 - **REST API** (`src/audytor/api`) – FastAPI: `/health`, zlecenie skanu, status, wyniki. Opis: [docs/backend.md](docs/backend.md).
 - **Worker** (`src/audytor/worker`) – Celery: wykonuje skany zlecone przez API i zapisuje wyniki w bazie.
+- **Test fokusu** (`src/audytor/fokus`) – przejście stroną klawiszem Tab i ocena widoczności fokusu (WCAG 2.4.7). Instrukcja i wybór modelu wizyjnego: [docs/ai-wizja-fokus.md](docs/ai-wizja-fokus.md).
 
 ## Dokumentacja
 
@@ -68,3 +69,5 @@ Pull request można zmergować dopiero, gdy CI przejdzie i ktoś z zespołu zatw
 - [Kontrakt danych między modułami](docs/kontrakt-danych.md)
 - [Model danych v1 (ERD)](docs/model-danych.md)
 - [Konwencje i zasady współpracy](docs/konwencje.md)
+- [AI: ocena tekstu alternatywnego (F9)](docs/ai-ocena-alt.md)
+- [AI: model wizyjny i test fokusu (F8)](docs/ai-wizja-fokus.md)

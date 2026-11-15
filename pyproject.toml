@@ -17,6 +17,7 @@ dependencies = [
     "fastapi>=0.115",             # REST API (F21)
     "uvicorn[standard]>=0.30",
     "celery[redis]>=5.4",         # kolejka skanów (F4)
+    "pillow>=10",
 ]
 
 [project.optional-dependencies]
@@ -30,6 +31,7 @@ dev = [
 audytor-crawl = "audytor.crawler.cli:main"
 audytor-scan = "audytor.skan.cli:main"
 audytor-api = "audytor.api.__main__:main"
+audytor-fokus = "audytor.fokus.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
