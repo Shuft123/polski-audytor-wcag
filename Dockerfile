@@ -12,7 +12,9 @@ WORKDIR /app
 # Zależności i Chromium (Playwright) – wersja przeglądarki zawsze zgodna z zainstalowanym Playwrightem.
 COPY pyproject.toml README.md ./
 COPY src ./src
-RUN pip install . \
+# libatomic1 – wymagany przez Node.js wbudowany w Playwrighta (brak w obrazie slim).
+RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 \
+    && pip install . \
     && python -m playwright install --with-deps chromium \
     && rm -rf /var/lib/apt/lists/*
 
