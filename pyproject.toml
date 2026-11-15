@@ -25,6 +25,9 @@ audytor-fokus = "audytor.fokus.cli:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+"audytor.axe" = ["locales/*.json"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
