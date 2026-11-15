@@ -1,0 +1,25 @@
+# Lista stron testowych (sprint 1, osoba 5): 20 stron – uczelnie, gminy/miasta, administracja, sklepy.
+# Użycie: python -m audytor.deklaracja --urls-file tests/data/strony-testowe-deklaracja.csv --csv wyniki-deklaracji.csv
+# deklaracja_oczekiwana: adres sprawdzony ręcznie (podstawa testów F17); puste = do uzupełnienia po pierwszym przebiegu skryptu.
+# Pierwsze 5 wierszy to strony z migawkami crawlera (tests/data/snapshots).
+url,typ,dlaczego_w_zestawie,deklaracja_oczekiwana,zrodlo
+https://pb.edu.pl/,uczelnia,nasza uczelnia; WordPress; link w stopce,https://pb.edu.pl/dostepnosc-cyfrowa/deklaracja-dostepnosci/,migawka 03.11.2026
+https://www.bialystok.pl/,miasto,duży portal; adres bez słowa dostepnosc (/cms/deklaracja); niepełny łańcuch SSL,https://www.bialystok.pl/cms/deklaracja,migawka 03.11.2026
+https://www.wasilkow.pl/,gmina mała,link poza stopką; obok strona o dostępności urzędu (pułapka),https://www.wasilkow.pl/pl/informator-mieszkanca/deklaracja-dostepnosci-wwwwasilkowpl.html,migawka 03.11.2026
+https://www.gov.pl/,administracja centralna,platforma gov.pl (wspólna dla ministerstw); dużo JS,https://www.gov.pl/web/gov/deklaracja-dostepnosci-serwisu-govpl,migawka 03.11.2026
+https://www.x-kom.pl/,sklep,podmiot prywatny (PAD); ciężki JS; słowo „dostępny” w artykułach (pułapka),https://www.x-kom.pl/lp/deklaracja-dostepnosci,migawka 03.11.2026
+https://uwb.edu.pl/,uczelnia,druga uczelnia w Białymstoku; wykrywane przez meta tag,https://uwb.edu.pl/uniwersytet/dostepnosc-cyfrowa/,przebieg skryptu 15.11.2026 (meta)
+https://www.umb.edu.pl/,uczelnia,osobne podstrony dostępności cyfrowej/architektonicznej/komunikacyjnej,https://www.umb.edu.pl/deklaracja-dostepnosci,przebieg skryptu 15.11.2026
+https://www.pw.edu.pl/,uczelnia,duża uczelnia spoza regionu,https://www.pw.edu.pl/deklaracja-dostepnosci,przebieg skryptu 15.11.2026
+https://www.uj.edu.pl/,uczelnia,robots.txt zabrania naszemu botowi – test etycznego crawlowania (oczekiwany wynik: BRAK),,przebieg skryptu 15.11.2026 (robots.txt)
+https://suprasl.pl/,gmina mała,gmina pod Białymstokiem; BIP na osobnej domenie,https://suprasl.pl/administracja/deklaracja-dostepnosci/,przebieg skryptu 15.11.2026
+https://www.choroszcz.pl/,gmina mała,gmina pod Białymstokiem; BIP na poddomenie bip.choroszcz.pl,https://www.choroszcz.pl/cms/deklaracja-dostepnosci,przebieg skryptu 15.11.2026
+https://samorzad.gov.pl/web/gmina-augustow,gmina mała,platforma samorzad.gov.pl (setki gmin na jednym szablonie),https://samorzad.gov.pl/web/gmina-augustow/deklaracja-dostepnosci,przebieg skryptu 15.11.2026
+https://www.krakow.pl/,miasto,duże miasto; wykrywane przez meta tag deklaracja-dostępności,https://krakow.pl/?dok_id=262635,przebieg skryptu 15.11.2026 (meta)
+https://www.gdansk.pl/,miasto,duże miasto; nowoczesny portal,https://www.gdansk.pl/deklaracja-dostepnosci,przebieg skryptu 15.11.2026
+https://um.warszawa.pl/,miasto,największy samorząd; link niewidoczny bez JS (znalezione pod typowym adresem),https://um.warszawa.pl/deklaracja-dostepnosci,przebieg skryptu 15.11.2026 (typowy adres)
+https://www.podlaskie.eu/,administracja regionalna,Urząd Marszałkowski Województwa Podlaskiego (dawne wrotapodlasia.pl – domena nie działa),https://www.podlaskie.eu/cms/deklaracja-dostepnosci,przebieg skryptu 15.11.2026
+https://www.zus.pl/,administracja centralna,duży urząd; własny portal (nie gov.pl),https://www.zus.pl/dostepnosc/deklaracja-dostepnosci-zus.pl,przebieg skryptu 15.11.2026
+https://www.empik.com/,sklep,PAD; ma deklarację tylko dla Empik Go (/go/deklaracja-dostepnosci) – sprawdzić stronę główną,,
+https://www.mediaexpert.pl/,sklep,PAD; ochrona przed botami (403); informacja bez a11y-*,https://www.mediaexpert.pl/dostepnosc-cyfrowa,przebieg skryptu 15.11.2026 (bez a11y)
+https://www.rossmann.pl/,sklep,PAD; inna branża niż elektronika; informacja bez a11y-*,https://www.rossmann.pl/pomoc/wszystkie-tematy/dostepnosc-uslug,przebieg skryptu 15.11.2026 (bez a11y)
