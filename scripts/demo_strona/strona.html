@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Polski audytor WCAG – pokaz sprintu 1</title>
+<style>
+  :root {
+    --tlo: #f6f7f9; --karta: #ffffff; --tekst: #1b1f24; --szary: #4b5563; --linia: #d6dae0;
+    --akcent: #1f4fbf; --akcent-ciemny: #163a8c; --ok: #146c2e; --ok-tlo: #e3f4e8;
+    --blad: #a4161a; --blad-tlo: #fbe7e7; --uwaga: #7a4b00; --uwaga-tlo: #fff3d6;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.5 system-ui, "Segoe UI", Roboto, sans-serif; background: var(--tlo); color: var(--tekst); }
+  header { background: #13213f; color: #fff; padding: 14px 24px; display: flex; flex-wrap: wrap; gap: 12px 24px;
+           align-items: center; justify-content: space-between; }
+  header h1 { font-size: 1.25rem; margin: 0; }
+  header p { margin: 0; color: #c9d3ea; font-size: .9rem; }
+  main { max-width: 1200px; margin: 0 auto; padding: 20px 24px 48px; }
+  a { color: var(--akcent); }
+  header a { color: #fff; }
+  :focus-visible { outline: 3px solid #f2a900; outline-offset: 2px; }
+  .karta { background: var(--karta); border: 1px solid var(--linia); border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+  .wiersz { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  label { font-weight: 600; }
+  input[type=url] { flex: 1 1 360px; font: inherit; padding: 8px 10px; border: 1px solid #8a93a0; border-radius: 6px; }
+  input[type=number] { width: 5em; font: inherit; padding: 6px 8px; border: 1px solid #8a93a0; border-radius: 6px; }
+  button { font: inherit; cursor: pointer; border-radius: 6px; padding: 8px 14px; border: 1px solid var(--akcent);
+           background: var(--akcent); color: #fff; }
+  button:hover { background: var(--akcent-ciemny); }
+  button[disabled] { opacity: .55; cursor: progress; }
+  button.lekki { background: #fff; color: var(--akcent); }
+  button.lekki:hover { background: #eef2fb; }
+  .przyklady { font-size: .9rem; color: var(--szary); }
+  .przyklady button { padding: 2px 8px; font-size: .9rem; }
+  [role=tablist] { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 2px solid var(--linia); margin: 8px 0 16px; }
+  [role=tab] { background: transparent; color: var(--tekst); border: 0; border-bottom: 3px solid transparent;
+               border-radius: 6px 6px 0 0; padding: 10px 14px; margin-bottom: -2px; }
+  [role=tab]:hover { background: #e9edf5; }
+  [role=tab][aria-selected=true] { border-bottom-color: var(--akcent); color: var(--akcent); font-weight: 700; }
+  .kto { display: block; font-size: .78rem; font-weight: 400; color: var(--szary); }
+  .opis { color: var(--szary); margin-top: 0; }
+  .status { min-height: 1.6em; margin: 8px 0; }
+  .laduje::before { content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -2px;
+                    border: 3px solid #c5cfe6; border-top-color: var(--akcent); border-radius: 50%; animation: krec 1s linear infinite; }
+  @keyframes krec { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .laduje::before { animation: none; } }
+  .komunikat { padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+  .komunikat.blad { background: var(--blad-tlo); color: var(--blad); border: 1px solid #e3a1a1; }
+  .komunikat.uwaga { background: var(--uwaga-tlo); color: var(--uwaga); border: 1px solid #e8c77a; }
+  .siatka { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .siatka { grid-template-columns: 1fr; } }
+  .zrzut { display: block; max-height: 520px; overflow: auto; border: 1px solid var(--linia); border-radius: 6px; background: #fff; }
+  .zrzut img { display: block; width: 100%; }
+  figure { margin: 0 0 14px; }
+  figcaption { font-size: .85rem; color: var(--szary); margin-top: 4px; }
+  dl.fakty { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0 0 12px; }
+  dl.fakty dt { color: var(--szary); }
+  dl.fakty dd { margin: 0; overflow-wrap: anywhere; }
+  .liczby { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 14px; padding: 0; list-style: none; }
+  .liczby li { border: 1px solid var(--linia); border-radius: 8px; padding: 8px 14px; background: #fafbfc; min-width: 120px; }
+  .liczby strong { display: block; font-size: 1.5rem; line-height: 1.2; }
+  .znaczek { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: .82rem; font-weight: 600; white-space: nowrap; }
+  .z-blad { background: var(--blad-tlo); color: var(--blad); }
+  .z-ok { background: var(--ok-tlo); color: var(--ok); }
+  .z-uwaga { background: var(--uwaga-tlo); color: var(--uwaga); }
+  .z-neutral { background: #e9edf5; color: #2c3e66; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  caption { text-align: left; font-weight: 700; padding: 4px 0 8px; }
+  th, td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--linia); }
+  th { background: #eef1f6; position: sticky; top: 0; }
+  .przewijana { max-height: 560px; overflow: auto; border: 1px solid var(--linia); border-radius: 6px; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: .85em; background: #f0f2f5; padding: 1px 4px;
+         border-radius: 4px; overflow-wrap: anywhere; }
+  details summary { cursor: pointer; color: var(--akcent); }
+  .filtry { margin: 0 0 10px; }
+  .filtry button[aria-pressed=true] { background: var(--akcent); color: #fff; }
+  .backend { display: flex; align-items: center; gap: 8px; font-size: .9rem; }
+  .kropka { width: 12px; height: 12px; border-radius: 50%; background: #9aa3b2; flex: none; }
+  .kropka.tak { background: #3ccf6e; } .kropka.nie { background: #ef6b6b; }
+  ul.linki { margin: 6px 0 0; padding-left: 20px; max-height: 260px; overflow: auto; font-size: .9rem; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Polski audytor dostępności cyfrowej (WCAG)</h1>
+    <p>Pokaz sprintu 1 – strona pomocnicza do prezentacji, nie część audytora</p>
+  </div>
+  <div class="backend" id="backend" title="Backend z docker-compose (osoba 6)">
+    <span class="kropka" id="backend-kropka" aria-hidden="true"></span>
+    <span id="backend-tekst">Backend (Docker): sprawdzam…</span>
+    <button class="lekki" type="button" id="backend-odswiez">Sprawdź</button>
+  </div>
+</header>
+
+<main>
+  <section class="karta" aria-labelledby="adres-naglowek">
+    <h2 id="adres-naglowek" class="sr">Adres strony do sprawdzenia</h2>
+    <form id="formularz" class="wiersz" novalidate>
+      <label for="url">Adres strony:</label>
+      <input type="url" id="url" name="url" value="https://www.wasilkow.pl/" required autocomplete="url"
+             aria-describedby="url-pomoc">
+      <button type="submit" id="uruchom">Uruchom</button>
+    </form>
+    <p class="przyklady" id="url-pomoc">
+      Przykłady:
+      <button class="lekki" type="button" data-url="https://www.wasilkow.pl/">wasilkow.pl</button>
+      <button class="lekki" type="button" data-url="https://pb.edu.pl/">pb.edu.pl</button>
+      <button class="lekki" type="button" data-url="https://www.gov.pl/">gov.pl</button>
+      <button class="lekki" type="button" data-url="https://www.bialystok.pl/">bialystok.pl</button>
+      – „Uruchom” wykonuje akcję z wybranej zakładki.
+    </p>
+  </section>
+
+  <div role="tablist" aria-label="Moduły audytora">
+    <button role="tab" id="tab-migawka" aria-controls="panel-migawka" aria-selected="true">Migawka strony<span class="kto">crawler – osoba 1</span></button>
+    <button role="tab" id="tab-skan" aria-controls="panel-skan" aria-selected="false" tabindex="-1">Skan axe-core<span class="kto">osoba 2</span></button>
+    <button role="tab" id="tab-alt" aria-controls="panel-alt" aria-selected="false" tabindex="-1">Ocena altów (AI)<span class="kto">osoba 3</span></button>
+    <button role="tab" id="tab-fokus" aria-controls="panel-fokus" aria-selected="false" tabindex="-1">Test fokusu<span class="kto">osoba 4</span></button>
+    <button role="tab" id="tab-deklaracja" aria-controls="panel-deklaracja" aria-selected="false" tabindex="-1">Deklaracja dostępności<span class="kto">osoba 5</span></button>
+  </div>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <section role="tabpanel" id="panel-migawka" aria-labelledby="tab-migawka" class="karta">
+    <p class="opis">Playwright otwiera stronę, wykonuje JavaScript, przewija ją (obrazki ładowane leniwie), zamyka baner
+      cookies przyciskiem „odrzuć” i zapisuje migawkę: DOM, zrzut całej strony i <code>meta.json</code> z linkami
+      wewnętrznymi (z kontrolą robots.txt).</p>
+    <div id="wynik-migawka"></div>
+  </section>
+
+  <section role="tabpanel" id="panel-skan" aria-labelledby="tab-skan" class="karta" hidden>
+    <p class="opis">„Chodzący szkielet”: adres → render → axe-core (WCAG 2.0/2.1, poziomy A i AA) → zapis
+      <code>wynik.json</code> we wspólnym formacie z kontraktu danych. To samo co komenda <code>audytor-scan</code>.</p>
+    <div id="wynik-skan"></div>
+  </section>
+
+  <section role="tabpanel" id="panel-alt" aria-labelledby="tab-alt" class="karta" hidden>
+    <p class="opis">Wyniki testu promptu oceny tekstu alternatywnego (kryterium 1.1.1) – model Bielik-11B przez
+      Ollamę na Google Colab. <strong>Model nie jest uruchamiany na żywo</strong>: to zapisane wyniki z notatnika
+      (<code>docs/wyniki/alt_wyniki_v3.csv</code>). Ta zakładka nie używa adresu strony.</p>
+    <div id="wynik-alt"></div>
+  </section>
+
+  <section role="tabpanel" id="panel-fokus" aria-labelledby="tab-fokus" class="karta" hidden>
+    <p class="opis">Przejście stroną klawiszem Tab: dla każdego elementu zrzut z fokusem i bez, porównanie pikseli
+      i ocena, czy fokus jest widoczny (WCAG 2.4.7).
+      <label for="max-krokow">Liczba kroków Tab:</label>
+      <input type="number" id="max-krokow" min="1" max="60" value="20"></p>
+    <div id="wynik-fokus"></div>
+  </section>
+
+  <section role="tabpanel" id="panel-deklaracja" aria-labelledby="tab-deklaracja" class="karta" hidden>
+    <p class="opis">Wyszukanie linku do deklaracji dostępności (stopka, słowa kluczowe, typowe adresy) i sprawdzenie,
+      czy strona deklaracji ma identyfikatory <code>a11y-*</code> z warunków technicznych.</p>
+    <div id="wynik-deklaracja"></div>
+  </section>
+</main>
+
+<script>
+"use strict";
+const $ = (s) => document.querySelector(s);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const zakladki = [...document.querySelectorAll("[role=tab]")];
+let aktywna = "migawka";
+let trwa = false;
+
+/* ---------- zakładki (obsługa klawiaturą: strzałki, Home, End) ---------- */
+function pokaz(nazwa, fokus) {
+  aktywna = nazwa;
+  for (const t of zakladki) {
+    const ta = t.id === "tab-" + nazwa;
+    t.setAttribute("aria-selected", ta);
+    t.tabIndex = ta ? 0 : -1;
+    $("#" + t.getAttribute("aria-controls")).hidden = !ta;
+    if (ta && fokus) t.focus();
+  }
+  $("#uruchom").textContent = nazwa === "alt" ? "Pokaż wyniki" : "Uruchom";
+  if (nazwa === "alt" && !$("#wynik-alt").innerHTML) uruchom();
+}
+zakladki.forEach((t, i) => {
+  t.addEventListener("click", () => pokaz(t.id.slice(4)));
+  t.addEventListener("keydown", (e) => {
+    const n = {ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: zakladki.length - 1}[e.key];
+    if (n === undefined) return;
+    e.preventDefault();
+    pokaz(zakladki[(n + zakladki.length) % zakladki.length].id.slice(4), true);
+  });
+});
+
+/* ---------- uruchamianie akcji ---------- */
+document.querySelectorAll("[data-url]").forEach((b) => b.addEventListener("click", () => {
+  $("#url").value = b.dataset.url; $("#url").focus();
+}));
+$("#formularz").addEventListener("submit", (e) => { e.preventDefault(); uruchom(); });
+
+function ustawStatus(html, laduje) {
+  const s = $("#status");
+  s.className = "status" + (laduje ? " laduje" : "");
+  s.innerHTML = html;
+}
+
+async function uruchom() {
+  if (trwa) return;
+  const nazwa = aktywna;
+  const cel = $("#wynik-" + nazwa);
+  let zadanie = null;
+  if (nazwa !== "alt") {
+    const url = $("#url").value.trim();
+    if (!/^https?:\/\/\S+$/i.test(url)) {
+      ustawStatus('<div class="komunikat blad">Podaj pełny adres zaczynający się od http:// lub https://</div>');
+      $("#url").focus();
+      return;
+    }
+    zadanie = {url, max_krokow: Number($("#max-krokow").value) || 20};
+  }
+  trwa = true;
+  document.querySelectorAll("#formularz button, [role=tab]").forEach((b) => b.disabled = true);
+  const start = Date.now();
+  const nazwyAkcji = {migawka: "Robię migawkę", skan: "Skanuję axe-core", fokus: "Przechodzę stronę klawiszem Tab",
+                      deklaracja: "Szukam deklaracji dostępności", alt: "Wczytuję wyniki"};
+  const zegar = setInterval(() => ustawStatus(`${nazwyAkcji[nazwa]}… ${Math.round((Date.now() - start) / 1000)} s`, true), 1000);
+  ustawStatus(`${nazwyAkcji[nazwa]}…`, true);
+  try {
+    const odp = await fetch("/api/" + nazwa, zadanie
+      ? {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(zadanie)}
+      : {});
+    const dane = await odp.json().catch(() => ({}));
+    if (!odp.ok) throw new Error(dane.detail || `Błąd serwera (HTTP ${odp.status})`);
+    cel.innerHTML = {migawka: htmlMigawka, skan: htmlSkan, alt: htmlAlt, fokus: htmlFokus, deklaracja: htmlDeklaracja}[nazwa](dane);
+    if (nazwa === "skan") podepnijFiltry(cel);
+    ustawStatus(nazwa === "alt" ? "" : `Gotowe w ${dane.czas_s} s.` + (dane.uwagi ? " " + esc(dane.uwagi.join(" ")) : ""));
+  } catch (err) {
+    ustawStatus(`<div class="komunikat blad"><strong>Nie udało się:</strong> ${esc(err.message)}</div>`);
+  } finally {
+    clearInterval(zegar);
+    trwa = false;
+    document.querySelectorAll("#formularz button, [role=tab]").forEach((b) => b.disabled = false);
+  }
+}
+
+/* ---------- widoki wyników ---------- */
+const liczba = (n, opis, klasa) => `<li${klasa ? ` class="${klasa}"` : ""}><strong>${esc(n)}</strong>${esc(opis)}</li>`;
+const ostrzezenia = (lista) => (lista || []).map((w) => `<div class="komunikat uwaga">${esc(w)}</div>`).join("");
+const obraz = (src, alt, podpis) => src
+  ? `<figure><a class="zrzut" href="${esc(src)}" target="_blank" rel="noopener"><img src="${esc(src)}" alt="${esc(alt)}"></a>
+     <figcaption>${esc(podpis)} – kliknij, aby otworzyć w pełnym rozmiarze.</figcaption></figure>` : "";
+
+function opisBanera(b) {
+  if (!b || !b.checked) return "nie sprawdzano";
+  if (!b.detected) return "nie wykryto";
+  if (b.dismissed) return `zamknięty przyciskiem „${b.button_text}”`;
+  return "wykryty, ale NIE zamknięty (brak przycisku odrzucenia)";
+}
+
+function htmlMigawka(d) {
+  const m = d.meta, l = m.links;
+  return `
+    ${ostrzezenia(m.warnings)}
+    <div class="siatka">
+      <div>
+        ${obraz(d.pliki.screenshot, "Zrzut całej strony " + m.title, "Zrzut całej strony (po zamknięciu banera cookies)")}
+        ${obraz(d.pliki.cookie_banner_screenshot, "Widok strony z banerem cookies", "Widok przed zamknięciem banera cookies")}
+      </div>
+      <div>
+        <dl class="fakty">
+          <dt>Tytuł</dt><dd>${esc(m.title)}</dd>
+          <dt>Adres końcowy</dt><dd><a href="${esc(m.final_url)}" target="_blank" rel="noopener">${esc(m.final_url)}</a></dd>
+          <dt>Kod HTTP</dt><dd>${esc(m.http_status)}</dd>
+          <dt>Czas renderowania</dt><dd>${esc(m.render_ms)} ms</dd>
+          <dt>Język strony (lang)</dt><dd>${m.lang ? esc(m.lang) : '<span class="znaczek z-blad">brak – błąd WCAG 3.1.1</span>'}</dd>
+          <dt>robots.txt</dt><dd>${esc(m.robots.status)} (<code>${esc(m.robots.robots_url)}</code>)</dd>
+          <dt>Baner cookies</dt><dd>${esc(opisBanera(m.cookie_banner))}</dd>
+          <dt>Pliki migawki</dt><dd>${Object.values(m.files).map((f) => `<code>${esc(f)}</code>`).join(" ")}
+            ${d.pliki.dom ? ` – <a href="${esc(d.pliki.dom)}" target="_blank" rel="noopener">otwórz zapisany DOM</a>` : ""}</dd>
+        </dl>
+        <ul class="liczby" aria-label="Linki na stronie">
+          ${liczba(l.internal.length, "linki wewnętrzne")}
+          ${liczba(l.blocked_by_robots.length, "zablokowane w robots.txt")}
+          ${liczba(l.documents.length, "dokumenty PDF/DOC")}
+          ${liczba(l.external_count, "linki zewnętrzne")}
+        </ul>
+        <details><summary>Lista linków wewnętrznych (${l.internal.length})</summary>
+          <ul class="linki" tabindex="0">${l.internal.map((u) => `<li>${esc(u)}</li>`).join("")}</ul></details>
+        ${l.blocked_by_robots.length ? `<details><summary>Zablokowane przez robots.txt (${l.blocked_by_robots.length})</summary>
+          <ul class="linki" tabindex="0">${l.blocked_by_robots.map((u) => `<li>${esc(u)}</li>`).join("")}</ul></details>` : ""}
+      </div>
+    </div>`;
+}
+
+const ZNACZEK_STATUSU = {blad: ["błąd", "z-blad"], do_weryfikacji: ["do weryfikacji", "z-uwaga"], odrzucony: ["odrzucony", "z-neutral"]};
+const ZNACZEK_WAGI = {krytyczna: "z-blad", powazna: "z-uwaga", umiarkowana: "z-neutral", drobna: "z-neutral"};
+
+function htmlSkan(d) {
+  const w = d.wynik, p = w.podsumowanie;
+  const wiersze = w.problemy.map((x) => {
+    const [st, kl] = ZNACZEK_STATUSU[x.status] || [x.status, "z-neutral"];
+    return `<tr data-status="${esc(x.status)}">
+      <td><span class="znaczek ${kl}">${esc(st)}</span></td>
+      <td>${x.waga ? `<span class="znaczek ${ZNACZEK_WAGI[x.waga] || "z-neutral"}">${esc(x.waga)}</span>` : "–"}</td>
+      <td>${esc((x.kryteria_wcag || []).join(", ") || "–")} ${x.poziom_wcag ? esc(x.poziom_wcag) : ""}</td>
+      <td>${esc(x.opis)}<details><summary>Szczegóły</summary><p>${esc(x.szczegoly)}</p>
+        ${x.fragment_html ? `<p><code>${esc(x.fragment_html)}</code></p>` : ""}
+        ${x.link_pomocy ? `<p><a href="${esc(x.link_pomocy)}" target="_blank" rel="noopener">Dokumentacja reguły ${esc(x.regula)}</a></p>` : ""}
+      </details></td>
+      <td><code>${esc(x.selektor || "(cała strona)")}</code></td></tr>`;
+  }).join("");
+  return `
+    ${ostrzezenia(w.ostrzezenia)}
+    <ul class="liczby" aria-label="Podsumowanie skanu">
+      ${liczba(p.liczba_problemow, "wszystkie problemy")}
+      ${liczba(p.wg_statusu.blad, "błędy (pewne)")}
+      ${liczba(p.wg_statusu.do_weryfikacji, "do weryfikacji")}
+      ${liczba(p.wg_wagi.krytyczna, "krytyczne")}
+      ${liczba(p.wg_wagi.powazna, "poważne")}
+    </ul>
+    <p>Strona: <a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.url)}</a>, HTTP ${esc(w.http_status)},
+      axe-core ${esc(w.narzedzia["axe-core"])}. Wynik zapisany w <code>demo-wyniki/skany/${esc(w.migawka)}/wynik.json</code>.</p>
+    <div class="siatka">
+      <div>${obraz(d.pliki.screenshot, "Zrzut sprawdzonej strony", "Sprawdzona strona")}</div>
+      <div>
+        <div class="filtry wiersz" role="group" aria-label="Filtr problemów">
+          <button class="lekki" type="button" data-filtr="" aria-pressed="true">Wszystkie (${p.liczba_problemow})</button>
+          <button class="lekki" type="button" data-filtr="blad" aria-pressed="false">Błędy (${p.wg_statusu.blad})</button>
+          <button class="lekki" type="button" data-filtr="do_weryfikacji" aria-pressed="false">Do weryfikacji (${p.wg_statusu.do_weryfikacji})</button>
+        </div>
+        ${w.problemy.length ? `<div class="przewijana" tabindex="0" role="region" aria-label="Tabela problemów"><table>
+          <caption class="sr">Problemy wykryte przez axe-core</caption>
+          <thead><tr><th scope="col">Status</th><th scope="col">Waga</th><th scope="col">WCAG</th>
+            <th scope="col">Opis</th><th scope="col">Element</th></tr></thead>
+          <tbody>${wiersze}</tbody></table></div>` : "<p>axe-core nie znalazł problemów.</p>"}
+      </div>
+    </div>`;
+}
+
+function podepnijFiltry(cel) {
+  cel.querySelectorAll("[data-filtr]").forEach((b) => b.addEventListener("click", () => {
+    cel.querySelectorAll("[data-filtr]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    cel.querySelectorAll("tbody tr").forEach((tr) => tr.hidden = !!b.dataset.filtr && tr.dataset.status !== b.dataset.filtr);
+  }));
+}
+
+const WERDYKT_FOKUSU = {ok: ["widoczny", "z-ok"], slaby: ["słaby", "z-uwaga"], brak: ["brak", "z-blad"],
+                        niewidoczny: ["poza ekranem", "z-neutral"], zgubiony: ["zgubiony", "z-blad"]};
+
+function htmlFokus(d) {
+  const w = d.wynik, p = w.podsumowanie;
+  const kroki = w.kroki.map((k) => {
+    const [t, kl] = WERDYKT_FOKUSU[k.werdykt] || [k.werdykt, "z-neutral"];
+    return `<tr><td>${esc(k.nr)}</td><td><code>${esc(k.tag)}</code> ${esc(k.nazwa || "")}</td>
+      <td><span class="znaczek ${kl}">${esc(t)}</span></td><td><code>${esc(k.selektor)}</code></td></tr>`;
+  }).join("");
+  return `
+    ${ostrzezenia(w.ostrzezenia)}
+    <ul class="liczby" aria-label="Podsumowanie testu fokusu">
+      ${liczba(p.kroki, "elementów (Tab)")}
+      ${liczba(p.ok, "fokus widoczny")}
+      ${liczba(p.slaby, "fokus słaby")}
+      ${liczba(p.brak, "brak fokusu")}
+      ${liczba(w.problemy.length, "problemy do weryfikacji")}
+    </ul>
+    <p>Zakończenie: ${esc(w.zakonczenie)}.</p>
+    <div class="siatka">
+      <div>${obraz(d.pliki.mapa, "Mapa kolejności fokusu na stronie", "Mapa fokusu: numer = kolejność Tab, kolor ramki = werdykt")}</div>
+      <div class="przewijana" tabindex="0" role="region" aria-label="Elementy w kolejności Tab"><table>
+        <caption class="sr">Kolejne elementy w kolejności Tab</caption>
+        <thead><tr><th scope="col">Nr</th><th scope="col">Element</th><th scope="col">Fokus</th><th scope="col">Selektor</th></tr></thead>
+        <tbody>${kroki}</tbody></table></div>
+    </div>`;
+}
+
+function htmlDeklaracja(d) {
+  const w = d.wynik;
+  const kandydaci = (w.candidates || []).slice(0, 5).map((k) => `<tr><td>${esc(k.url)}</td><td>${esc(k.score)}</td>
+    <td>${esc((k.reasons || []).join("; "))}</td></tr>`).join("");
+  return `
+    ${ostrzezenia(w.warnings)}
+    <p>${w.found ? '<span class="znaczek z-ok">Znaleziono deklarację</span>' : '<span class="znaczek z-blad">Nie znaleziono deklaracji</span>'}</p>
+    <dl class="fakty">
+      <dt>Strona</dt><dd>${esc(w.site_url)}</dd>
+      <dt>Deklaracja</dt><dd>${w.declaration_url ? `<a href="${esc(w.declaration_url)}" target="_blank" rel="noopener">${esc(w.declaration_url)}</a>` : "–"}</dd>
+      <dt>Status</dt><dd>${esc(w.status)}</dd>
+      <dt>Metoda / pewność</dt><dd>${esc(w.method)}, ${esc(w.confidence)}</dd>
+      <dt>Identyfikatory a11y-*</dt><dd>${(w.a11y_ids || []).length} znalezionych${(w.missing_required_ids || []).length
+        ? `, brak obowiązkowych: ${w.missing_required_ids.map((x) => `<code>${esc(x)}</code>`).join(" ")}` : ""}</dd>
+    </dl>
+    ${kandydaci ? `<details><summary>Najlepsi kandydaci</summary><div class="przewijana" tabindex="0" role="region" aria-label="Kandydaci"><table>
+      <caption class="sr">Kandydaci na link do deklaracji</caption>
+      <thead><tr><th scope="col">Adres</th><th scope="col">Punkty</th><th scope="col">Powody</th></tr></thead>
+      <tbody>${kandydaci}</tbody></table></div></details>` : ""}`;
+}
+
+function htmlAlt(d) {
+  const p = d.podsumowanie;
+  const wiersze = d.wiersze.map((x) => `<tr>
+    <td>${x.alt ? esc(x.alt) : '<em>(brak / pusty)</em>'}</td><td>${esc(x.kontekst)}</td>
+    <td>${esc(x.oczekiwany)}</td><td>${esc(x.werdykt)}</td><td>${esc(x.kategoria)}</td>
+    <td>${x.zrodlo === "ai" ? "model" : "reguła"}</td>
+    <td>${x.trafiony === "True" ? '<span class="znaczek z-ok">tak</span>' : '<span class="znaczek z-blad">nie</span>'}</td>
+    <td>${esc(x.uzasadnienie)}</td></tr>`).join("");
+  return `
+    <ul class="liczby" aria-label="Podsumowanie oceny altów">
+      ${liczba(p.przykladow, "przykładów")}
+      ${liczba(`${p.trafionych}/${p.przykladow}`, "zgodnych z oczekiwanym")}
+      ${liczba(`${p.ai_trafionych}/${p.ai}`, "trafień modelu")}
+      ${liczba(p.reguly, "rozstrzygnięte regułami")}
+    </ul>
+    <p>Plik: <code>${esc(d.plik)}</code>. Opis metody i wnioski: <code>docs/ai-ocena-alt.md</code>.</p>
+    <div class="przewijana" tabindex="0" role="region" aria-label="Wyniki oceny altów"><table>
+      <caption class="sr">Wyniki oceny tekstów alternatywnych</caption>
+      <thead><tr><th scope="col">Alt</th><th scope="col">Kontekst</th><th scope="col">Oczekiwany</th><th scope="col">Werdykt</th>
+        <th scope="col">Kategoria</th><th scope="col">Źródło</th><th scope="col">Trafiony</th><th scope="col">Uzasadnienie</th></tr></thead>
+      <tbody>${wiersze}</tbody></table></div>`;
+}
+
+/* ---------- backend z docker-compose (osoba 6) ---------- */
+async function sprawdzBackend() {
+  const kropka = $("#backend-kropka"), tekst = $("#backend-tekst");
+  try {
+    const d = await (await fetch("/api/backend")).json();
+    const h = d.health || {};
+    if (d.dziala) {
+      kropka.className = "kropka tak";
+      tekst.innerHTML = `Backend (Docker): działa – <a href="${esc(d.adres)}/docs" target="_blank" rel="noopener">API</a>`;
+    } else if (d.kod) {
+      kropka.className = "kropka nie";
+      tekst.textContent = `Backend: API odpowiada, ale baza=${h.baza ?? "?"}, kolejka=${h.kolejka ?? "?"}`;
+    } else {
+      kropka.className = "kropka";
+      tekst.textContent = "Backend (Docker): nie uruchomiony";
+    }
+  } catch {
+    kropka.className = "kropka";
+    tekst.textContent = "Backend: nie udało się sprawdzić";
+  }
+}
+$("#backend-odswiez").addEventListener("click", sprawdzBackend);
+sprawdzBackend();
+</script>
+</body>
+</html>
