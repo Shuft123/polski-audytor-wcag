@@ -95,7 +95,9 @@ def jako_data_url(obraz: Image.Image) -> str:
     return "data:image/jpeg;base64," + base64.b64encode(bufor.getvalue()).decode()
 
 
-def zapytaj(base_url: str, model: str, klucz: str | None, obraz_url: str, polecenie: str, timeout: float) -> tuple[str, dict]:
+def zapytaj(
+    base_url: str, model: str, klucz: str | None, obraz_url: str, polecenie: str, timeout: float
+) -> tuple[str, dict]:
     tresc = {
         "model": model,
         "temperature": 0.1,
@@ -130,7 +132,9 @@ def zapytaj_ollama(base_url: str, model: str, obraz_url: str, polecenie: str, ti
         ],
     }
     adres = re.sub(r"/v1/?$", "", base_url.rstrip("/")) + "/api/chat"
-    zadanie = urllib.request.Request(adres, data=json.dumps(tresc).encode(), headers={"Content-Type": "application/json"})
+    zadanie = urllib.request.Request(
+        adres, data=json.dumps(tresc).encode(), headers={"Content-Type": "application/json"}
+    )
     with urllib.request.urlopen(zadanie, timeout=timeout) as odp:
         dane = json.load(odp)
     uzycie = {"total_tokens": dane.get("prompt_eval_count", 0) + dane.get("eval_count", 0)}
@@ -155,13 +159,15 @@ def parsuj_json(tekst: str) -> dict | None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--model", required=True, help="nazwa modelu, np. qwen2.5vl:3b")
-    parser.add_argument("--base-url", default="http://localhost:11434/v1", help="API zgodne z OpenAI (domyślnie Ollama)")
+    parser.add_argument("--base-url", default="http://localhost:11434/v1",
+                        help="API zgodne z OpenAI (domyślnie Ollama)")
     parser.add_argument("--zadania", default=",".join(ZADANIA), help="lista zadań, domyślnie wszystkie")
     parser.add_argument("--timeout", type=float, default=300, help="limit na jedno zapytanie w sekundach")
     parser.add_argument("--ollama-opcje", type=json.loads, default=None,
                         help='użyj natywnego API Ollamy z opcjami, np. \'{"num_gpu": 0}\' = tylko CPU')
     parser.add_argument("--cpu", action="store_true",
-                        help="Ollama liczy tylko na CPU (gdy model na GPU zwraca śmieci, np. RTX 20xx); dodaje sufiks _cpu")
+                        help="Ollama liczy tylko na CPU (gdy model na GPU zwraca śmieci, np. RTX 20xx); "
+                             "dodaje sufiks _cpu")
     parser.add_argument("--sufiks", default="", help="dopisek do nazwy pliku wyników, np. _cpu")
     args = parser.parse_args(argv)
     if args.cpu:
@@ -186,7 +192,9 @@ def main(argv: list[str] | None = None) -> int:
                     odpowiedz, uzycie = zapytaj_ollama(args.base_url, args.model, obraz_url, ZADANIA[zadanie],
                                                        args.timeout, args.ollama_opcje)
                 else:
-                    odpowiedz, uzycie = zapytaj(args.base_url, args.model, klucz, obraz_url, ZADANIA[zadanie], args.timeout)
+                    odpowiedz, uzycie = zapytaj(
+                        args.base_url, args.model, klucz, obraz_url, ZADANIA[zadanie], args.timeout
+                    )
                 blad = ""
             except urllib.error.HTTPError as exc:
                 tresc_bledu = exc.read().decode(errors="replace")[:200]

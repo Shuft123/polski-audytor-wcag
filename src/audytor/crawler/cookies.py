@@ -149,6 +149,11 @@ def _frames(page: Page) -> list[Frame]:
     return [main] + [f for f in page.frames if f is not main]
 
 
+def _usun_znacznik_js(selector: str) -> str:
+    """Skrypt JS zdejmujący tymczasowy atrybut-znacznik z elementów pasujących do selektora."""
+    return f"() => document.querySelectorAll(\"{selector}\").forEach(e => e.removeAttribute('{MARKER_ATTR}'))"
+
+
 def _safe_eval(frame: Frame, script: str, arg) -> object:
     try:
         return frame.evaluate(script, arg)
@@ -221,7 +226,7 @@ def handle_cookie_banner(
         found_frame.click(selector, timeout=5000)
     except PlaywrightError as exc:
         result.warnings.append(f"Nie udało się kliknąć „{result.button_text}”: {exc.message.splitlines()[0]}")
-        _safe_eval(found_frame, f"() => document.querySelectorAll(\"{selector}\").forEach(e => e.removeAttribute('{MARKER_ATTR}'))", None)
+        _safe_eval(found_frame, _usun_znacznik_js(selector), None)
         return result
 
     # Część banerów przeładowuje stronę po wyborze.
@@ -232,7 +237,7 @@ def handle_cookie_banner(
     page.wait_for_timeout(wait_after_ms)
     # Znacznik nie może zostać w zapisanym DOM-ie.
     for frame in _frames(page):
-        _safe_eval(frame, f"() => document.querySelectorAll(\"{selector}\").forEach(e => e.removeAttribute('{MARKER_ATTR}'))", None)
+        _safe_eval(frame, _usun_znacznik_js(selector), None)
 
     if banner_visible(page):
         result.warnings.append(

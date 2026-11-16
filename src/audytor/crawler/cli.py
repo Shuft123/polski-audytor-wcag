@@ -49,7 +49,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--jpeg", action="store_true", help="zrzut jako JPEG (mniejszy plik) zamiast PNG")
     parser.add_argument("--no-mhtml", action="store_true", help="nie zapisuj kopii MHTML")
     parser.add_argument("--no-scroll", action="store_true", help="nie przewijaj strony przed zrzutem")
-    parser.add_argument("--ignore-robots", action="store_true", help="NIE sprawdzaj robots.txt (tylko do testów własnych stron)")
+    parser.add_argument("--ignore-robots", action="store_true",
+                        help="NIE sprawdzaj robots.txt (tylko do testów własnych stron)")
     parser.add_argument("--keep-cookie-banner", action="store_true",
                         help="nie zamykaj banera cookies (domyślnie zamykany przyciskiem odrzucenia)")
     parser.add_argument("--headed", action="store_true", help="pokaż okno przeglądarki")

@@ -103,7 +103,9 @@ _JS_AKTYWNY = """
 }
 """
 
-_JS_PRZEWIN = "() => window.__audytorFokus && window.__audytorFokus.scrollIntoView({block: 'nearest', inline: 'nearest'})"
+_JS_PRZEWIN = (
+    "() => window.__audytorFokus && window.__audytorFokus.scrollIntoView({block: 'nearest', inline: 'nearest'})"
+)
 _JS_BLUR = "() => window.__audytorFokus && window.__audytorFokus.blur()"
 _JS_FOCUS = "() => window.__audytorFokus && window.__audytorFokus.focus({preventScroll: true})"
 _JS_WYSOKOSC = "() => Math.max(document.documentElement.scrollHeight, document.body ? document.body.scrollHeight : 0)"
@@ -198,7 +200,8 @@ def _problem(url: str, krok: KrokFokusu, regula: str, kryterium: str, waga: str,
         "poziom_wcag": "A" if kryterium == "2.1.2" else "AA",
         "opis": opis,
         "szczegoly": szczegoly,
-        "link_pomocy": f"https://www.w3.org/WAI/WCAG21/Understanding/{'no-keyboard-trap' if kryterium == '2.1.2' else 'focus-visible'}",
+        "link_pomocy": "https://www.w3.org/WAI/WCAG21/Understanding/"
+        + ("no-keyboard-trap" if kryterium == "2.1.2" else "focus-visible"),
         "poziom_pewnosci": pewnosc,
         "uzasadnienie": None,
         "wykryto": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -361,7 +364,10 @@ def przejdz_tabem(page: Page, url: str | None = None, max_krokow: int = 60,
     return wynik
 
 
-_KOLORY = {"ok": (0, 140, 60), "slaby": (230, 140, 0), "brak": (210, 0, 0), "niewidoczny": (120, 0, 200), "zgubiony": (0, 0, 0)}
+_KOLORY = {
+    "ok": (0, 140, 60), "slaby": (230, 140, 0), "brak": (210, 0, 0),
+    "niewidoczny": (120, 0, 200), "zgubiony": (0, 0, 0),
+}
 
 
 def mapa_fokusu(page: Page, wynik: WynikFokusu, max_wysokosc: int = 15_000) -> Image.Image:

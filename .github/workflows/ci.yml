@@ -1,0 +1,121 @@
+# CI (F28): lint + testy przy każdym PR do main i po każdym merge'u.
+# Nazwy zadań (lint, testy, ...) są używane w regule ochrony main jako wymagane sprawdzenia –
+# zmiana nazwy = aktualizacja reguły w Settings → Rules.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install "ruff>=0.6"
+      - name: ruff check
+        run: ruff check --output-format=github .
+
+  testy:
+    name: testy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Instalacja projektu
+        run: pip install -e ".[dev]"
+      - name: Chromium dla Playwrighta (testy z markerem browser)
+        run: python -m playwright install --with-deps chromium
+      - name: pytest
+        run: python -m pytest -v --junitxml=pytest.xml
+      - name: Raport testów
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-wyniki
+          path: pytest.xml
+
+  migracje:
+    name: migracje (PostgreSQL)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: audytor
+          POSTGRES_PASSWORD: audytor
+          POSTGRES_DB: audytor
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U audytor" --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      AUDYTOR_DB_URL: postgresql+psycopg://audytor:audytor@localhost:5432/audytor
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - run: pip install -e .
+      - name: alembic upgrade head
+        run: alembic upgrade head
+      - name: Modele zgodne z migracjami (alembic check)
+        run: alembic check
+      - name: downgrade + ponowny upgrade
+        run: alembic downgrade base && alembic upgrade head
+
+  docker:
+    name: docker-compose (skan przez API)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - name: Budowa i start usług
+        run: docker compose up --build --detach --wait --wait-timeout 300
+      - name: GET /health
+        run: curl --fail-with-body -s http://localhost:8000/health
+      - name: Skan https://example.com przez API
+        run: |
+          id=$(curl --fail-with-body -s -X POST http://localhost:8000/skany \
+                 -H 'Content-Type: application/json' -d '{"url": "https://example.com/"}' | jq -r .id)
+          echo "Skan #$id"
+          for i in $(seq 1 60); do
+            status=$(curl -s "http://localhost:8000/skany/$id" | jq -r .status)
+            echo "  status: $status"
+            case "$status" in
+              zakonczony) break ;;
+              blad) curl -s "http://localhost:8000/skany/$id" | jq; exit 1 ;;
+            esac
+            sleep 3
+          done
+          test "$status" = zakonczony
+          curl -s "http://localhost:8000/skany/$id/wyniki" | jq '.podstrony[0].podsumowanie'
+      - name: Logi usług
+        if: always()
+        run: docker compose logs --no-color
+      - name: Sprzątanie
+        if: always()
+        run: docker compose down -v

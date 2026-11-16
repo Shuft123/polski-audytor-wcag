@@ -225,5 +225,6 @@ __marimo__/
 # Wyniki pokazu sprintu (scripts\demo_sprint1.bat)
 demo-wyniki/
 
-# Wyniki lokalnych uruchomień (test fokusu, model wizyjny)
+# Wyniki lokalnych uruchomień (audytor-scan, test fokusu, model wizyjny) i lokalne bazy SQLite
 /wyniki/
+/*.db

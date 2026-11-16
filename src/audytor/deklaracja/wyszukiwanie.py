@@ -633,7 +633,8 @@ def find_declaration(
                 try:
                     _, final_url, html = browser(page_url)
                     page_url = normalize_url(final_url) or page_url
-                    fallback.notes.append(f"{page_url}: mało linków w HTML – strona główna wyrenderowana w przeglądarce")
+                    fallback.notes.append(
+                        f"{page_url}: mało linków w HTML – strona główna wyrenderowana w przeglądarce")
                 except OSError as exc:
                     warnings.append(f"Renderowanie strony głównej nieudane: {exc}")
             else:
