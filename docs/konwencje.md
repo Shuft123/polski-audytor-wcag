@@ -46,8 +46,9 @@ notebooks/               notatniki Jupyter / Colab (eksperymenty AI; lint ich ni
 
 ## 5. Zasady pull requestów i recenzji
 
-- Każde zadanie to zgłoszenie (issue) z numerem funkcjonalności; PR zawiera `Zamyka #<nr issue>`
-  (wypełnij [szablon](../.github/PULL_REQUEST_TEMPLATE.md)).
+- Każde zadanie to zgłoszenie (issue) z numerem funkcjonalności; PR zawiera `Closes #<nr issue>`
+  (wypełnij [szablon](../.github/PULL_REQUEST_TEMPLATE.md)). Słowo `Closes` po angielsku – polskie
+  „Zamyka” nie zamyka zgłoszenia automatycznie.
 - Do `main` wchodzi się **tylko przez PR** – bezpośredni push jest zablokowany regułą `ochrona-main`.
 - Wymagane przed merge'em: **zielone CI** i **co najmniej 1 zatwierdzenie** (Approve), w pierwszej
   kolejności od osoby z pary zastępstw: 1↔2, 3↔4, 5↔6.

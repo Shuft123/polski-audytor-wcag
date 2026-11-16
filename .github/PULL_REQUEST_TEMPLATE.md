@@ -4,7 +4,8 @@
 
 ## 🔗 Powiązane zgłoszenie i funkcjonalność
 <!-- Wpisz numer Issue, z którym powiązany jest ten PR, oraz numer z listy F1-F28. -->
-Zamyka #
+Closes #
+<!-- Słowo „Closes” musi zostać po angielsku – tylko wtedy GitHub sam zamknie zgłoszenie po merge'u (polskie „Zamyka” nie działa). -->
 Funkcjonalność: F
 
 ## ✅ Lista kontrolna (odhacz przed zgłoszeniem)
