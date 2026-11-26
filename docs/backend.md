@@ -45,6 +45,7 @@ Czyta je `src/audytor/ustawienia.py` (API, worker, Alembic). Wzór: `.env.exampl
 | `AUDYTOR_WYNIKI_DIR` | `wyniki` | Migawki i `wynik.json` – `skan-<id>/<strona>/`. |
 | `AUDYTOR_PRZEGLADARKA` | (puste) | `chrome` / `msedge` – przeglądarka z systemu zamiast Chromium z Playwrighta. |
 | `AUDYTOR_TIMEOUT_S` | `30` | Limit wczytania strony. |
+| `AUDYTOR_OPOZNIENIE_S` | `1` | Pauza między podstronami tej samej witryny w jednym skanie (albo Crawl-delay z robots.txt, jeśli większy). |
 
 ## Praca bez Dockera
 

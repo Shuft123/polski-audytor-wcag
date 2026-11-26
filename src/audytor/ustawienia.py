@@ -7,6 +7,7 @@
 | AUDYTOR_WYNIKI_DIR      | wyniki                        | folder na migawki i wynik.json ze skanów         |
 | AUDYTOR_PRZEGLADARKA    | (puste = Chromium Playwrighta)| "chrome" / "msedge" – przeglądarka z systemu     |
 | AUDYTOR_TIMEOUT_S       | 30                            | limit wczytania strony w sekundach               |
+| AUDYTOR_OPOZNIENIE_S    | 1                             | pauza między podstronami tej samej witryny (s)   |
 
 Lokalnie można je wpisać do pliku `.env` (wzór: `.env.example`) – docker-compose czyta go sam.
 """
@@ -25,6 +26,7 @@ class Ustawienia:
     wyniki_dir: Path = Path("wyniki")
     przegladarka: str | None = None
     timeout_s: float = 30.0
+    opoznienie_s: float = 1.0
 
     @classmethod
     def ze_srodowiska(cls) -> Ustawienia:
@@ -35,4 +37,5 @@ class Ustawienia:
             wyniki_dir=Path(env.get("AUDYTOR_WYNIKI_DIR") or cls.wyniki_dir),
             przegladarka=env.get("AUDYTOR_PRZEGLADARKA") or None,
             timeout_s=float(env.get("AUDYTOR_TIMEOUT_S") or cls.timeout_s),
+            opoznienie_s=float(env.get("AUDYTOR_OPOZNIENIE_S") or cls.opoznienie_s),
         )

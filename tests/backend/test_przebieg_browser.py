@@ -26,6 +26,12 @@ STRONA = """<!doctype html>
 <body><h1>Gmina</h1><img src="herb.png"><a href="/aktualnosci"></a></body></html>
 """
 
+# Podstrona bez błędów axe – do skanu wielu podstron (sprint 2).
+KONTAKT = """<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><title>Kontakt</title></head>
+<body><main><h1>Kontakt</h1><p>Urząd Gminy, ul. Testowa 1</p></main></body></html>
+"""
+
 
 class _CichyHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *args):
@@ -36,6 +42,7 @@ class _CichyHandler(http.server.SimpleHTTPRequestHandler):
 def strona(tmp_path_factory):
     root = tmp_path_factory.mktemp("strona-api")
     (root / "index.html").write_text(STRONA, encoding="utf-8")
+    (root / "kontakt.html").write_text(KONTAKT, encoding="utf-8")
     (root / "robots.txt").write_text("User-agent: *\nDisallow: /prywatne/\n", encoding="utf-8")
     serwer = http.server.ThreadingHTTPServer(
         ("127.0.0.1", 0), functools.partial(_CichyHandler, directory=str(root)))
@@ -89,3 +96,20 @@ def test_page_blocked_by_robots_ends_with_error(klient, strona):
     skan = klient.get(f"/skany/{skan_id}").json()
     assert skan["status"] == "blad"
     assert "robots.txt" in skan["opis_bledu"]
+
+
+def test_scan_of_several_subpages_through_api(klient, strona):
+    """Sprint 2 (F6): axe na każdej podstronie z listy; podstrona z robots.txt zapisana z polem blad."""
+    odp = klient.post("/skany", json={"url": strona + "/index.html", "parametry": {
+        "podstrony": [strona + "/kontakt.html", strona + "/prywatne/panel.html", "https://example.com/"],
+    }})
+    skan_id = odp.json()["id"]
+
+    skan = klient.get(f"/skany/{skan_id}").json()
+    assert skan["status"] == "zakonczony", skan["opis_bledu"]
+    assert skan["liczba_podstron"] == 3                    # example.com pominięty – inna witryna
+    podstrony = {p["url"]: p for p in klient.get(f"/skany/{skan_id}/wyniki").json()["podstrony"]}
+    assert "image-alt" in {p["regula"] for p in podstrony[strona + "/index.html"]["problemy"]}
+    assert podstrony[strona + "/kontakt.html"]["podsumowanie"]["wg_statusu"]["blad"] == 0
+    assert podstrony[strona + "/kontakt.html"]["blad"] is None
+    assert "robots.txt" in podstrony[strona + "/prywatne/panel.html"]["blad"]

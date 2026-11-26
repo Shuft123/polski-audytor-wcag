@@ -73,7 +73,7 @@ def test_summary_counts():
     assert p["liczba_problemow"] == 4
     assert p["wg_statusu"] == {"blad": 2, "do_weryfikacji": 1, "odrzucony": 1}
     assert p["wg_wagi"] == {"krytyczna": 1, "powazna": 2, "umiarkowana": 0, "drobna": 0}  # odrzucone pominięte
-    assert p["wg_zrodla"] == {"axe": 3, "ai": 1}
+    assert p["wg_zrodla"] == {"axe": 3, "ai": 1, "heurystyka": 0}
 
 
 def test_save_and_load_roundtrip(tmp_path):
@@ -89,7 +89,7 @@ def test_save_and_load_roundtrip(tmp_path):
     )
     plik = zapisz_wynik(wynik, tmp_path / "p-pl")
     dane = json.loads(plik.read_text(encoding="utf-8"))
-    assert dane["schema_version"] == "1.0"
+    assert dane["schema_version"] == "1.1"
     assert "Obrazy muszą" in plik.read_text(encoding="utf-8")   # polskie znaki bez ą
     assert wczytaj_wynik(tmp_path / "p-pl").to_dict() == wynik.to_dict()
 
@@ -101,3 +101,21 @@ def test_load_rejects_other_major_version(tmp_path):
     )
     with pytest.raises(ValueError, match="wersja"):
         wczytaj_wynik(tmp_path)
+
+
+def test_heuristic_source_is_accepted():
+    problem = _problem(zrodlo="heurystyka", regula="fokus-niewidoczny", status="do_weryfikacji", poziom_pewnosci=0.9)
+    assert problem.zrodlo == "heurystyka"
+    assert problem.id != _problem(zrodlo="ai", regula="fokus-niewidoczny").id
+
+
+def test_page_error_roundtrip_and_old_files_still_load(tmp_path):
+    wynik = WynikStrony(url="https://p.pl/a", requested_url="https://p.pl/a",
+                        sprawdzono="2026-11-26T12:00:00+00:00", blad="Pominięto zgodnie z robots.txt")
+    zapisz_wynik(wynik, tmp_path)
+    assert wczytaj_wynik(tmp_path).blad == "Pominięto zgodnie z robots.txt"
+    # plik w wersji 1.0 (sprint 1) – bez pola "blad" – dalej się wczytuje
+    dane = wynik.to_dict()
+    dane["schema_version"] = "1.0"
+    del dane["blad"]
+    assert WynikStrony.from_dict(dane).blad is None

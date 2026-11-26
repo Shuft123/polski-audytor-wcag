@@ -56,7 +56,9 @@ def test_failed_scan_is_marked_as_error(sesje, ustawienia, udawany_skan, wyjatek
         assert skan.status == StatusSkanu.BLAD
         assert skan.opis_bledu.startswith(poczatek_opisu)
         assert skan.zakonczono is not None
-        assert skan.podstrony == []
+        # sprint 2: niesprawdzona podstrona zostaje w bazie z powodem (pole blad), bez problemów
+        assert [(p.url, p.problemy) for p in skan.podstrony] == [(URL, [])]
+        assert skan.podstrony[0].blad.startswith(poczatek_opisu)
 
 
 def test_scan_not_waiting_is_not_run_again(sesje, ustawienia, udawany_skan):
@@ -81,7 +83,8 @@ def test_celery_task_runs_scan_eagerly(monkeypatch, sesje, ustawienia, udawany_s
     monkeypatch.setenv("AUDYTOR_DB_URL", ustawienia.db_url)
     monkeypatch.setenv("AUDYTOR_WYNIKI_DIR", str(ustawienia.wyniki_dir))
     monkeypatch.setattr(zadania, "domyslny_renderer", udawany_skan["renderer"])
-    monkeypatch.setattr(zadania.wykonaj_skan, "__defaults__", (udawany_skan["renderer"],))
+    domyslne = zadania.wykonaj_skan.__defaults__
+    monkeypatch.setattr(zadania.wykonaj_skan, "__defaults__", (udawany_skan["renderer"], *domyslne[1:]))
     skan_id = _nowy_skan(sesje)
 
     wynik = zadania.skanuj_strone_zadanie.apply(args=[skan_id])

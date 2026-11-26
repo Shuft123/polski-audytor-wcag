@@ -170,6 +170,6 @@ Modele wizyjne źle podają liczby (np. współczynnik kontrastu), za to dobrze 
 Funkcje `kontrast()` i `luminancja()` z `audytor.fokus.pomiar` wykorzystamy także tutaj.
 
 ## Do uzgodnienia
-- **Z osobą 2 (model danych, F7):** wyniki fokusu mają już pola `Problem` (`regula`, `kryteria_wcag`, `status`, `poziom_pewnosci` …). Ustalić, czy test fokusu to `zrodlo: "ai"`, czy dodajemy osobne źródło (np. `"heurystyka"`). Teraz jest `"ai"`, bo `Zrodlo` ma tylko `axe` i `ai`.
+- **Z osobą 2 (model danych, F7) – ustalone w sprincie 2:** test fokusu to `zrodlo: "heurystyka"` (porównanie pikseli, bez modelu AI) – patrz [kontrakt danych, sekcja 2.4](kontrakt-danych.md). Pełny wynik testu (kroki, podsumowanie, mapa fokusu) trafia do tabeli `wynik_fokusu` (migracja 0002, [model-danych.md](model-danych.md)), a problemy – do tabeli `problem`.
 - **Z osobą 3 (AI tekst, F9):** format `obraz_opis` – proponuję krótki opis po polsku (1–2 zdania) + lista tekstów widocznych na obrazie.
 - **Z osobą 6 (backend):** test fokusu trwa ok. 1 s na element – w przebiegu skanu powinien iść w workerze Celery, z limitem kroków.

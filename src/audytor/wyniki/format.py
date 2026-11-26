@@ -16,7 +16,7 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"   # 1.1: źródło "heurystyka", pole "blad" podstrony (sprint 2)
 WYNIK_FILE = "wynik.json"
 
 # Maksymalna długość fragmentu HTML zapisywanego przy problemie (reszta jest obcinana).
@@ -26,10 +26,11 @@ _KRYTERIUM_RE = re.compile(r"^[1-4]\.\d{1,2}\.\d{1,2}$")
 
 
 class Zrodlo(StrEnum):
-    """Kto wykrył problem."""
+    """Kto wykrył problem (decyzja ze sprintu 2: kontrakt danych, sekcja 2.4)."""
 
-    AXE = "axe"
-    AI = "ai"
+    AXE = "axe"                 # reguły axe-core
+    AI = "ai"                   # model językowy lub wizyjny – ocena treści, zawsze do weryfikacji
+    HEURYSTYKA = "heurystyka"   # własne reguły bez modelu: test fokusu, deklaracja, tryb AI „same reguły”
 
 
 class Waga(StrEnum):
@@ -44,8 +45,8 @@ class Waga(StrEnum):
 class Status(StrEnum):
     """Stan problemu w procesie audytu."""
 
-    BLAD = "blad"                      # pewny błąd (axe: violation)
-    DO_WERYFIKACJI = "do_weryfikacji"  # wymaga oceny człowieka (axe: incomplete, wszystkie wyniki AI)
+    BLAD = "blad"                      # pewny błąd (axe: violation, heurystyka pewna swego)
+    DO_WERYFIKACJI = "do_weryfikacji"  # wymaga oceny człowieka (axe: incomplete, wyniki AI i heurystyk)
     ODRZUCONY = "odrzucony"            # audytor uznał za fałszywy alarm
 
 
@@ -123,6 +124,7 @@ class WynikStrony:
     migawka: str | None = None          # nazwa folderu migawki (dom.html, zrzut, meta.json)
     http_status: int | None = None
     ostrzezenia: list[str] = field(default_factory=list)
+    blad: str | None = None             # podstrona NIE została sprawdzona – powód (np. robots.txt, timeout)
 
     def podsumowanie(self) -> dict[str, Any]:
         """Liczby problemów wg statusu, wagi i źródła (do raportu i szybkiego podglądu)."""
@@ -152,6 +154,7 @@ class WynikStrony:
             "migawka": self.migawka,
             "podsumowanie": self.podsumowanie(),
             "ostrzezenia": self.ostrzezenia,
+            "blad": self.blad,
             "problemy": [p.to_dict() for p in self.problemy],
         }
 
@@ -169,6 +172,7 @@ class WynikStrony:
             migawka=dane.get("migawka"),
             http_status=dane.get("http_status"),
             ostrzezenia=dane.get("ostrzezenia", []),
+            blad=dane.get("blad"),
         )
 
 
