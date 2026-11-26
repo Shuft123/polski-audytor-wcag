@@ -29,7 +29,7 @@ Migawki testowe leżą w `tests/data/snapshots/<nazwa>/`, jeden folder na stron�
 Przykład (`tests/data/snapshots/gov-pl/meta.json`, lista linków skrócona):
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "requested_url": "https://www.gov.pl/",
   "final_url": "https://www.gov.pl/",
   "http_status": 200,
@@ -99,8 +99,8 @@ with Renderer() as renderer:
 - Zbieramy linki tylko z jednej strony (1 poziom). Pełny crawling witryny: sprint 3 (F1).
 
 
-## 2. Format wyniku audytu (axe-core i AI)
-Każdy wykryty problem – niezależnie od tego, czy znalazł go axe-core, czy model AI – ma ten sam format (`Problem`). Problemy jednej podstrony trafiają do pliku `wynik.json` (`WynikStrony`) obok plików migawki. Kod: `src/audytor/wyniki/format.py`, zapis w bazie: [model-danych.md](model-danych.md).
+## 2. Format wyniku audytu (axe-core, AI i heurystyki)
+Każdy wykryty problem – niezależnie od tego, czy znalazł go axe-core, model AI czy własna heurystyka (np. test fokusu) – ma ten sam format (`Problem`). Problemy jednej podstrony trafiają do pliku `wynik.json` (`WynikStrony`) obok plików migawki. Kod: `src/audytor/wyniki/format.py`, zapis w bazie: [model-danych.md](model-danych.md).
 
 ```python
 from audytor.wyniki import Problem, WynikStrony, zapisz_wynik, wczytaj_wynik
@@ -111,7 +111,7 @@ from audytor.wyniki import Problem, WynikStrony, zapisz_wynik, wczytaj_wynik
 |---|---|---|
 | `id` | string | Stały identyfikator (16 znaków hex) liczony z `url_podstrony`, `zrodlo`, `regula`, `selektor`. Ten sam problem w kolejnym skanie ma ten sam `id`. Liczy się sam – nie trzeba go podawać. |
 | `url_podstrony` | string | `final_url` z migawki. |
-| `zrodlo` | `"axe"` \| `"ai"` | Kto wykrył problem. |
+| `zrodlo` | `"axe"` \| `"ai"` \| `"heurystyka"` | Kto wykrył problem – patrz 2.4. |
 | `regula` | string | Id reguły axe (np. `image-alt`, `color-contrast`) albo testu AI. Proponowane nazwy testów AI: `ai-alt-tekst` (F9), `ai-cel-linku` (F10), `ai-naglowki` (F11), `ai-komunikaty-bledow` (F12), `ai-kontrast-obraz` (F13), `ai-fokus` (F8). |
 | `kryteria_wcag` | lista stringów | Np. `["1.1.1"]`. **Lista**, bo jedna reguła może dotyczyć kilku kryteriów (np. `link-name` → `2.4.4` i `4.1.2`). Format `zasada.wytyczna.kryterium`. |
 | `poziom_wcag` | `"A"` \| `"AA"` \| `"AAA"` \| null | Poziom kryterium; null dla reguł spoza WCAG. |
@@ -122,8 +122,8 @@ from audytor.wyniki import Problem, WynikStrony, zapisz_wynik, wczytaj_wynik
 | `opis` | string | Krótki opis problemu (po polsku). |
 | `szczegoly` | string | Co dokładnie jest nie tak i jak poprawić. |
 | `link_pomocy` | string \| null | Dokumentacja reguły. |
-| `poziom_pewnosci` | float 0–1 \| null | AI: pewność modelu. axe: `1.0` dla błędów, `null` dla `do_weryfikacji`. |
-| `uzasadnienie` | string \| null | Uzasadnienie oceny modelu AI. |
+| `poziom_pewnosci` | float 0–1 \| null | AI i heurystyki: pewność oceny. axe: `1.0` dla błędów, `null` dla `do_weryfikacji`. |
+| `uzasadnienie` | string \| null | Uzasadnienie oceny modelu AI (heurystyka – opcjonalnie). |
 | `wykryto` | string | Czas wykrycia, ISO 8601 UTC. |
 
 ### 2.2. Plik `wynik.json` (`WynikStrony`)
@@ -143,6 +143,7 @@ from audytor.wyniki import Problem, WynikStrony, zapisz_wynik, wczytaj_wynik
     "wg_zrodla": {"axe": 1, "ai": 1}
   },
   "ostrzezenia": [],
+  "blad": null,
   "problemy": [
     {
       "id": "0b112c937ee80ff3",
@@ -201,11 +202,41 @@ Kod: `src/audytor/axe/mapowanie.py` (`axe_na_problemy`).
 
 Zakres reguł: tagi `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` (WCAG 2.0/2.1, poziomy A i AA). Wyniki `passes` i `inapplicable` nie są zapisywane.
 
-### 2.4. Zasady dla modułów AI
-- `zrodlo: "ai"`, `status: "do_weryfikacji"` – wyniki AI nigdy nie są twardymi błędami (definicja projektu).
+### 2.4. Źródła wyników: axe, AI, heurystyka (decyzja ze sprintu 2)
+| `zrodlo` | Kiedy | Przykłady |
+|---|---|---|
+| `"axe"` | Reguła axe-core. | `image-alt`, `color-contrast` |
+| `"ai"` | Ocenę wydaje **model** (językowy lub wizyjny) – ocenia sens treści. | ocena altu (F9), cel linku (F10), kontrast na obrazie (F13) |
+| `"heurystyka"` | Własne reguły **bez modelu** – deterministyczne, powtarzalne. | test fokusu – porównanie zrzutów (F8), tryb AI „same reguły” w CI (F9), sprawdzenia deklaracji (F18) |
+
+Dlaczego osobne źródło: raport i audytor muszą wiedzieć, czy ocenę wydał model (może „zmyślać”, zależy od wersji
+modelu i promptu), czy powtarzalna reguła. Heurystyka nie wymaga też GPU ani klucza API, więc działa w CI.
+
+Zasady dla `"ai"`:
+- `status: "do_weryfikacji"` – wyniki AI nigdy nie są twardymi błędami (definicja projektu).
 - `poziom_pewnosci` obowiązkowy (0–1), `uzasadnienie` – krótko, po polsku.
 - Gdy model uzna, że element jest w porządku, **nie** tworzymy problemu.
 - `selektor` – ten sam co w wyniku axe dla tego elementu, jeśli to możliwe; ułatwi łączenie wyników w raporcie.
 
+Zasady dla `"heurystyka"`:
+- `poziom_pewnosci` obowiązkowy (0–1) – jak bardzo reguła jest pewna (np. fokus: brak zmiany 0.9, słaba zmiana 0.6).
+- `status: "do_weryfikacji"` domyślnie. `"blad"` tylko wtedy, gdy reguła jest jednoznaczna i zespół to uzgodni
+  (np. brak deklaracji dostępności na stronie podmiotu publicznego).
+- Moduł AI w trybie bez modelu („same reguły”) zapisuje wyniki jako `"heurystyka"`, nie `"ai"` – ta sama `regula`,
+  inne źródło, więc i inny `id` (wyniki z modelem i bez modelu się nie nadpisują).
+
 ### 2.5. Wersjonowanie
 `schema_version` jak w migawkach: zmiana niekompatybilna = podbicie pierwszej cyfry i informacja dla zespołu. `wczytaj_wynik` odrzuca pliki z inną główną wersją.
+
+| Wersja | Zmiana |
+|---|---|
+| 1.0 | Sprint 1. |
+| 1.1 | Sprint 2: źródło `"heurystyka"`; pole `blad` w `WynikStrony` – podstrona **nie** została sprawdzona (np. `"Pominięto zgodnie z robots.txt – …"`), wtedy `problemy` jest puste. Pliki 1.0 wczytują się bez zmian. |
+
+### 2.6. Wyniki fokusu i deklaracji
+Pełne wyniki tych testów nie mieszczą się w formacie `Problem` (kroki Tab, mapa fokusu; adres deklaracji,
+identyfikatory a11y-*), więc w bazie mają własne tabele (migracja 0002, [model-danych.md](model-danych.md)):
+- **fokus** – `WynikFokusu.to_dict()` (osoba 4) przy podstronie: `audytor.db.zapisz_wynik_fokusu(sesja, podstrona, wynik)`.
+  Problemy z `wynik["problemy"]` trafiają też do zwykłej listy problemów podstrony (`zrodlo: "heurystyka"`).
+- **deklaracja** – `DeclarationResult.to_dict()` (osoba 5) przy skanie: `audytor.db.zapisz_wynik_deklaracji(sesja, skan, wynik)`.
+  Wynik walidatora F18 można dołączyć jako `wynik["walidacja"]` (słownik – format ustala osoba 5).

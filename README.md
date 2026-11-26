@@ -56,9 +56,9 @@ Pull request można zmergować dopiero, gdy CI przejdzie i ktoś z zespołu zatw
 
 - **Crawler** (`src/audytor/crawler`) – renderowanie stron, migawki, linki wewnętrzne, robots.txt. Instrukcja: [docs/crawler.md](docs/crawler.md).
 - **Audyt axe-core** (`src/audytor/axe`) – uruchomienie axe-core na stronie i zamiana wyników na wspólny format. Instrukcja: [docs/audyt-axe.md](docs/audyt-axe.md).
-- **Format wyników** (`src/audytor/wyniki`) – wspólny format problemu dla axe i AI, plik `wynik.json`.
-- **Baza danych** (`src/audytor/db`, `migrations/`) – model danych v1 (skan, podstrona, problem), migracje Alembic. Opis: [docs/model-danych.md](docs/model-danych.md).
-- **Skan** (`src/audytor/skan`) – komenda `audytor-scan`: render → axe-core → zapis wyniku.
+- **Format wyników** (`src/audytor/wyniki`) – wspólny format problemu dla axe, AI i heurystyk, plik `wynik.json`.
+- **Baza danych** (`src/audytor/db`, `migrations/`) – model danych (skan, podstrona, problem, wyniki fokusu i deklaracji), migracje Alembic. Opis: [docs/model-danych.md](docs/model-danych.md).
+- **Skan** (`src/audytor/skan`) – komenda `audytor-scan`: render → axe-core → zapis wyniku; lista podstron i limit tempa dla workera. Instrukcja: [docs/audyt-axe.md](docs/audyt-axe.md).
 - **REST API** (`src/audytor/api`) – FastAPI: `/health`, zlecenie skanu, status, wyniki. Opis: [docs/backend.md](docs/backend.md).
 - **Worker** (`src/audytor/worker`) – Celery: wykonuje skany zlecone przez API i zapisuje wyniki w bazie.
 - **Deklaracja dostępności** (`src/audytor/deklaracja`) – wykrywanie linku do deklaracji (F17), wymogi do walidacji (F18). Instrukcja: [docs/deklaracja.md](docs/deklaracja.md), checklista: [docs/deklaracja-checklista.md](docs/deklaracja-checklista.md).
@@ -68,7 +68,9 @@ Pull request można zmergować dopiero, gdy CI przejdzie i ktoś z zespołu zatw
 
 - [Backend: API, worker, docker-compose, CI](docs/backend.md)
 - [Kontrakt danych między modułami](docs/kontrakt-danych.md)
-- [Model danych v1 (ERD)](docs/model-danych.md)
+- [Model danych (ERD)](docs/model-danych.md)
+- [Audyt axe-core i skan wielu podstron (F6)](docs/audyt-axe.md)
+- [Rozpoznanie: audyt dostępności PDF](docs/rozpoznanie-pdf.md)
 - [Konwencje i zasady współpracy](docs/konwencje.md)
 - [AI: ocena tekstu alternatywnego (F9)](docs/ai-ocena-alt.md)
 - [AI: model wizyjny i test fokusu (F8)](docs/ai-wizja-fokus.md)

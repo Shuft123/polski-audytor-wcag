@@ -11,7 +11,7 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any
 
-from sqlalchemy import JSON, DateTime, Enum, Float, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy import JSON, Boolean, DateTime, Enum, Float, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -46,7 +46,7 @@ _JSON = JSON().with_variant(JSONB(), "postgresql")
 
 
 class Base(DeclarativeBase):
-    type_annotation_map = {dict[str, Any]: _JSON, list[str]: _JSON}
+    type_annotation_map = {dict[str, Any]: _JSON, list[str]: _JSON, list[dict[str, Any]]: _JSON}
 
 
 class Skan(Base):
@@ -65,6 +65,10 @@ class Skan(Base):
 
     podstrony: Mapped[list[Podstrona]] = relationship(
         back_populates="skan", cascade="all, delete-orphan", order_by="Podstrona.id"
+    )
+    # Deklaracja dostępności dotyczy całej witryny, więc jest jedna na skan (F17/F18, migracja 0002).
+    deklaracja: Mapped[WynikDeklaracji | None] = relationship(
+        back_populates="skan", cascade="all, delete-orphan", uselist=False
     )
 
     def __repr__(self) -> str:
@@ -86,10 +90,14 @@ class Podstrona(Base):
     migawka: Mapped[str | None] = mapped_column(String(255))    # folder migawki (dom.html, zrzut, meta.json)
     narzedzia: Mapped[dict[str, Any]] = mapped_column(default=dict)
     ostrzezenia: Mapped[list[str]] = mapped_column(default=list)
+    blad: Mapped[str | None] = mapped_column(Text)              # podstrona NIE sprawdzona – powód (migracja 0002)
 
     skan: Mapped[Skan] = relationship(back_populates="podstrony")
     problemy: Mapped[list[Problem]] = relationship(
         back_populates="podstrona", cascade="all, delete-orphan", order_by="Problem.id"
+    )
+    fokus: Mapped[WynikFokusu | None] = relationship(
+        back_populates="podstrona", cascade="all, delete-orphan", uselist=False
     )
 
     def __repr__(self) -> str:
@@ -124,3 +132,61 @@ class Problem(Base):
 
     def __repr__(self) -> str:
         return f"<Problem #{self.id} {self.zrodlo}:{self.regula} {self.status}>"
+
+
+class WynikFokusu(Base):
+    """Pełny wynik testu fokusu jednej podstrony (F8, osoba 4) – `WynikFokusu.to_dict()` z audytor.fokus.
+
+    Problemy wykryte przez test (fokus niewidoczny, słabo widoczny, zgubiony, pułapka) trafiają do tabeli
+    `problem` ze źródłem "heurystyka"; tu zostaje to, czego nie da się zapisać jako problem: kroki Tab,
+    podsumowanie i powód zakończenia – potrzebne do mapy fokusu w raporcie.
+    """
+
+    __tablename__ = "wynik_fokusu"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    podstrona_id: Mapped[int] = mapped_column(
+        ForeignKey("podstrona.id", ondelete="CASCADE"), unique=True, index=True
+    )
+    sprawdzono: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    zakonczenie: Mapped[str] = mapped_column(Text, default="")        # dlaczego przestano naciskać Tab
+    limit_krokow: Mapped[int | None]
+    podsumowanie: Mapped[dict[str, Any]] = mapped_column(default=dict)  # liczby kroków wg werdyktu
+    kroki: Mapped[list[dict[str, Any]]] = mapped_column(default=list)
+    ostrzezenia: Mapped[list[str]] = mapped_column(default=list)
+    mapa: Mapped[str | None] = mapped_column(String(255))     # plik mapy fokusu w folderze migawki
+
+    podstrona: Mapped[Podstrona] = relationship(back_populates="fokus")
+
+    def __repr__(self) -> str:
+        return f"<WynikFokusu #{self.id} podstrona #{self.podstrona_id}>"
+
+
+class WynikDeklaracji(Base):
+    """Wynik wyszukania (F17) i walidacji (F18) deklaracji dostępności witryny – osoba 5.
+
+    Pola odpowiadają `DeclarationResult.to_dict()` z audytor.deklaracja. `walidacja` to miejsce na wynik
+    walidatora v1 (sekcje B i C checklisty) – jego format ustala osoba 5.
+    """
+
+    __tablename__ = "wynik_deklaracji"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    skan_id: Mapped[int] = mapped_column(ForeignKey("skan.id", ondelete="CASCADE"), unique=True, index=True)
+    sprawdzono: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    znaleziono: Mapped[bool] = mapped_column(Boolean)
+    url_deklaracji: Mapped[str | None] = mapped_column(String(2048))
+    metoda: Mapped[str] = mapped_column(String(30))           # link | meta | typowy_adres | brak
+    status: Mapped[str] = mapped_column(String(30))           # zweryfikowana | bez_a11y | niezweryfikowana | brak
+    pewnosc: Mapped[float] = mapped_column(Float)
+    zweryfikowano: Mapped[bool] = mapped_column(Boolean)
+    identyfikatory_a11y: Mapped[list[str]] = mapped_column(default=list)
+    brakujace_identyfikatory: Mapped[list[str]] = mapped_column(default=list)
+    kandydaci: Mapped[list[dict[str, Any]]] = mapped_column(default=list)
+    ostrzezenia: Mapped[list[str]] = mapped_column(default=list)
+    walidacja: Mapped[dict[str, Any] | None] = mapped_column()   # F18 v1 – format ustala osoba 5
+
+    skan: Mapped[Skan] = relationship(back_populates="deklaracja")
+
+    def __repr__(self) -> str:
+        return f"<WynikDeklaracji #{self.id} skan #{self.skan_id} {self.status}>"

@@ -28,6 +28,8 @@ MARGINES = 10
 # Po tylu kolejnych Tabach na tym samym elemencie uznajemy, że to pułapka klawiaturowa (2.1.2).
 LIMIT_PULAPKI = 3
 MAX_FRAGMENT_HTML = 2000
+# Test fokusu porównuje piksele, nie używa modelu AI – źródło "heurystyka" (kontrakt danych, sekcja 2.4).
+ZRODLO = "heurystyka"
 
 # Ustawia punkt startowy nawigacji sekwencyjnej na początek dokumentu: crawler mógł kliknąć
 # przycisk banera cookies, a wtedy pierwszy Tab poszedłby od banera, a nie od góry strony.
@@ -181,7 +183,7 @@ def _werdykt(widoczny: bool, pomiar: PomiarFokusu | None) -> str:
 
 def _id_problemu(url: str, regula: str, selektor: str) -> str:
     # Ten sam sposób liczenia co identyfikator_problemu() w audytor.wyniki (F7).
-    klucz = "\x1f".join([url, "ai", regula, selektor])
+    klucz = "\x1f".join([url, ZRODLO, regula, selektor])
     return hashlib.sha1(klucz.encode("utf-8")).hexdigest()[:16]
 
 
@@ -190,7 +192,7 @@ def _problem(url: str, krok: KrokFokusu, regula: str, kryterium: str, waga: str,
     """Problem w formacie wspólnego modelu wyniku (audytor.wyniki.Problem, F7)."""
     return {
         "url_podstrony": url,
-        "zrodlo": "ai",
+        "zrodlo": ZRODLO,
         "regula": regula,
         "kryteria_wcag": [kryterium],
         "status": "do_weryfikacji",

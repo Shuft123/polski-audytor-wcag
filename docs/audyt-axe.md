@@ -54,7 +54,51 @@ with Renderer() as renderer:
   `uruchom_axe(page, jezyk=None)` daje oryginalne angielskie.
 - axe-core działa na stronie **po** zamknięciu banera cookies (patrz kontrakt, sekcja 1.4).
 
-## Znane ograniczenia (sprint 1)
+## Skan wielu podstron przez API i worker (sprint 2)
+
+Skan zlecony przez API sprawdza stronę startową i podane podstrony – axe-core na każdej z nich:
+
+```
+curl -X POST http://localhost:8000/skany -H "Content-Type: application/json" -d '{
+  "url": "https://www.wasilkow.pl/",
+  "parametry": {
+    "podstrony": ["https://www.wasilkow.pl/kontakt", "https://www.wasilkow.pl/deklaracja-dostepnosci"],
+    "max_podstron": 20
+  }
+}'
+```
+
+W PowerShellu łatwiej przez Swaggera: http://localhost:8000/docs → `POST /skany` → „Try it out”.
+
+| Parametr | Domyślnie | Znaczenie |
+|---|---|---|
+| `podstrony` | `[]` | Adresy do sprawdzenia oprócz strony startowej. Inne witryny (także poddomeny, np. `bip.…`) są pomijane, duplikaty i fragmenty `#…` usuwane. |
+| `max_podstron` | 20 | Ile podstron najwyżej, licząc stronę startową. Twardy limit: 50. |
+
+Jak działa (`audytor.worker.zadania.wykonaj_skan`):
+- **Jedna przeglądarka na cały skan**; podstrony po kolei, strona startowa pierwsza.
+- **Limit tempa na witrynę:** między podstronami tej samej witryny pauza `AUDYTOR_OPOZNIENIE_S` (1 s)
+  albo Crawl-delay z robots.txt, jeśli jest większy (`audytor.skan.Ogranicznik`). robots.txt jest sprawdzany
+  dla **każdej** podstrony (robi to crawler przy otwieraniu strony).
+- **Błąd jednej podstrony nie przerywa skanu.** Podstrona zablokowana w robots.txt albo niewczytana w limicie
+  czasu trafia do bazy z polem `blad` (w API: `"blad": "Pominięto zgodnie z robots.txt – …"`), bez problemów.
+- **Postęp widać w trakcie:** każda podstrona jest zapisywana zaraz po sprawdzeniu – `GET /skany/{id}` pokazuje
+  rosnące `liczba_podstron`.
+- **Status skanu:** `zakonczony`, gdy sprawdzono choć jedną podstronę; `blad`, gdy żadnej (powód w `opis_bledu`).
+- **Budżet czasu:** po 480 s (zapas przed limitem zadania Celery – 540 s) kolejne podstrony nie są już
+  otwierane, tylko zapisywane z `blad` „przekroczony czas skanu”. Dłuższe skany – kolejka F4 w sprincie 3.
+- Dwa adresy, które przekierowują na tę samą stronę, dają jedną podstronę.
+
+Lista podstron w sprincie 3 przyjdzie z crawlera wielu podstron (F1, osoba 1) – worker użyje jej tak samo
+jak `parametry["podstrony"]` (funkcja `audytor.skan.lista_podstron`).
+
+Z wiersza poleceń kilka podstron sprawdza też `audytor-scan` (bez bazy albo z `--db`):
+
+```
+python -m audytor.skan https://www.wasilkow.pl/ https://www.wasilkow.pl/kontakt --db sqlite:///audytor.db
+```
+
+## Znane ograniczenia
 
 - Treść w `<iframe>` nie jest jeszcze sprawdzana (axe działa w głównej ramce).
 - Testy automatyczne wykrywają tylko część problemów WCAG – resztę mają uzupełniać moduły AI i audytor.
