@@ -4,6 +4,7 @@ Przykłady:
     python -m audytor.crawler https://pb.edu.pl
     python -m audytor.crawler https://pb.edu.pl https://www.gov.pl --out tests/data/snapshots
     python -m audytor.crawler --urls-file strony.txt --delay 2
+    python -m audytor.crawler https://www.wasilkow.pl/ --crawl --depth 2 --max-pages 20   # cała witryna
 """
 
 from __future__ import annotations
@@ -16,9 +17,10 @@ from urllib.parse import urlsplit
 
 from .links import normalize_url
 from .render import Renderer, RenderError, RenderOptions, RobotsDisallowedError
-from .snapshot import save_snapshot
+from .snapshot import save_snapshot, slug_for_url
 
 DEFAULT_OUT = Path("tests") / "data" / "snapshots"
+DEFAULT_CRAWL_OUT = Path("wyniki") / "crawl"      # folder w .gitignore – crawl nie trafia przypadkiem do repo
 
 
 def _viewport(value: str) -> tuple[int, int]:
@@ -35,12 +37,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m audytor.crawler",
         description="Renderuje strony (Playwright), zapisuje DOM, zrzut ekranu, MHTML "
-        "i linki wewnętrzne (1 poziom) z kontrolą robots.txt.",
+        "i linki wewnętrzne z kontrolą robots.txt. Z --crawl przechodzi całą witrynę od podanej strony.",
     )
     parser.add_argument("urls", nargs="*", metavar="URL", help="adresy stron do zapisania")
     parser.add_argument("--urls-file", type=Path, help="plik z adresami, jeden w linii (# = komentarz)")
-    parser.add_argument("--out", type=Path, default=DEFAULT_OUT, help=f"folder wyjściowy (domyślnie {DEFAULT_OUT})")
-    parser.add_argument("--name", help="nazwa folderu migawki (tylko przy jednym adresie)")
+    parser.add_argument("--out", type=Path, default=None,
+                        help=f"folder wyjściowy (domyślnie {DEFAULT_OUT}, z --crawl: {DEFAULT_CRAWL_OUT})")
+    parser.add_argument("--name", help="nazwa folderu migawki / crawlowania (tylko przy jednym adresie)")
     parser.add_argument("--delay", type=float, default=1.0, help="pauza między stronami w sekundach (domyślnie 1)")
     parser.add_argument("--timeout", type=float, default=30.0, help="limit wczytania strony w sekundach (domyślnie 30)")
     parser.add_argument("--viewport", type=_viewport, default=(1366, 768), help="rozmiar okna, np. 1366x768")
@@ -56,6 +59,18 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--headed", action="store_true", help="pokaż okno przeglądarki")
     parser.add_argument("--channel", choices=["msedge", "chrome"],
                         help="użyj przeglądarki zainstalowanej w systemie zamiast Chromium z Playwrighta")
+
+    crawl = parser.add_argument_group("crawling wielu podstron (F1)")
+    crawl.add_argument("--crawl", action="store_true",
+                       help="przejdź witrynę od podanej strony po linkach wewnętrznych")
+    crawl.add_argument("--depth", type=int, default=2,
+                       help="głębokość: 0 = tylko strona startowa, 1 = + jej linki… (domyślnie 2, maks. 10)")
+    crawl.add_argument("--max-pages", type=int, default=20,
+                       help="ile stron najwyżej odwiedzić, łącznie ze startową (domyślnie 20, maks. 500)")
+    crawl.add_argument("--max-time", type=float, default=None,
+                       help="limit czasu crawlowania w sekundach (domyślnie bez limitu)")
+    crawl.add_argument("--no-snapshots", action="store_true",
+                       help="tylko lista podstron (crawl.json), bez migawek – szybciej")
     return parser
 
 
@@ -74,6 +89,13 @@ def _read_urls(args: argparse.Namespace, parser: argparse.ArgumentParser) -> lis
         parser.error("nieprawidłowe adresy (wymagany http:// lub https://): " + ", ".join(bad))
     if args.name and len(urls) > 1:
         parser.error("--name można użyć tylko z jednym adresem")
+    if args.crawl:
+        if not 0 <= args.depth <= 10:
+            parser.error("--depth musi być w zakresie 0–10")
+        if not 1 <= args.max_pages <= 500:
+            parser.error("--max-pages musi być w zakresie 1–500")
+    elif args.no_snapshots:
+        parser.error("--no-snapshots działa tylko z --crawl")
     return urls
 
 
@@ -115,6 +137,11 @@ def main(argv: list[str] | None = None) -> int:
         print("Spróbuj: python -m playwright install chromium"
               + ("" if args.channel else "  albo dodaj --channel msedge"), file=sys.stderr)
         return 3
+    if args.crawl:
+        with renderer:
+            return _crawl(renderer, urls, args)
+
+    out = args.out or DEFAULT_OUT
     with renderer:
         for index, url in enumerate(urls, start=1):
             prefix = f"[{index}/{len(urls)}] {url}"
@@ -147,7 +174,7 @@ def main(argv: list[str] | None = None) -> int:
             finally:
                 last_visit[host] = time.monotonic()
 
-            folder = save_snapshot(snapshot, args.out, name=args.name)
+            folder = save_snapshot(snapshot, out, name=args.name)
             print(
                 f"{prefix}\n"
                 f"    OK  HTTP {snapshot.http_status}  {snapshot.render_ms} ms  \"{snapshot.title[:60]}\"\n"
@@ -162,6 +189,58 @@ def main(argv: list[str] | None = None) -> int:
 
     ok = len(urls) - failures
     print(f"\nGotowe: {ok} z {len(urls)} stron zapisanych.")
+    return 0 if failures == 0 else 1
+
+
+_STATUS = {"ok": "OK", "blad": "BŁĄD", "pominieta": "POMINIĘTO"}
+_STOP = {
+    "kolejka_pusta": "odwiedzono wszystkie znalezione podstrony w limicie głębokości",
+    "limit_stron": "osiągnięto limit stron (--max-pages)",
+    "limit_czasu": "osiągnięto limit czasu (--max-time)",
+    "strona_startowa_niedostepna": "strona startowa niedostępna",
+}
+
+
+def _crawl(renderer: Renderer, urls: list[str], args: argparse.Namespace) -> int:
+    from .crawl import CrawlOptions, SiteCrawler
+
+    options = CrawlOptions(
+        max_depth=args.depth,
+        max_pages=args.max_pages,
+        delay_s=args.delay,
+        time_budget_s=args.max_time,
+        save_snapshots=not args.no_snapshots,
+    )
+    crawler = SiteCrawler(renderer, options)
+    out_root = args.out or DEFAULT_CRAWL_OUT
+    failures = 0
+    for url in urls:
+        start = normalize_url(url) or url
+        parts = urlsplit(start)
+        folder = out_root / (args.name or slug_for_url(f"{parts.scheme}://{parts.netloc}/"))
+        print(f"Crawling: {start}  (głębokość {args.depth}, maks. {args.max_pages} stron) -> {folder}")
+        counter = {"n": 0}
+
+        def progress(page) -> None:
+            counter["n"] += 1
+            line = f"  [{counter['n']:>3}] g{page.depth} {_STATUS.get(page.status, page.status):9} "
+            if page.status == "ok":
+                line += f"HTTP {page.http_status}  {page.final_url}"
+                if page.new_links:
+                    line += f"  (+{page.new_links} nowych)"
+            else:
+                line += f"{page.url}\n              {page.reason}"
+            print(line, flush=True)
+
+        result = crawler.crawl(start, out_dir=folder, on_result=progress)
+        s = result.summary()
+        print(f"Koniec: {_STOP.get(result.stop_reason, result.stop_reason)}.")
+        print(f"  odwiedzone: {s['ok']}, błędy: {s['blad']}, pominięte: {s['pominieta']}, "
+              f"nieodwiedzone (ponad limit): {s['nie_odwiedzone']}")
+        print(f"  zablokowane w robots.txt: {s['zablokowane_robots']}, dokumenty (PDF/DOC…): {s['dokumenty']}")
+        print(f"  zapisano: {folder / 'crawl.json'}\n")
+        if result.stop_reason == "strona_startowa_niedostepna":
+            failures += 1
     return 0 if failures == 0 else 1
 
 

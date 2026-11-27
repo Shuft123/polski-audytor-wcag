@@ -1,0 +1,14 @@
+# Podstrony do migawek testowych (sprint 2, osoba 1): formularze, galeria, deklaracje dostępności.
+# Format: nazwa folderu migawki, spacja, adres. Odtworzenie jednej migawki (w głównym folderze repozytorium):
+#   python -m audytor.crawler <adres> --name <nazwa> --jpeg --no-mhtml
+# Strony główne tych witryn są w strony-testowe.txt.
+
+# formularz wyszukiwania zaawansowanego (18 pól) – etykiety pól, F12
+wasilkow-pl_formularz-wyszukiwania https://www.wasilkow.pl/cms/search/advanced
+# formularz logowania (login, hasło) – etykiety, komunikaty błędów
+wasilkow-pl_formularz-logowania https://www.wasilkow.pl/surfer/index/login
+# artykuł ze zdjęciami – ocena tekstów alternatywnych (F9)
+wasilkow-pl_galeria-cerkiew https://www.wasilkow.pl/pl/dla-turystow/zabytkiimiejsca/cerkiew-sww-app-piotra-i-pawla.html
+# deklaracje dostępności – walidator deklaracji (F18)
+wasilkow-pl_deklaracja https://www.wasilkow.pl/pl/informator-mieszkanca/deklaracja-dostepnosci-wwwwasilkowpl.html
+pb-edu-pl_deklaracja https://pb.edu.pl/dostepnosc-cyfrowa/deklaracja-dostepnosci/

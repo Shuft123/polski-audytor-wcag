@@ -108,6 +108,16 @@ class OpenedPage:
     warnings: list[str] = field(default_factory=list)
 
 
+@dataclass
+class PageLinks:
+    """Linki znalezione na stronie, podzielone jak w `meta.json` migawki."""
+
+    internal: list[str]              # podstrony tej witryny dozwolone w robots.txt
+    blocked_by_robots: list[str]     # podstrony zablokowane w robots.txt
+    documents: list[str]             # PDF, DOCX itd.
+    external_count: int
+
+
 class Renderer:
     """Zarządza przeglądarką. Jedna instancja może wyrenderować wiele stron."""
 
@@ -260,10 +270,7 @@ class Renderer:
             except PlaywrightError as exc:
                 warnings.append(f"Nie udało się zapisać MHTML: {exc.message.splitlines()[0]}")
 
-        links = classify_links(hrefs, opened.final_url)
-        allowed = [u for u in links.pages if self.robots.can_fetch(u)]
-        allowed_set = set(allowed)
-        blocked = [u for u in links.pages if u not in allowed_set]
+        links = self._classify(hrefs, opened.final_url)
 
         return PageSnapshot(
             requested_url=opened.requested_url,
@@ -276,8 +283,8 @@ class Renderer:
             user_agent=self.user_agent,
             render_ms=opened.render_ms,
             robots=opened.robots.to_dict(),
-            links_internal=allowed,
-            links_blocked_by_robots=blocked,
+            links_internal=links.internal,
+            links_blocked_by_robots=links.blocked_by_robots,
             documents=links.documents,
             links_external_count=links.external_count,
             dom_html=dom,
@@ -287,6 +294,25 @@ class Renderer:
             cookie_banner=opened.cookie_banner.to_dict() if opened.cookie_banner else {"checked": False},
             cookie_banner_screenshot=opened.cookie_banner.screenshot if opened.cookie_banner else None,
             warnings=warnings,
+        )
+
+    def page_links(self, opened: OpenedPage) -> PageLinks:
+        """Linki otwartej strony bez robienia migawki (szybciej – bez zrzutu i DOM-u).
+
+        Ten sam podział co w `capture()`: podstrony dozwolone / zablokowane w robots.txt, dokumenty.
+        """
+        hrefs = opened.page.eval_on_selector_all("a[href]", "els => els.map(e => e.href)")
+        return self._classify(hrefs, opened.final_url)
+
+    def _classify(self, hrefs: list[str], page_url: str) -> PageLinks:
+        links = classify_links(hrefs, page_url)
+        allowed = [u for u in links.pages if self.robots.can_fetch(u)]
+        allowed_set = set(allowed)
+        return PageLinks(
+            internal=allowed,
+            blocked_by_robots=[u for u in links.pages if u not in allowed_set],
+            documents=links.documents,
+            external_count=links.external_count,
         )
 
     def _screenshot_kwargs(self) -> dict:

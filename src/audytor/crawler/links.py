@@ -52,6 +52,24 @@ def normalize_url(url: str | None, base: str | None = None) -> str | None:
     return urlunsplit((scheme, netloc, path, parts.query, ""))
 
 
+# Parametry śledzące – ta sama strona pod wieloma adresami. Crawler usuwa je przed deduplikacją.
+_TRACKING_PREFIXES = ("utm_",)
+_TRACKING_PARAMS = {"fbclid", "gclid", "msclkid", "yclid", "mc_cid", "mc_eid", "_ga", "igshid"}
+
+
+def strip_tracking(url: str) -> str:
+    """Usuwa z adresu parametry śledzące (utm_*, fbclid, gclid…); reszta adresu bez zmian."""
+    parts = urlsplit(url)
+    if not parts.query:
+        return url
+    kept = [
+        p for p in parts.query.split("&")
+        if p and not (p.split("=", 1)[0].lower().startswith(_TRACKING_PREFIXES)
+                      or p.split("=", 1)[0].lower() in _TRACKING_PARAMS)
+    ]
+    return urlunsplit((parts.scheme, parts.netloc, parts.path, "&".join(kept), parts.fragment))
+
+
 def site_host(url: str) -> str:
     """Host bez przedrostka "www." – www.example.pl i example.pl to ta sama witryna."""
     host = (urlsplit(url).hostname or "").lower().rstrip(".")

@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "requested_url": "https://www.wasilkow.pl/surfer/index/login",
+  "final_url": "https://www.wasilkow.pl/surfer/index/login",
+  "http_status": 200,
+  "fetched_at": "2026-11-26T18:17:08+00:00",
+  "title": "LogowanieUrząd Miejski w Wasilkowie",
+  "lang": "pl",
+  "viewport": {
+    "width": 1366,
+    "height": 768
+  },
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36 PolskiAudytorWCAG/0.1.0 (+https://github.com/Shuft123/polski-audytor-wcag)",
+  "render_ms": 3704,
+  "robots": {
+    "robots_url": "https://www.wasilkow.pl/robots.txt",
+    "status": "ok",
+    "crawl_delay": null,
+    "error": null
+  },
+  "links": {
+    "internal": [
+      "https://www.wasilkow.pl/surfer/index/register",
+      "https://www.wasilkow.pl/cms/search/advanced",
+      "https://www.wasilkow.pl/",
+      "https://www.wasilkow.pl/surfer/index/remind-password"
+    ],
+    "blocked_by_robots": [],
+    "documents": [],
+    "external_count": 3
+  },
+  "cookie_banner": {
+    "checked": true,
+    "detected": true,
+    "dismissed": false,
+    "method": null,
+    "button_text": null,
+    "frame_url": null
+  },
+  "files": {
+    "dom": "dom.html",
+    "screenshot": "screenshot.jpg",
+    "cookie_banner_screenshot": "screenshot-baner.jpg"
+  },
+  "warnings": [
+    "Wykryto baner cookies, ale nie znaleziono przycisku odrzucenia – migawka zawiera baner"
+  ]
+}
