@@ -112,6 +112,7 @@ Crawler z opcją `--crawl` (albo `SiteCrawler` z kodu) zapisuje w folderze witry
 {
   "schema_version": "1.0",
   "start_url": "https://www.wasilkow.pl/",
+  "site_url": "https://www.wasilkow.pl/",
   "started_at": "2026-11-26T18:04:29+00:00",
   "finished_at": "2026-11-26T18:06:49+00:00",
   "stop_reason": "limit_stron",
@@ -132,6 +133,7 @@ Crawler z opcją `--crawl` (albo `SiteCrawler` z kodu) zapisuje w folderze witry
 
 | Pole | Znaczenie |
 |---|---|
+| `site_url` | Witryna, którą crawlowano – zwykle równa `start_url`; inna, gdy strona startowa przekierowuje na inną witrynę (np. `gmina.pl` -> `bip.gmina.pl`). Format pliku się nie zmienia (pole doszło w sprincie 2, `schema_version` bez zmian). |
 | `stop_reason` | `kolejka_pusta` (odwiedzono wszystko w limicie głębokości), `limit_stron`, `limit_czasu`, `strona_startowa_niedostepna`. |
 | `pages[].status` | `ok` – strona wczytana (także z HTTP ≥ 400 – wtedy jej linków nie śledzimy); `blad` – nie udało się wczytać (timeout, plik zamiast strony); `pominieta` – świadomie pominięta (robots.txt, przekierowanie poza witrynę albo na już odwiedzoną stronę). Powód w `reason`. |
 | `pages[].depth` / `found_on` | Głębokość (0 = strona startowa) i strona, na której znaleziono link. |

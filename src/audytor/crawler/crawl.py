@@ -4,8 +4,9 @@ Od strony startowej przechodzimy wszerz (BFS) po linkach wewnętrznych:
 - tylko ta sama witryna (`www.` bez znaczenia, poddomeny to inne witryny – jak w links.is_internal),
 - limit głębokości (`max_depth`: 0 = tylko strona startowa, 1 = + linki ze startowej, …),
 - limit liczby stron (`max_pages`, łącznie ze startową) i opcjonalnie limit czasu,
-- deduplikacja: adres znormalizowany (bez #, bez parametrów śledzących utm_*/fbclid…), a po wczytaniu
+- deduplikacja: bez #, parametrów śledzących (utm_*/fbclid…), schematu (http/https) i `www.`, a po wczytaniu
   także adres końcowy – dwa linki przekierowujące w to samo miejsce dają jedną stronę,
+- strona startowa przekierowująca na inną witrynę (np. gmina.pl -> bip.gmina.pl) – crawlujemy witrynę docelową,
 - robots.txt dla KAŻDEJ podstrony (sprawdza Renderer.open; zablokowane linki nawet nie trafiają do kolejki),
 - limit tempa na witrynę: pauza `delay_s` albo Crawl-delay z robots.txt, jeśli większy (F2).
 
@@ -58,8 +59,15 @@ def _now_iso() -> str:
 
 
 def crawl_key(url: str) -> str:
-    """Klucz deduplikacji: adres znormalizowany, bez parametrów śledzących."""
-    return strip_tracking(normalize_url(url) or url)
+    """Klucz deduplikacji: bez schematu (http/https), bez `www.`, bez `#` i parametrów śledzących.
+
+    http://, https://, z www. i bez – to ta sama strona; bez tego każdy wariant linku byłby wczytywany
+    osobno i zjadał limit stron.
+    """
+    parts = urlsplit(strip_tracking(normalize_url(url) or url))
+    host = (parts.hostname or "").removeprefix("www.")
+    netloc = f"{host}:{parts.port}" if parts.port else host
+    return netloc + (parts.path or "/") + (f"?{parts.query}" if parts.query else "")
 
 
 @dataclass
@@ -106,6 +114,7 @@ class CrawlResult:
     start_url: str
     options: CrawlOptions
     started_at: str
+    site_url: str | None = None       # witryna crawlowana; inna niż start_url, gdy startowa przekierowuje
     finished_at: str | None = None
     stop_reason: str | None = None
     pages: list[CrawledPage] = field(default_factory=list)
@@ -136,6 +145,7 @@ class CrawlResult:
         return {
             "schema_version": CRAWL_SCHEMA_VERSION,
             "start_url": self.start_url,
+            "site_url": self.site_url or self.start_url,
             "started_at": self.started_at,
             "finished_at": self.finished_at,
             "stop_reason": self.stop_reason,
@@ -242,7 +252,8 @@ class SiteCrawler:
             raise ValueError("save_snapshots wymaga out_dir")
         out = Path(out_dir) if out_dir is not None else None
 
-        result = CrawlResult(start_url=start, options=opts, started_at=_now_iso())
+        result = CrawlResult(start_url=start, options=opts, started_at=_now_iso(), site_url=start)
+        site = start                         # zmienia się tylko, gdy strona startowa przekierowuje na inną witrynę
         queue: deque[tuple[str, int, str | None]] = deque([(start, 0, None)])
         seen = {crawl_key(start)}            # adresy już w kolejce albo odwiedzone
         blocked: dict[str, None] = {}        # zbiór z zachowaniem kolejności
@@ -284,7 +295,8 @@ class SiteCrawler:
             visited += 1
             try:
                 with self.renderer.open(url) as opened:
-                    links = self._handle_page(opened, page, start, out, used_names, visited_finals, on_page)
+                    links, site = self._handle_page(opened, page, site, out, used_names, visited_finals, on_page)
+                    result.site_url = site
                     if links is not None:
                         for u in links.blocked_by_robots:
                             blocked.setdefault(u, None)
@@ -295,7 +307,7 @@ class SiteCrawler:
                             for link in links.internal:
                                 link = strip_tracking(link)
                                 key = crawl_key(link)
-                                if key in seen or not is_internal(link, start):
+                                if key in seen or not is_internal(link, site):
                                     continue
                                 seen.add(key)
                                 queue.append((link, depth + 1, page.final_url))
@@ -337,23 +349,29 @@ class SiteCrawler:
         return result
 
     # --- pomocnicze ---------------------------------------------------------------------------
-    def _handle_page(self, opened: OpenedPage, page: CrawledPage, start: str, out: Path | None,
-                     used_names: set[str], visited_finals: set[str], on_page) -> PageLinks | None:
-        """Uzupełnia `page`; zwraca linki strony albo None, gdy strona została pominięta."""
+    def _handle_page(self, opened: OpenedPage, page: CrawledPage, site: str, out: Path | None,
+                     used_names: set[str], visited_finals: set[str],
+                     on_page) -> tuple[PageLinks | None, str]:
+        """Uzupełnia `page`; zwraca (linki strony albo None, gdy pominięta; witrynę crawlowaną)."""
         final = strip_tracking(normalize_url(opened.final_url) or opened.final_url)
         page.final_url = final
         page.http_status = opened.http_status
         page.render_ms = opened.render_ms
         page.warnings = list(opened.warnings)
 
-        if not is_internal(final, start):
-            page.status = POMINIETA
-            page.reason = f"przekierowanie poza witrynę: {final}"
-            return None
+        if not is_internal(final, site):
+            if page.depth == 0:
+                # strona startowa przekierowuje na inną witrynę (np. nowa domena urzędu) – crawlujemy tamtą
+                page.warnings.append(f"Strona startowa przekierowuje na inną witrynę – crawlujemy {final}")
+                site = final
+            else:
+                page.status = POMINIETA
+                page.reason = f"przekierowanie poza witrynę: {final}"
+                return None, site
         if crawl_key(final) in visited_finals:   # np. /stary-kontakt -> /kontakt, już odwiedzony
             page.status = POMINIETA
             page.reason = f"ta sama strona co {final} (przekierowanie)"
-            return None
+            return None, site
         visited_finals.add(crawl_key(final))
 
         page.status = OK
@@ -367,7 +385,8 @@ class SiteCrawler:
             name = _unique_name(slug_for_url(final), used_names)
             save_snapshot(snapshot, out, name=name)
             page.snapshot = name
-            page.warnings = list(snapshot.warnings)
+            # ostrzeżenia migawki zawierają już te z renderowania; dopisujemy własne (np. o przekierowaniu)
+            page.warnings = list(snapshot.warnings) + [w for w in page.warnings if w not in snapshot.warnings]
             links = PageLinks(snapshot.links_internal, snapshot.links_blocked_by_robots,
                               snapshot.documents, snapshot.links_external_count)
         else:
@@ -378,7 +397,7 @@ class SiteCrawler:
                 on_page(opened, page)
             except Exception as exc:  # noqa: BLE001 – błąd w haku innego modułu nie przerywa crawlowania
                 page.warnings.append(f"on_page: {type(exc).__name__}: {exc}")
-        return links
+        return links, site
 
 
 def _unique_name(base: str, used: set[str]) -> str:

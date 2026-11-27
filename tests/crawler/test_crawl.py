@@ -28,6 +28,18 @@ def test_strip_tracking(url, expected):
     assert strip_tracking(url) == expected
 
 
+def test_crawl_key_ignores_scheme_www_fragment_and_tracking():
+    pytest.importorskip("playwright")
+    from audytor.crawler.crawl import crawl_key
+
+    same = ["https://www.p.pl/a?id=1", "http://p.pl/a?id=1#x", "HTTPS://P.PL/a?id=1&utm_source=fb",
+            "http://www.p.pl:80/a?id=1"]
+    assert len({crawl_key(u) for u in same}) == 1
+    assert crawl_key("https://p.pl/a?id=1") != crawl_key("https://p.pl/a?id=2")      # inny parametr = inna strona
+    assert crawl_key("https://p.pl/a") != crawl_key("https://bip.p.pl/a")            # poddomena = inna witryna
+    assert crawl_key("https://p.pl:8443/a") != crawl_key("https://p.pl/a")           # inny port = inna witryna
+
+
 class FakeClock:
     def __init__(self):
         self.t = 100.0
@@ -95,6 +107,7 @@ PAGES = {
         "/zewn",                                                                  # 302 -> inny host
         "/pobierz",                                                               # plik do pobrania
         "/brak",                                                                  # 404
+        "HTTPS_A",                    # https:// do a.html – ta sama strona co http:// (podmieniane w serwerze)
     ]),
     "/a.html": _html("A", ["/c.html", "/", "/b.html"]),
     "/b.html": _html("B", ["/d.html"]),
@@ -128,7 +141,9 @@ class _Handler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
         elif path in PAGES:
-            self._send(200, PAGES[path], "text/plain" if path.endswith(".txt") else "text/html")
+            port = self.server.server_address[1]
+            text = PAGES[path].replace("HTTPS_A", f"https://127.0.0.1:{port}/a.html")
+            self._send(200, text, "text/plain" if path.endswith(".txt") else "text/html")
         else:
             self._send(404, _html("Nie znaleziono", ["/d.html"]), "text/html")
 
@@ -207,6 +222,8 @@ def test_full_crawl_of_small_site(site, renderer, tmp_path):
     # deduplikacja: b.html z utm_ i bez to jedna strona, a.html#gora to a.html
     assert sum(1 for p in result.pages if "b.html" in p.url) == 1
     assert sum(1 for p in result.pages if "a.html" in p.url) == 1
+    # https:// do strony znanej z http:// nie jest wczytywany drugi raz (nie zjada limitu stron)
+    assert not [p for p in result.pages if p.url.startswith("https://")]
 
     assert result.blocked_by_robots == [f"{site}/prywatne/x.html"]
     assert result.documents == [f"{site}/pliki/plan.pdf"]
@@ -302,3 +319,20 @@ def test_cli_no_snapshots_requires_crawl():
     proc = subprocess.run([sys.executable, "-m", "audytor.crawler", "https://p.pl/", "--no-snapshots"],
                           capture_output=True, text=True, encoding="utf-8", env=env, timeout=60)
     assert proc.returncode == 2 and "--no-snapshots" in proc.stderr
+
+
+@pytest.mark.browser
+def test_start_page_redirecting_to_other_host_crawls_target_site(site, renderer):
+    # /zewn przekierowuje na http://localhost:PORT/ – inny host (jak gmina.pl -> bip.gmina.pl)
+    from audytor.crawler.crawl import CrawlOptions, SiteCrawler
+
+    result = SiteCrawler(renderer, CrawlOptions(max_depth=1, max_pages=50, delay_s=0, save_snapshots=False)).crawl(
+        site + "/zewn")
+    other = _Handler.other_host
+    assert result.site_url == other + "/"
+    assert result.stop_reason == "kolejka_pusta"
+    assert result.pages[0].status == "ok" and result.pages[0].final_url == other + "/"
+    assert any("przekierowuje na inną witrynę" in w for w in result.pages[0].warnings)
+    urls = result.page_urls()
+    assert len(urls) >= 3 and all(u.startswith(other) for u in urls)
+    assert result.to_dict()["site_url"] == other + "/"

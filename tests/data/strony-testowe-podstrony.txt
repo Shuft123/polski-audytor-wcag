@@ -1,6 +1,8 @@
 # Podstrony do migawek testowych (sprint 2, osoba 1): formularze, galeria, deklaracje dostępności.
 # Format: nazwa folderu migawki, spacja, adres. Odtworzenie jednej migawki (w głównym folderze repozytorium):
 #   python -m audytor.crawler <adres> --name <nazwa> --jpeg --no-mhtml
+# UWAGA: tego pliku NIE da się podać w --urls-file (ta opcja oczekuje samych adresów, po jednym w linii) –
+# migawki odtwarza się pojedynczo, komendą wyżej.
 # Strony główne tych witryn są w strony-testowe.txt.
 
 # formularz wyszukiwania zaawansowanego (18 pól) – etykiety pól, F12

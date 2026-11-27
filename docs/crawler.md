@@ -90,8 +90,11 @@ Wynik: folder `--out`/`<witryna>/` (domyślnie `wyniki/crawl/`, jest w `.gitigno
 **Zasady:**
 - Kolejność **wszerz** (BFS): najpierw strona startowa, potem wszystkie jej linki, potem ich linki itd.
 - **Tylko ta sama witryna:** `www.` bez znaczenia, poddomeny (np. `bip.gmina.pl`) to inne witryny.
-- **Deduplikacja:** adresy bez `#…` i bez parametrów śledzących (`utm_*`, `fbclid`, `gclid`…); po wczytaniu także adres
-  końcowy – dwa linki przekierowujące na tę samą stronę dają jedną stronę.
+- **Deduplikacja:** adresy bez `#…`, bez parametrów śledzących (`utm_*`, `fbclid`, `gclid`…), a `http://`/`https://`
+  i z `www.`/bez `www.` to ta sama strona; po wczytaniu także adres końcowy – dwa linki przekierowujące na tę samą stronę
+  dają jedną stronę.
+- **Strona startowa przekierowuje na inną witrynę** (np. stara domena urzędu -> nowa, `gmina.pl` -> `bip.gmina.pl`):
+  crawlowana jest witryna docelowa (`site_url` w `crawl.json`, ostrzeżenie przy stronie startowej).
 - **robots.txt dla każdej podstrony:** linki zablokowane nie trafiają do kolejki (lista w `crawl.json`), a do
   zablokowanej strony nie jest wysyłane żadne zapytanie. Strona startowa zablokowana = koniec crawlowania.
 - **Limit tempa (F2):** między stronami tej samej witryny `--delay` albo `Crawl-delay`, jeśli większy.
