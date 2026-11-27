@@ -6,7 +6,7 @@ Dokument zawiera ustalony format wymiany danych, dzięki czemu moduł crawlera, 
 Migawka to zapis jednej wyrenderowanej strony (po wykonaniu JavaScriptu). Tworzy ją moduł `audytor.crawler` (osoba 1). Szczegóły użycia: [crawler.md](crawler.md).
 
 ### 1.1. Gdzie
-Migawki testowe leżą w `tests/data/snapshots/<nazwa>/`, jeden folder na stronę. Nazwa folderu powstaje z adresu, np. `https://www.gov.pl/web/zdrowie` -> `gov-pl_web-zdrowie`. Lista stron testowych: `tests/data/strony-testowe.txt`.
+Migawki testowe leżą w `tests/data/snapshots/<nazwa>/`, jeden folder na stronę. Nazwa folderu powstaje z adresu, np. `https://www.gov.pl/web/zdrowie` -> `gov-pl_web-zdrowie`. Lista stron testowych: `tests/data/strony-testowe.txt` (strony główne) i `tests/data/strony-testowe-podstrony.txt` (podstrony, sprint 2).
 
 | Folder | Strona | Typ |
 |---|---|---|
@@ -15,6 +15,13 @@ Migawki testowe leżą w `tests/data/snapshots/<nazwa>/`, jeden folder na stron�
 | `gov-pl` | https://www.gov.pl/ | administracja centralna, dużo JS |
 | `x-kom-pl` | https://www.x-kom.pl/ | sklep, ciężki JS |
 | `wasilkow-pl` | https://www.wasilkow.pl/ | mała gmina |
+| `wasilkow-pl_formularz-wyszukiwania` | wasilkow.pl – wyszukiwanie zaawansowane | formularz (18 pól) – etykiety, F12 |
+| `wasilkow-pl_formularz-logowania` | wasilkow.pl – logowanie | formularz (login, hasło) |
+| `wasilkow-pl_galeria-cerkiew` | wasilkow.pl – artykuł o cerkwi | zdjęcia – ocena altów (F9) |
+| `wasilkow-pl_deklaracja` | wasilkow.pl – deklaracja dostępności | deklaracja (F18) |
+| `pb-edu-pl_deklaracja` | pb.edu.pl – deklaracja dostępności | deklaracja (F18), inny układ |
+
+Na podstronach wasilkow.pl jest baner cookies – witryna ma tylko przycisk „Akceptuję”, więc crawler go nie zamyka (sekcja 1.4).
 
 ### 1.2. Co zawiera folder migawki
 | Plik | Zawartość |
@@ -94,9 +101,45 @@ with Renderer() as renderer:
         migawka = renderer.capture(opened)        # DOM, zrzut, linki z tej samej sesji
 ```
 
-### 1.6. Znane ograniczenia (sprint 1)
+### 1.6. Znane ograniczenia
 - Baner cookies jest rozpoznawany po typowych napisach przycisków i popularnych systemach zgód – na nietypowych stronach może zostać na zrzucie (zawsze z ostrzeżeniem w `warnings`).
-- Zbieramy linki tylko z jednej strony (1 poziom). Pełny crawling witryny: sprint 3 (F1).
+- Crawling wielu podstron (sekcja 1.7) idzie tylko po linkach `<a href>`; nie czyta `sitemap.xml`.
+
+### 1.7. Crawling wielu podstron: `crawl.json` (sprint 2)
+Crawler z opcją `--crawl` (albo `SiteCrawler` z kodu) zapisuje w folderze witryny migawki odwiedzonych stron (format jak wyżej) i plik `crawl.json` – listę stron z wynikiem crawlowania. Instrukcja: [crawler.md](crawler.md).
+
+```json
+{
+  "schema_version": "1.0",
+  "start_url": "https://www.wasilkow.pl/",
+  "started_at": "2026-11-26T18:04:29+00:00",
+  "finished_at": "2026-11-26T18:06:49+00:00",
+  "stop_reason": "limit_stron",
+  "options": {"max_depth": 2, "max_pages": 20, "delay_s": 1.0, "time_budget_s": null,
+              "save_snapshots": true, "follow_error_pages": false},
+  "summary": {"ok": 20, "blad": 0, "pominieta": 0, "nie_odwiedzone": 116,
+              "zablokowane_robots": 0, "dokumenty": 2, "max_glebokosc": 1},
+  "pages": [
+    {"url": "https://www.wasilkow.pl/", "depth": 0, "found_on": null, "status": "ok",
+     "final_url": "https://www.wasilkow.pl/", "http_status": 200, "title": "Strona Główna - Urząd Miejski w Wasilkowie",
+     "snapshot": "wasilkow-pl", "new_links": 132, "render_ms": 14329, "reason": null, "warnings": ["..."]}
+  ],
+  "not_visited": [{"url": "https://www.wasilkow.pl/pl/dla-turystow/", "depth": 1, "reason": "limit stron"}],
+  "blocked_by_robots": [],
+  "documents": ["https://www.wasilkow.pl/..."]
+}
+```
+
+| Pole | Znaczenie |
+|---|---|
+| `stop_reason` | `kolejka_pusta` (odwiedzono wszystko w limicie głębokości), `limit_stron`, `limit_czasu`, `strona_startowa_niedostepna`. |
+| `pages[].status` | `ok` – strona wczytana (także z HTTP ≥ 400 – wtedy jej linków nie śledzimy); `blad` – nie udało się wczytać (timeout, plik zamiast strony); `pominieta` – świadomie pominięta (robots.txt, przekierowanie poza witrynę albo na już odwiedzoną stronę). Powód w `reason`. |
+| `pages[].depth` / `found_on` | Głębokość (0 = strona startowa) i strona, na której znaleziono link. |
+| `pages[].snapshot` | Nazwa folderu migawki w tym samym folderze co `crawl.json` (`null` przy `--no-snapshots` albo gdy strona nie jest `ok`). |
+| `not_visited` | Adresy znalezione, ale nieodwiedzone przez limit stron lub czasu – dalsza część witryny. |
+| `blocked_by_robots`, `documents` | Linki wewnętrzne zablokowane w robots.txt i linki do dokumentów (PDF, DOCX…) z całej przejrzanej części witryny. |
+
+Lista podstron do skanu to strony `ok` z `http_status` < 400 – w kodzie `CrawlResult.page_urls()`.
 
 
 ## 2. Format wyniku audytu (axe-core, AI i heurystyki)

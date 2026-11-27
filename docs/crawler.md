@@ -1,6 +1,6 @@
 # Moduł crawlera (`audytor.crawler`)
 
-Osoba 1, sprint 1. Funkcjonalności: F3 (renderowanie JS, DOM, zrzuty), F2 (robots.txt, tempo zapytań), F1 w wersji okrojonej (linki wewnętrzne z jednej strony).
+Osoba 1, sprinty 1–2. Funkcjonalności: F3 (renderowanie JS, DOM, zrzuty), F2 (robots.txt, tempo zapytań), F1 w wersji okrojonej (linki wewnętrzne z jednej strony).
 Format wyników: [kontrakt-danych.md, sekcja 1](kontrakt-danych.md#1-format-migawki-strony-crawler---reszta).
 
 ## Instalacja (jednorazowo)
@@ -61,6 +61,58 @@ Kod wyjścia: `0` – wszystkie strony zapisane, `1` – co najmniej jedna pomin
 4. Zapisywane są: DOM z dopisanym `<base href>`, zrzut całej strony, opcjonalnie MHTML, oraz `meta.json` z linkami wewnętrznymi (podzielonymi na dozwolone/zablokowane przez robots.txt), linkami do dokumentów i wynikiem obsługi banera.
 5. Błąd jednej strony nie przerywa pozostałych – jest wypisywany, a kod wyjścia to `1`.
 
+Crawling wielu podstron opisuje sekcja [Crawling wielu podstron](#crawling-wielu-podstron-sprint-2-f1-v1--f2).
+
+## Crawling wielu podstron (sprint 2, F1 v1 + F2)
+
+Z opcją `--crawl` crawler przechodzi witrynę od podanej strony po linkach wewnętrznych:
+
+```powershell
+# do 20 podstron, głębokość 2 -> wyniki/crawl/wasilkow-pl/ (folder poza repozytorium)
+python -m audytor.crawler https://www.wasilkow.pl/ --crawl --depth 2 --max-pages 20 --jpeg --no-mhtml
+
+# tylko lista podstron (crawl.json), bez migawek – kilka razy szybciej
+python -m audytor.crawler https://www.wasilkow.pl/ --crawl --max-pages 50 --no-snapshots
+```
+
+| Opcja | Domyślnie | Opis |
+|---|---|---|
+| `--crawl` | wyłączone | przejdź witrynę od podanej strony |
+| `--depth N` | `2` | głębokość: `0` = tylko strona startowa, `1` = + linki z niej, `2` = + linki z tamtych… (maks. 10) |
+| `--max-pages N` | `20` | ile stron najwyżej odwiedzić, łącznie ze startową i nieudanymi (maks. 500) |
+| `--max-time S` | bez limitu | limit czasu crawlowania |
+| `--no-snapshots` | migawki | tylko `crawl.json` z listą podstron |
+| `--delay S` | `1` | pauza między stronami tej samej witryny (albo `Crawl-delay` z robots.txt, jeśli większy) |
+
+Wynik: folder `--out`/`<witryna>/` (domyślnie `wyniki/crawl/`, jest w `.gitignore`) z migawką każdej strony
+(ten sam format co zawsze) i plikiem **`crawl.json`** – format w [kontrakcie danych, sekcja 1.7](kontrakt-danych.md).
+
+**Zasady:**
+- Kolejność **wszerz** (BFS): najpierw strona startowa, potem wszystkie jej linki, potem ich linki itd.
+- **Tylko ta sama witryna:** `www.` bez znaczenia, poddomeny (np. `bip.gmina.pl`) to inne witryny.
+- **Deduplikacja:** adresy bez `#…` i bez parametrów śledzących (`utm_*`, `fbclid`, `gclid`…); po wczytaniu także adres
+  końcowy – dwa linki przekierowujące na tę samą stronę dają jedną stronę.
+- **robots.txt dla każdej podstrony:** linki zablokowane nie trafiają do kolejki (lista w `crawl.json`), a do
+  zablokowanej strony nie jest wysyłane żadne zapytanie. Strona startowa zablokowana = koniec crawlowania.
+- **Limit tempa (F2):** między stronami tej samej witryny `--delay` albo `Crawl-delay`, jeśli większy.
+- **Błąd jednej strony nie przerywa crawlowania** (timeout, plik zamiast strony, przekierowanie poza witrynę).
+  Linków ze stron z kodem HTTP ≥ 400 nie śledzimy.
+- Kod wyjścia: `0` – crawl wykonany (nawet gdy część podstron miała błędy), `1` – strona startowa niedostępna.
+
+**Z kodu** (np. worker w sprincie 3 – lista podstron do skanu, axe w tej samej sesji przeglądarki):
+
+```python
+from audytor.crawler import Renderer, SiteCrawler, CrawlOptions
+
+with Renderer() as renderer:
+    crawler = SiteCrawler(renderer, CrawlOptions(max_depth=2, max_pages=20, save_snapshots=False))
+    wynik = crawler.crawl("https://www.wasilkow.pl/")
+    wynik.page_urls()          # sprawdzone podstrony (HTTP < 400), np. do parametry["podstrony"] skanu
+
+    # albo od razu axe/fokus na każdej stronie, bez ponownego renderowania:
+    crawler.crawl("https://www.wasilkow.pl/", on_page=lambda opened, strona: uruchom_axe(opened.page))
+```
+
 ## Użycie z innych modułów
 
 ```python
@@ -89,6 +141,9 @@ python -m pytest                    # wszystkie testy (ok. 20 s)
 python -m pytest -m "not browser"   # tylko testy bez przeglądarki (np. w CI bez Chromium)
 ```
 
+- `tests/crawler/test_crawl.py` – crawling wielu podstron: limit tempa (zegar podmieniony w teście), parametry śledzące,
+  a w przeglądarce cała lokalna witryna z pułapkami (przekierowania, duplikaty, link poza witrynę, plik do pobrania,
+  strona 404, robots.txt, limity głębokości i liczby stron, `Crawl-delay`, hak `on_page`, tryb `--crawl`).
 - `tests/crawler/test_links.py`, `test_robots.py`, `test_snapshot.py`, `test_cookies.py` – logika bez sieci i bez przeglądarki (m.in. które napisy przycisków są uznawane za „odrzuć”).
 - `tests/crawler/test_render_browser.py` – cały przebieg w prawdziwym Chromium na lokalnym serwerze HTTP (bez internetu): robots.txt, CLI, banery cookies (odrzucenie, baner bez opcji odrzucenia, baner z opóźnieniem, przycisk „Odrzuć” poza banerem). Pomijany automatycznie, gdy Chromium nie jest zainstalowany.
 
@@ -101,9 +156,12 @@ Do CI (osoba 6): przed testami potrzebne `python -m playwright install --with-de
 - **Kod wyjścia `3`** – przeglądarka w ogóle się nie uruchomiła; komunikat podpowiada, co zrobić.
 - **U asystenta AI (np. Claude z Desktop Commanderem) testy przechodzą, a w Twoim terminalu nie** – aplikacja ze Sklepu Microsoft ma prywatną kopię `AppData\Local`, więc przeglądarki zainstalowane z jej poziomu są niewidoczne dla zwykłego terminala. Zainstaluj je we własnym terminalu: `.\.venv\Scripts\python.exe -m playwright install chromium`.
 
-## Znane ograniczenia (sprint 1)
+## Znane ograniczenia
 
 - Baner cookies bez opcji odrzucenia (np. wasilkow.pl – tylko „Akceptuję”) zostaje na zrzucie; nietypowe banery mogą nie zostać rozpoznane. Zawsze jest wtedy ostrzeżenie w `warnings`.
-- Linki zbierane tylko z jednej strony; pełny crawling witryny, kolejka i limity – sprint 3 (F1, F4).
+- Crawling idzie po linkach `<a href>` – nie czyta `sitemap.xml` ani linków tworzonych dopiero po kliknięciu (menu
+  rozwijane JS-em zwykle i tak ma linki w DOM-ie).
+- Każda podstrona to nowa sesja przeglądarki, więc baner cookies jest zamykany na każdej stronie od nowa
+  (około 5–7 s na stronę). Kolejka skanów w tle i ponawianie – sprint 3 (F4).
 - Poddomeny (np. `bip.gmina.pl`) traktowane są jako osobne witryny.
 - Niektóre strony zgłaszają absurdalną wysokość (np. bialystok.pl z otwartym banerem: ponad 33 mln px) – zrzut jest wtedy przycinany do `--max-height`.

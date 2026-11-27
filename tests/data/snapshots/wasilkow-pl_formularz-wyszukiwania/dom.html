@@ -1,0 +1,1073 @@
+<!DOCTYPE html><html lang="pl"><head><base href="https://www.wasilkow.pl/cms/search/advanced">
+    <meta charset="utf-8">
+    <title>Wyszukiwanie zaawansowane</title>    <meta name="generator" content="SmartSite by BIT Sp. z o.o. - https://www.bit-sa.pl [app2-jst]">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">    <link href="/assets/css/jquery-ui.min.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/assets/css/daterangepicker.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/projects/www_wasilkow/css/style.less.css" media="all" rel="stylesheet" type="text/css">        <script src="https://connect.facebook.net/en_US/bundle/sdk.js/" async="" crossorigin="anonymous"></script><script id="facebook-jssdk" src="//connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v2.7"></script><script src="/system/js/jquery-1.11.1.min.js"></script>
+<script src="/assets/js/date-time/moment.min.js"></script>
+<script src="/assets/js/date-time/daterangepicker.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script>
+<script src="/app/js/cms/search/advanced.min.js"></script>
+<script src="/libs/translate-js/dist/translate.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>    <link rel="stylesheet" href="/system/fonts/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/system/css/jquery.cookiebar.min.css" type="text/css">
+    <link rel="stylesheet" href="/projects/www_wasilkow/css/myStyle.css" type="text/css">
+    <link rel="shortcut icon" href="/projects/www_wasilkow/img/favicon.png" type="image/x-icon">
+    <link rel="icon" href="/projects/www_wasilkow/img/favicon.png" type="image/x-icon">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script type='text/javascript' src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+
+<style type="text/css" data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0px;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:lucida grande,tahoma,verdana,arial,sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:400;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}@keyframes fb_transform{0%{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+
+.fb_dialog{background:#525252b3;position:absolute;top:-10000px;z-index:10001}.fb_dialog_advanced{border-radius:8px;padding:10px}.fb_dialog_content{background:#fff;color:#373737}.fb_dialog_close_icon{background:url(https://connect.facebook.net/rsrc.php/v4/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{left:5px;right:auto;top:5px}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://connect.facebook.net/rsrc.php/v4/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent}.fb_dialog_close_icon:active{background:url(https://connect.facebook.net/rsrc.php/v4/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:700;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://connect.facebook.net/rsrc.php/v4/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{height:100%;left:0;margin:0;overflow:visible;position:absolute;top:-10000px;transform:none;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://connect.facebook.net/rsrc.php/v4/ya/r/3rhSv5V8j3o.gif) #fff no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{background:none;height:auto;min-height:initial;min-width:initial;width:auto}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{clear:both;color:#fff;display:block;font-size:18px;padding-top:20px}#fb-root #fb_dialog_ipad_overlay{background:#0006;inset:0;min-height:100%;position:absolute;width:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_mobile .fb_dialog_iframe{position:sticky;top:0}.fb_dialog_content .dialog_header{background:linear-gradient(from(#738aba),to(#2c4987));border-bottom:1px solid;border-color:#043b87;box-shadow:#fff 0 1px 1px -1px inset;color:#fff;font:700 14px Helvetica,sans-serif;text-overflow:ellipsis;text-shadow:rgba(0,30,84,.296875) 0px -1px 0px;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:linear-gradient(from(#4267B2),to(#2a4887));background-clip:padding-box;border:1px solid #29487d;border-radius:3px;display:inline-block;line-height:18px;margin-top:3px;max-width:85px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{background:none;border:none;color:#fff;font:700 12px Helvetica,sans-serif;margin:2px -12px;padding:2px 6px 3px;text-shadow:rgba(0,30,84,.296875) 0px -1px 0px}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:700;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://connect.facebook.net/rsrc.php/v4/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #4A4A4A;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f5f6f7;border:1px solid #4A4A4A;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://connect.facebook.net/rsrc.php/v4/y2/r/onuUJj0tCqE.png);background-position:50% 50%;background-repeat:no-repeat;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}
+</style></head>
+<body class="project_cms-wasilkow theme_www_wasilkow tmpl_action"><div id="cookie-bar" class="fixed bottom hidden-print"><p>Informujemy, iż w celu optymalizacji treści dostępnych w naszym serwisie i dostosowania ich do Państwa indywidualnych potrzeb korzystamy z informacji zapisanych za pomocą plików cookies na urządzeniach końcowych użytkowników. Pliki cookies użytkownik może kontrolować za pomocą ustawień swojej przeglądarki internetowej. Dalsze korzystanie z naszego serwisu internetowego bez zmiany ustawień przeglądarki internetowej oznacza, iż użytkownik akceptuje stosowanie plików cookies.</p><div class="btnSection"><a href="" class="cb-enable">Akceptuję</a><a href="http://bip.umwp.wrotapodlasia.pl/wojewodztwo/polityka_prywatnoci_1/polityka_plikw_cookies/polityka-plikow-cookies.html" class="cb-policy">Polityka prywatności</a></div></div>
+
+<div id="wrapper">
+    <link rel="icon" type="image/png" href="icon.png">
+
+<div id="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="top-row clearfix">
+                    <div class="col-xs-12">
+                        <div class="row side-row col-static component-toolbar">
+    <div class="col-sm-12 col-static">
+        <div class="panel-logowania align-right">
+            <div class="btn-group hidden-xs">
+                                                                <a href="/surfer/index/login" class="btn btn-default btn-meta font-fluid" style="font-size: 1em; line-height: 2.08333em;">Logowanie</a>
+                            <a href="/surfer/index/register" class="btn btn-default btn-meta font-fluid" style="font-size: 1em; line-height: 2.08333em;">Załóż konto</a>
+                                                        <button type="button" class="btn btn-default btn-meta btn-contrast" title="Przełącz pomiędzy widokiem o wysokim i normalnym kontraście">
+                    <span class="fa fa-adjust"></span>
+                    <span class="sr-only">Przełącz pomiędzy widokiem o wysokim i normalnym kontraście</span>
+                </button>
+                <button id="fontSmall" type="button" class="btn btn-default btn-meta" title="Zmniejsz czcionkę">
+                    <span class="fa fa-font fa-font-small"></span>
+                    <span class="sr-only">Zmniejsz czcionkę</span>
+                </button>
+                <button id="fontReset" type="button" class="btn btn-default btn-meta" title="Domyślny rozmiar czcionki">
+                    <span class="fa fa-font fa-font-medium"></span>
+                    <span class="sr-only">Domyślny rozmiar czcionki</span>
+                </button>
+                <button id="fontLarge" type="button" class="btn btn-default btn-meta" title="Zwiększ czcionkę">
+                    <span class="fa fa-font fa-font-large"></span>
+                    <span class="sr-only">Zwiększ czcionkę</span>
+                </button>
+                <script type="text/javascript" src="/system/js/jquery.creaseFont.js"></script>
+                <script type="text/javascript">
+                jQuery(document).ready(function(){
+                    $.creaseFont({
+                        content     :  ["p", 'h1', 'h2', 'h3', 'h4', "td", "th", 'li', '.header-search div', '.panel-logowania a', '.component-dynamic-menu .component-item li a', 'a.more-link', '.component-copyright', '.component-bottom-menu .component-content li a', '.component-item-title', '.footer-content', '.component-head-link', '.component-content button'],
+                        defaultSize :  100,
+                        maxSize     :  200,
+                        minSize     :  80,
+                        stepSize    :  20,
+                        unit        :  '%',
+                        animate     :  false,
+                        animateSpeed:  400,
+                        cookieName  :  'creaseFont',
+                        cookiePath  :  '/',
+                        cookieLifetime: 60
+                    });
+                });
+                </script>
+            </div>
+            <form class="navbar-form search" method="get" action="/cms/search">
+                <div class="input-group input-group-search">
+                    <label for="srch-term"></label>
+                    <input type="text" class="form-control form-control-search icon-keyboard" placeholder="Szukaj..." name="q" id="srch-term" value="" style="">
+                    <div class="input-group-btn input-group-btn-search">
+                        <button type="submit" class="btn btn-search" title="Szukaj">
+                            <span class="fa fa-search"></span>
+                            <span class="sr-only">Szukaj</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="hidden-xs search-advance text-right"><a href="/cms/search/advanced">Wyszukiwanie zaawansowane</a></div>
+            </form>
+            <button class="btn btn-mobile-show" title="Szukaj">
+                <span class="fa fa-search"></span>
+                <span class="sr-only">Szukaj</span>
+            </button>
+            <div class="btn-group btn-group-language">
+                            </div>
+        </div>
+    </div>
+</div>
+<!-- required scripts -->
+<script type="text/javascript" src="/system/js/component-toolbar.js"></script>
+                        <div class="row side-row">
+                            <div class="logo">
+                                <div class="middle-col">
+                                    <a href="/">
+                                        	<img class="main-logo img-responsive" style="width:265px;" src="/projects/www_wasilkow/img/logo451.png" alt="Gmina Wasilków - strona główna" title="Gmina Wasilków - strona główna">
+						
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="main-lead col-static">
+                                <div class="middle-col">
+                                    <span></span>
+									<p class="lead" style="font-size: 30px; font-family:calibri">Miasto i Gmina Wasilków</p>									
+                                </div>
+                            </div>
+                            <div class="header-secondary-menu col-static ">
+                                
+<div class="component-secondary-menu">
+    <div class="middle-col">
+        <span></span>
+        <ul class="list-inline">
+			
+            <li>
+                <a target="_blank" href="http://bip.wasilkow.pl/" title="Przejdź do strony Biuletynu Informacji Publicznej" class="btn header-secondary-menu3">
+                    <img src="/projects/wp/img/header-secondary-menu3.png" alt="Biuletyn Informacji Publicznej">
+                </a>
+            </li>
+			<li>
+				
+			</li>
+        </ul>
+    </div>
+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="topMenuContainer">
+                                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="flash">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="flash-message">
+                                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="top-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 top-column">
+                <div class="row droppable ui-sortable"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="main-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 main-col main-column col-100">
+                <div class="row droppable ui-sortable" id="fluid-box" style="position: relative; height: 0px;">
+                    <div class="grid-sizer"></div>
+                <div class="component component-accepted" data-id="da9cf21f-3f28-11e4-b1ef-000c2908767d" data-is-editable="0" data-name="Cms_Module">
+<div class="component component-search-advanced">
+    <div class="component-wrapper">
+        <div class="component-head">
+            <h1>Wyszukiwanie zaawansowane</h1>
+        </div>
+        <div class="component-content">
+            <div class="search-form">
+                <form method="get" name="advanced-search-form" class="form-horizontal" role="form" action="/cms/search/advanced" id="advanced-search-form">                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-srchTerm">
+                        Wyszukiwana fraza:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="srchTerm" class="form-control" placeholder="Wyszukiwana fraza" id="form-field-srchTerm" value="" style="">                    </div>
+                </div>
+                <!-- typ strony -->
+                <div id="content-type" class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-content-type">
+                        Typ strony:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <select name="content-type" class="form-control" id="form-field-content-type"><option value="">--- Wybierz ---</option>
+<option value="114">Ogłoszenie</option>
+<option value="206">strona</option>
+<option value="154">Strona Domowa Instytucji</option>
+<option value="240">Strona Przekierowania</option>
+<option value="1">Zwykła Strona</option></select>                    </div>
+                </div>
+                <!-- autor -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-author">
+                        Autor:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="author" class="form-control" placeholder="Autor" id="form-field-author" value="" style="">                    </div>
+                </div>
+                <!-- kategoria -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-tags">
+                        Kategoria:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="tags" class="form-control" placeholder="Kategorie" id="form-field-tags" value="" style="">                    </div>
+                </div>
+                <!-- bip only -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-bip-only">
+                        Tylko strony BIP:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <div class="checkbox">
+                            <input type="hidden" name="bipOnly" value="0" style=""><input type="checkbox" name="bipOnly" id="form-field-bip-only" class="" value="1" style=""><span class="lbl"></span>                        </div>
+                    </div>
+                </div>
+                <!-- zmiany -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-changes">
+                        Rejestr zmian:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="changes" class="form-control" placeholder="Rejestr zmian" id="form-field-changes" value="" style="">                    </div>
+                </div>
+                <!-- zmiany -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-section">
+                        Sekcja:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="section" class="form-control ui-autocomplete-input" placeholder="Sekcja" id="form-field-section" value="" autocomplete="off" style="">                    </div>
+                </div>
+                <!-- data -->
+                <div id="date-publish" class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-date-publish">
+                        Data publikacji:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="date-publish" class="form-control date-range" id="form-field-date-publish" value="" style="">                        <input type="hidden" name="date-publish-from" value="" style="">                        <input type="hidden" name="date-publish-to" value="" style="">                    </div>
+                </div>
+
+                <div id="date-create" class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-date-create">
+                        Data utworzenia:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="date-create" class="form-control date-range" id="form-field-date-create" value="" style="">                        <input type="hidden" name="date-create-from" value="" style="">                        <input type="hidden" name="date-create-to" value="" style="">                    </div>
+                </div>
+
+                <div id="date-modify" class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-date-modify">
+                        Data modyfikacji:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="date-modify" class="form-control date-range" id="form-field-date-modify" value="" style="">                        <input type="hidden" name="date-modify-from" value="" style="">                        <input type="hidden" name="date-modify-to" value="" style="">                    </div>
+                </div>
+
+                <div id="date-workout" class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-date-workout">
+                        Data wytworzenia:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="date-workout" class="form-control date-range" id="form-field-date-workout" value="" style="">                        <input type="hidden" name="date-workout-from" value="" style="">                        <input type="hidden" name="date-workout-to" value="" style="">                    </div>
+                </div>
+
+                <div id="date-event" class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-date-event">
+                        Data wydarzenia:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="date-event" class="form-control date-range" id="form-field-date-event" value="" style="">                        <input type="hidden" name="date-event-from" value="" style="">                        <input type="hidden" name="date-event-to" value="" style="">                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-institution">
+                        Jednostka:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <select name="institution" class="form-control" id="form-field-institution"><option value="">--- Wybierz ---</option>
+<option value="https://bip-umlipsk.podlaskie.eu">Urząd Miejski w Lipsku</option>
+<option value="https://bip-ugbransk.podlaskie.eu">Urząd Gminy Brańsk</option>
+<option value="https://bip.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-spspzozs.podlaskie.eu">Specjalistyczny Psychiatryczny Samodzielny Publiczny  Zakład Opieki Zdrowotnej  w Suwałkach</option>
+<option value="https://bip-fb.podlaskie.eu">Opera i Filharmonia Podlaska - Europejskie Centrum Sztuki w BIałymstoku imienia Stanisława Moniuszki</option>
+<option value="https://bip-ugsztabin.podlaskie.eu">Samorząd Gminy Sztabin</option>
+<option value="https://bip.juchnowiec.gmina.pl">Urząd Gminy Juchnowiec Kościelny</option>
+<option value="https://bip-stsejny.podlaskie.eu">Samorząd Powiatu Sejneńskiego</option>
+<option value="https://bip-ugczyze.podlaskie.eu">Samorząd Gminy Czyże</option>
+<option value="https://bip-umgoniadz.podlaskie.eu">Urząd Miejski w Goniądzu</option>
+<option value="https://bip-ugaugustow.wrotapodlasia.pl">Urząd Gminy Augustów</option>
+<option value="https://bip-wup.podlaskie.eu">Wojewódzki Urząd Pracy w Białymstoku</option>
+<option value="https://bip-ugkorycin.podlaskie.eu">Samorząd Gminy Korycin</option>
+<option value="https://bip-ugmielnik.podlaskie.eu">Urząd Gminy Mielnik</option>
+<option value="https://bip-umknyszyn.podlaskie.eu">Urząd Miasta Knyszyn</option>
+<option value="https://bip-umlapy.podlaskie.eu">Urząd Miejski w Łapach</option>
+<option value="https://bip-stkolno.podlaskie.eu">Samorząd Powiatu Kolneńskiego</option>
+<option value="https://bip-umbielsk.podlaskie.eu">Urząd Miasta Bielsk Podlaski</option>
+<option value="https://bip-stbielsk.podlaskie.eu">Samorząd Powiatu Bielskiego</option>
+<option value="https://bip-ugnarewka.podlaskie.eu">Gmina Narewka</option>
+<option value="https://bip-ugdziadkowice.podlaskie.eu">Urząd Gminy Dziadkowice</option>
+<option value="https://bip-umkleszczele.podlaskie.eu">Urząd Miejski w Kleszczelach</option>
+<option value="https://bip-ugsuwalki.podlaskie.eu">Samorząd Gminy Suwałki</option>
+<option value="https://bip-ugsiemiatycze.podlaskie.eu">Urząd Gminy Siemiatycze</option>
+<option value="https://bip-umtykocin.podlaskie.eu">Samorząd Miasta i Gminy Tykocin</option>
+<option value="https://bip-stbialystok.podlaskie.eu">Starostwo Powiatowe w Białymstoku</option>
+<option value="https://bip-staugustow.podlaskie.eu">Samorząd Powiatu Augustowskiego</option>
+<option value="https://bip-ugdobrzyniewoduze.podlaskie.eu">Gmina Dobrzyniewo Duże</option>
+<option value="https://bip-sthajnowka.podlaskie.eu">Samorząd Powiatu Hajnowskiego</option>
+<option value="https://ug-giby.podlaskie.eu">Urząd Gminy Giby</option>
+<option value="https://bip-umdrohiczyn.podlaskie.eu">Urząd Miejski w Drohiczynie</option>
+<option value="https://bip-rops.podlaskie.eu">Regionalny Ośrodek Polityki Społecznej  w Białymstoku</option>
+<option value="https://bip-ughajnowka.podlaskie.eu">Urząd Gminy Hajnówka</option>
+<option value="https://bip-stmonki.podlaskie.eu">Starostwo Powiatowe w Mońkach</option>
+<option value="https://bip-umciechanowiec.podlaskie.eu">Urząd Miejski w Ciechanowcu</option>
+<option value="https://bip-kp.podlaskie.eu">Książnica Podlaska im. Łukasza Górnickiego w Białymstoku</option>
+<option value="https://bip-stwysmaz.podlaskie.eu">Starostwo Powiatowe w Wysokiem Mazowieckiem</option>
+<option value="https://bip-spzozors.podlaskie.eu">Samodzielny Publiczny ZOZ Ośrodek Rehabilitacji w Suwałkach</option>
+<option value="https://bip.wrotapodlasia1.pl">UMWP</option>
+<option value="https://bip-sp1oz.podlaskie.eu">Centrum Zawodów Medycznych i Społecznych - Szkoła Policealna Województwa Podlaskiego w Białymstoku</option>
+<option value="https://bip-umkolno.podlaskie.eu">Urząd Miasta Kolno</option>
+<option value="https://radny.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-bco.podlaskie.eu">Białostockie Centrum Onkologii im. Marii Skłodowskiej-Curie w Białymstoku</option>
+<option value="https://bip-cenb.podlaskie.eu">Centrum Edukacji Nauczycieli w Białymstoku</option>
+<option value="https://bip-cens.podlaskie.eu">Centrum Edukacji Nauczycieli w Suwałkach</option>
+<option value="https://bip-mpb.podlaskie.eu">Muzeum Podlaskie w Białymstoku</option>
+<option value="https://bip-mrkkkc.podlaskie.eu">Muzeum Rolnictwa im. Ks. K. Kluka w Ciechanowcu</option>
+<option value="https://bip-opskns.podlaskie.eu">Ośrodek "Pogranicze – sztuk, kultur, narodów" w Sejnach</option>
+<option value="https://bip-cenl.podlaskie.eu">Centrum Edukacji Nauczycieli w Łomży</option>
+<option value="https://bip-pwomp.podlaskie.eu">Podlaski Wojewódzki Ośrodek Medycyny Pracy w Białymstoku</option>
+<option value="https://bip-pzdw.podlaskie.eu">Podlaski Zarząd Dróg Wojewódzkich w Białymstoku</option>
+<option value="https://bip-pbppb.podlaskie.eu">Podlaskie Biuro Planowania Przestrzennego w Białymstoku</option>
+<option value="https://bip-pcprh-sthajnowka.podlaskie.eu">Powiatowe Centrum Pomocy Rodzinie w Hajnówce</option>
+<option value="https://bip-sppzozc.podlaskie.eu">Samodzielny Publiczny Psychiatryczny ZOZ w Choroszczy</option>
+<option value="https://bip-spsws.podlaskie.eu">Szpital Wojewódzki im. dr. L. Rydygiera w Suwałkach</option>
+<option value="https://bip-spzops.podlaskie.eu">SP Zespół Opieki Paliatywnej w Suwałkach</option>
+<option value="https://bip-spzozwspr.podlaskie.eu">SP ZOZ Wojewódzka Stacja Pogotowia Ratunkowego w Białymstoku</option>
+<option value="https://bip-spzozwszjs.podlaskie.eu">SP ZOZ Wojewódzki Szpital Zespolony im. Jędrzeja Śniadeckiego w Białymstoku</option>
+<option value="https://bip-stsiemiatycze.podlaskie.eu">Starostwo Powiatowe w Siemiatyczach</option>
+<option value="https://bip-swkswl.podlaskie.eu">Szpital Wojewódzki im. Kard. St. Wyszyńskiego w Łomży</option>
+<option value="https://bip-tdawb.podlaskie.eu">Teatr Dramatyczny im. Aleksandra  Węgierki w Białymstoku</option>
+<option value="https://bip-tw.podlaskie.eu">Teatr Wierszalin</option>
+<option value="https://bip-ugbarglow.podlaskie.eu">Urząd Gminy Bargłów Kościelny</option>
+<option value="https://bip-ugbocki.podlaskie.eu">Urząd Gminy Boćki</option>
+<option value="https://bip-ugdubicze.podlaskie.eu">Urząd Gminy Dubicze Cerkiewne</option>
+<option value="https://bip-ugkolaki.podlaskie.eu">Gmina Kołaki Kościelne</option>
+<option value="https://pwomp.podlaskie.eu">Podlaski Wojewódzki Ośrodek Medycyny Pracy w Białymstoku</option>
+<option value="https://bip-ugkrypno.podlaskie.eu">Urząd Gminy Krypno</option>
+<option value="https://bip-ugnarew.podlaskie.eu">Urząd Gminy Narew</option>
+<option value="https://bip-ugnowinka.podlaskie.eu">Urząd Gminy Nowinka</option>
+<option value="https://bip-ugnurzec.podlaskie.eu">Urząd Gminy Nurzec-Stacja</option>
+<option value="https://bip-ugperlejewo.podlaskie.eu">Urząd Gminy Perlejewo</option>
+<option value="https://bip-ugplaska.podlaskie.eu">Urząd Gminy Płaska</option>
+<option value="https://bip-ugposwietne.podlaskie.eu">Urząd Gminy Poświętne</option>
+<option value="https://bip-ugrudka.podlaskie.eu">Urząd Gminy Rudka</option>
+<option value="https://bip-ugrutkatartak.podlaskie.eu">Urząd Gminy Rutka-Tartak</option>
+<option value="https://bip-ugtrzcianne.podlaskie.eu">Urząd Gminy Trzcianne</option>
+<option value="https://bip.um.augustow.pl">Urząd Miejski  w Augustowie</option>
+<option value="https://bip-umsokolka.podlaskie.eu">Urząd Miejski w Sokółce</option>
+<option value="https://bip-umsuraz.podlaskie.eu">Urząd Miasta Suraż</option>
+<option value="https://bip-umwysokiemaz.podlaskie.eu">Urząd Miasta Wysokie Mazowieckie</option>
+<option value="https://bip-wsprspzozl.podlaskie.eu">Wojewódzka Stacja Pogotowia Ratunkowego SP ZOZ w Łomży</option>
+<option value="https://bip-wsprspzozs.podlaskie.eu">Wojewódzka Stacja Pogotowia Ratunkowego SP ZOZ w Suwałkach</option>
+<option value="https://bip-pik.podlaskie.eu">Podlaski Instytut Kultury w Białymstoku</option>
+<option value="https://bip-woptul.podlaskie.eu">Wojewódzki Ośrodek Profilaktyki i Terapii Uzależnień w Łomży</option>
+<option value="https://bip-wordb.podlaskie.eu">Wojewódzki Ośrodek Ruchu Drogowego w Białymstoku</option>
+<option value="https://bip-words.podlaskie.eu">Wojewódzki Ośrodek Ruchu Drogowego w Suwałkach</option>
+<option value="https://bip-zoes-ugaugustow.podlaskie.eu">Zespół Obsługi Ekonomicznej Szkół Gminy Augustów</option>
+<option value="https://bip-ugturosn.podlaskie.eu">Urząd Gminy Turośń Kościelna</option>
+<option value="https://bip-ugzawady.podlaskie.eu">Urząd Gminy Zawady</option>
+<option value="https://bip-ugradzilow.podlaskie.eu">Gmina Radziłów</option>
+<option value="https://biptest.wrotapodlasia.pl">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-spwn-ugnarewka.podlaskie.eu">Szkoła Podstawowa w Narewce</option>
+<option value="https://bip-ugmichalowo.podlaskie.eu">Urząd Miejski w Michałowie</option>
+<option value="https://bip-umsuchowola.podlaskie.eu">Urząd Miejski w Suchowoli</option>
+<option value="https://bip-wosir.podlaskie.eu">Wojewódzki Ośrodek Sportu i Rekreacji Szelment</option>
+<option value="https://bip.um.grajewo.pl">Miasto Grajewo</option>
+<option value="https://szkoleniait.wrotapodlasia1.pl">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-ugkolno.podlaskie.eu">Urząd Gminy Kolno</option>
+<option value="https://bip-stgrajewo.podlaskie.eu">Starostwo Powiatowe w Grajewie</option>
+<option value="https://stgrajewo.podlaskie.eu">Starostwo Powiatowe w Grajewie</option>
+<option value="https://bip-wbg.podlaskie.eu">Wojewódzkie Biuro Geodezji w Białymstoku</option>
+<option value="https://bip-umrajgrod.podlaskie.eu">Urząd Miejski w Rajgrodzie</option>
+<option value="https://tv.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-spk.podlaskie.eu">Suwalski Park Krajobrazowy</option>
+<option value="https://bip-pkpk.podlaskie.eu">Park Krajobrazowy Puszczy Knyszyńskiej</option>
+<option value="https://bip-lpkdn.podlaskie.eu">Łomżyński Park Krajobrazowy Doliny Narwi</option>
+<option value="https://siold.wrotapodlasia1.pl">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://pkpk.podlaskie.eu">Park Krajobrazowy Puszczy Knyszyńskiej</option>
+<option value="https://wbg.podlaskie.eu">Wojewódzkie Biuro Geodezji w Białymstoku</option>
+<option value="https://epodlaskie.wrotapodlasia1.pl">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-uggrodzisk.podlaskie.eu">Urząd Gminy Grodzisk</option>
+<option value="https://lpkdn.podlaskie.eu">Łomżyński Park Krajobrazowy Doliny Narwi</option>
+<option value="https://bip-ugjanow.podlaskie.eu">Urząd Gminy Janów</option>
+<option value="https://bip-ugklukowo.podlaskie.eu">Urząd Gminy Klukowo</option>
+<option value="https://bip-ugszudzialowo.podlaskie.eu">Urząd Gminy Szudziałowo</option>
+<option value="https://bip-ugmalyplock.podlaskie.eu">Urząd Gminy Mały Płock</option>
+<option value="https://bip-ugbielsk.podlaskie.eu">Gmina Bielsk Podlaski</option>
+<option value="https://www.si.wrotapodlasia.pl">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-ugmilejczyce.podlaskie.eu">Urząd Gminy Milejczyce</option>
+<option value="https://bip-ugjaswily.podlaskie.eu">Urząd Gminy Jaświły</option>
+<option value="https://strategia.podlaskie.eu">Departament Rozwoju Regionalnego - DRR</option>
+<option value="https://bip-ummonki.podlaskie.eu">Gmina Mońki</option>
+<option value="https://bip-ugsejny.podlaskie.eu">Urząd Gminy Sejny</option>
+<option value="https://bip-uggiby.podlaskie.eu">Urząd Gminy Giby</option>
+<option value="https://bip-uggrajewo.podlaskie.eu">Urząd Gminy Grajewo</option>
+<option value="https://bip-umsiemiatycze.podlaskie.eu">Miasto Siemiatycze</option>
+<option value="https://rot.podlaskie.eu">Regionalne Obserwatorium Terytorialne</option>
+<option value="https://samorzad.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip.wasilkow.pl">Urząd Miejski w Wasilkowie</option>
+<option value="https://umzabludow.podlaskie.eu">URZĄD MIEJSKI W ZABŁUDOWIE</option>
+<option value="https://poryby.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://crtd.zend.localhost">Podlaska Platforma Edukacyjna</option>
+<option value="https://prow.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-gok-ugturosn.podlaskie.eu">Gminny Ośrodek Kultury w Turośni Kościelnej</option>
+<option value="https://bip-gops-ugturosn.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Turośni Kościelnej</option>
+<option value="https://bip-zs-ugturosn.podlaskie.eu">Zespół Szkół w Turośni Kościelnej</option>
+<option value="https://bip-spd-ugturosn.podlaskie.eu">Szkoła Podstawowa w Turośni Dolnej</option>
+<option value="https://bip-spt-ugturosn.podlaskie.eu">Szkoła Podstawowa w Tołczach</option>
+<option value="https://bip-gops-ughajnowka.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Hajnówce</option>
+<option value="https://gops-ughajnowka.wrotapodlasia.pl">Gminny Ośrodek Pomocy Społecznej w Hajnówce</option>
+<option value="https://bip-gopsnarewka.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Narewce</option>
+<option value="https://ugnarewka.podlaskie.eu">Gmina Narewka</option>
+<option value="https://bip-pm-umkolno.podlaskie.eu">Przedszkole Miejskie nr 4 w Kolnie</option>
+<option value="https://bip-sp1-umkolno.podlaskie.eu">Szkoła Podstawowa nr 1 im. Tadeusza Kościuszki w Kolnie</option>
+<option value="https://bip-sp2-umkolno.podlaskie.eu">SZKOŁA PODSTAWOWA NR 2 IM. HENRYKA SIENKIEWICZA W KOLNIE</option>
+<option value="https://bip-mops-umkolno.podlaskie.eu">MIEJSKI OŚRODEK POMOCY SPOŁECZNEJ W KOLNIE</option>
+<option value="https://bip-mbp-umkolno.podlaskie.eu">Miejska Biblioteka Publiczna w Kolnie</option>
+<option value="https://bip-kokis-umkolno.podlaskie.eu">Kolneński Ośrodek Kultury i Sportu w Kolnie</option>
+<option value="https://bip-gops-ugposwietne.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Poświętnem</option>
+<option value="https://ugposwietne.podlaskie.eu">Urząd Gminy Poświętne</option>
+<option value="https://biblioteka-ugposwietne.podlaskie.eu">Gminna Biblioteka Publiczna w Poświętnem</option>
+<option value="https://zs-ugposwietne.podlaskie.eu">Zespół Szkół w Poświętnem</option>
+<option value="https://bip-ugwizna.podlaskie.eu">Urząd Gminy Wizna</option>
+<option value="https://ugwizna.podlaskie.eu">Urząd Gminy Wizna</option>
+<option value="https://bip-mok-ummonki.podlaskie.eu">Moniecki Ośrodek Kultury</option>
+<option value="https://bip-mops-ummonki.podlaskie.eu">Miejski Ośrodek Pomocy Społecznej w Mońkach</option>
+<option value="https://bip-zgkim-ummonki.podlaskie.eu">Zakład Gospodarki Komunalnej i Mieszkaniowej w Mońkach sp. z o.o.</option>
+<option value="https://bip-bp-ummonki.podlaskie.eu">Biblioteka Publiczna w Mońkach</option>
+<option value="https://bip-przedszkole-ummonki.podlaskie.eu">Przedszkole w Mońkach</option>
+<option value="https://bip-zs-ummonki.podlaskie.eu">Zespół Szkół w Mońkach </option>
+<option value="https://bip-pec-ummonki.podlaskie.eu">Przedsiębiorstwo Energetyki Cieplnej w Mońkach Sp. z o.o.</option>
+<option value="https://bip-umsejny.podlaskie.eu">Urząd Miasta Sejny</option>
+<option value="https://bip-gops.janow.com.pl">Gminny Ośrodek Pomocy Społecznej w Janowie</option>
+<option value="https://bip-ugsokoly.podlaskie.eu">Gmina Sokoły</option>
+<option value="https://bip-ops-ugsokoly.podlaskie.eu">Ośrodek Pomocy Społecznej w Sokołach</option>
+<option value="https://bip-sp-ugsokoly.podlaskie.eu">Szkoła Podstawowa w Sokołach</option>
+<option value="https://ugsokoly.podlaskie.eu">Gmina Sokoły</option>
+<option value="https://ops-ugsokoly.podlaskie.eu">Ośrodek Pomocy Społecznej w Sokołach</option>
+<option value="https://www.szkolasokoly.edupage.org">Szkoła Podstawowa w Sokołach</option>
+<option value="https://bip-ugsidra.podlaskie.eu">Urząd Gminy Sidra</option>
+<option value="https://ugsidra.podlaskie.eu">Urząd Gminy Sidra</option>
+<option value="https://bip-zgm-umwysokiemaz.podlaskie.eu">Zakład Gospodarki Mieszkaniowej w Wysokiem Mazowieckiem</option>
+<option value="https://bip-sp1-umwysokiemaz.podlaskie.eu">Szkoła Podstawowa Nr 1 w Wysokiem Mazowieckiem</option>
+<option value="https://bip-mzs-umwysokiemaz.podlaskie.eu">Miejski Zespół Szkół w Wysokiem Mazowieckiem</option>
+<option value="https://bip-mops-umwysokiemaz.podlaskie.eu">Miejski Ośrodek Pomocy Społecznej w Wysokiem Mazowieckiem</option>
+<option value="https://bip-pm1-umwysokiemaz.podlaskie.eu">Przedszkole Miejskie Nr 1 "Świat Malucha" w Wysokiem Mazowieckiem</option>
+<option value="https://bip-pm2-umwysokiemaz.podlaskie.eu">Przedszkole Miejskie Nr 2 w Wysokiem Mazowieckiem</option>
+<option value="https://bip-mok-umwysokiemaz.podlaskie.eu">Miejski Ośrodek Kultury w Wysokiem Mazowieckiem</option>
+<option value="https://bip.zsp4.augustow.eu">Zespół Szkolno-Przedszkolny Nr 4 w Augustowie</option>
+<option value="https://zsp4.augustow.eu">Zespół Szkolno-Przedszkolny Nr 4 w Augustowie</option>
+<option value="https://bip.zsp3.augustow.eu">Zespół Szkolno-Przedszkolny Nr 3 w Augustowie</option>
+<option value="https://bip.zsp2.augustow.eu">Zespół Szkolno-Przedszkolny Nr 2 w Augustowie</option>
+<option value="https://bip.sds.augustow.eu">Środowiskowy Dom Samopomocy w Augustowie</option>
+<option value="https://bip.zsp1.augustow.eu">Zespół Szkolno-Przedszkolny Nr 1 w Augustowie</option>
+<option value="https://zsp1.augustow.eu">Zespół Szkolno-Przedszkolny Nr 1 w Augustowie</option>
+<option value="https://bip.p4.augustow.eu">Przedszkole nr 4 w Augustowie</option>
+<option value="https://bip.zlobek.augustow.eu">Żłobek nr 1 w Augustowie</option>
+<option value="https://bip.mops.augustow.eu">Miejski Ośrodek Pomocy Społecznej w Augustowie</option>
+<option value="https://bip.apk.augustow.eu">Augustowskie Placówki Kultury</option>
+<option value="https://bip.csir.augustow.eu">Centrum Sportu i Rekreacji</option>
+<option value="https://bip-bp-ugplaska.podlaskie.eu">Gminna Biblioteka Publiczna w Płaskiej</option>
+<option value="https://bip-gok-ugplaska.podlaskie.eu">Gminny Ośrodek Kultury w Płaskiej</option>
+<option value="https://bip-gops-ugplaska.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Płaskiej</option>
+<option value="https://bip-umzabludow.podlaskie.eu">URZĄD MIEJSKI W ZABŁUDOWIE</option>
+<option value="https://bip-umbransk.podlaskie.eu">Miasto Brańsk</option>
+<option value="https://bip-mops-umbransk.podlaskie.eu">Miejski Ośrodek Pomocy Społecznej w Brańsku</option>
+<option value="https://bip-dpsmociesze-stmonki.podlaskie.eu">Dom Pomocy Społecznej "Dom Kombatanta" w Mocieszach</option>
+<option value="https://bip-dps-stmonki.podlaskie.eu">Dom Pomocy Społecznej w Mońkach</option>
+<option value="https://bip-plywalnia-stmonki.podlaskie.eu">Pływalnia Powiatowa w Mońkach</option>
+<option value="https://bip-pcpr-stmonki.podlaskie.eu">Powiatowe Centrum Pomocy Rodzinie w Mońkach</option>
+<option value="https://bip-ppp-stmonki.podlaskie.eu">Poradnia Psychologiczno-Pedagogiczna w Mońkach</option>
+<option value="https://bip-pssb-umbransk.podlaskie.eu">Przedszkole im. Sióstr Sercanek</option>
+<option value="https://bip-mok-umbransk.podlaskie.eu">Miejski Ośrodek Kultury w Brańsku</option>
+<option value="https://bip-zs-umbransk.podlaskie.eu">Zespół Szkół im. Armii Krajowej w Brańsku</option>
+<option value="https://bip-mbp-umbransk.podlaskie.eu">Miejska Biblioteka Publiczna w Brańsku</option>
+<option value="https://bip-um.szczuczyn.pl">Gmina Szczuczyn</option>
+<option value="https://bip-ops.szczuczyn.pl">Ośrodek Pomocy Społecznej w Szczuczynie</option>
+<option value="https://bip-zszp.szczuczyn.pl">Zespół Szkolno - Przedszkolny w Szczuczynie</option>
+<option value="https://bip-spn.szczuczyn.pl">Szkoła Podstawowa w Niedźwiadnej</option>
+<option value="https://bip-bck.szczuczyn.pl">Biblioteka Miejska w Szczuczynie</option>
+<option value="https://bip-gops-ugnarew.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Narwi</option>
+<option value="https://bip-gbp-ugnarew.podlaskie.eu">Gminna Biblioteka Publiczna w Narwi</option>
+<option value="https://bip-zsp-ugnarew.podlaskie.eu">Zespół Szkolno-Przedszkolny w Narwi</option>
+<option value="https://bip-ops-ugturosl.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Turośli</option>
+<option value="https://bip-zosg-ugturosl.podlaskie.eu">Zespół Obsługi Szkół Gminy Turośl</option>
+<option value="https://bip-bp-ugturosl.podlaskie.eu">Biblioteka Publiczna Gminy Turośl</option>
+<option value="https://ugjaswily.podlaskie.eu">Urząd Gminy Jaświły</option>
+<option value="https://bip-dps-stgrajewo.podlaskie.eu">Dom Pomocy Społecznej Grajewo</option>
+<option value="https://bip-ppp-stgrajewo.podlaskie.eu">Poradnia Psychologiczno-Pedagogiczna w Grajewie</option>
+<option value="https://bip-pcpr-stgrajewo.podlaskie.eu">Powiatowe Centrum Pomocy Rodzinie w Grajewie</option>
+<option value="https://bip-so-stgrajewo.podlaskie.eu">Szpital Ogólny im. dr Witolda Ginela</option>
+<option value="https://bip-zol-stgrajewo.podlaskie.eu">Zakład Opiekuńczo Leczniczy w Szczuczynie</option>
+<option value="https://bip-zpoz-stgrajewo.podlaskie.eu">Zakład Podstawowej Opieki Zdrowotnej w Grajewie</option>
+<option value="https://bip-zdp-stgrajewo.podlaskie.eu">Zarząd Dróg Powiatowych w Grajewie</option>
+<option value="https://bip-zs1-stgrajewo.podlaskie.eu">Zespół Szkół Nr 1 w Grajewie</option>
+<option value="https://bip-zs2-stgrajewo.podlaskie.eu">Zespół Szkół Nr 2 im. 9. Pułku Strzelców Konnych</option>
+<option value="https://bip-zss-stgrajewo.podlaskie.eu">Zespół Szkół Specjalnych im. Jana Pawła II w Grajewie</option>
+<option value="https://bip-zsn-stgrajewo.podlaskie.eu">Zespół Szkół w Niećkowie</option>
+<option value="https://bip-zsw-stgrajewo.podlaskie.eu">Zespół Szkół im. ks. Jana Krzysztofa Kluka w Wojewodzinie</option>
+<option value="https://bip-zssz-stgrajewo.podlaskie.eu">Zespół Szkół im. Marszałka Józefa Piłsudskiego w Szczuczynie</option>
+<option value="https://cuswasilkow.bip.gov.pl">Miejski Ośrodek Pomocy Społecznej w Wasilkowie</option>
+<option value="https://bipmoak.wasilkow.pl">Miejski Ośrodek Animacji i Kultury w Wasilkowie</option>
+<option value="https://bip-gops-ugbarglow.podlaskie.eu">GMINNY OŚRODEK POMOCY SPOŁECZNEJ W BARGŁOWIE KOŚCIELNYM</option>
+<option value="https://ugbarglow.podlaskie.eu">Urząd Gminy Bargłów Kościelny</option>
+<option value="https://bip-uggrodek.podlaskie.eu">Gmina Gródek</option>
+<option value="https://bip-zdp-stwysmaz.podlaskie.eu">Zarząd Dróg Powiatowych w Wysokiem Mazowieckiem</option>
+<option value="https://bip-gok-ugnarewka.podlaskie.eu">Gminny Ośrodek Kultury w Narewce</option>
+<option value="https://bip-cojp-stwysmaz.podlaskie.eu">Centrum Obsługi Jednostek Powiatowych w Wysokiem Mazowieckiem</option>
+<option value="https://bip-ppp-stwysmaz.podlaskie.eu">Poradnia Psychologiczno Pedagogiczna w Wysokiem Mazowieckiem</option>
+<option value="https://bip-zsr-stwysmaz.podlaskie.eu">Zespół Szkół Rolniczych im. Stefanii Karpowicz w Krzyżewie</option>
+<option value="https://bip-zsz-stwysmaz.podlaskie.eu">Zespół Szkół Zawodowych im. St. Staszica w Wysokiem Mazowieckiem</option>
+<option value="https://bip-zsoip-stwysmaz.podlaskie.eu">Liceum Ogólnokształcące im. Króla Kazimierza Jagiellończyka w Wysokiem Mazowieckiem</option>
+<option value="https://bip-zsoiz-stwysmaz.podlaskie.eu">Zespół Szkół Ogólnokształcących i Zawodowych im. Stefana Kardynała Wyszyńskiego w Czyżewie</option>
+<option value="https://bip-zsoizc-stwysmaz.podlaskie.eu">Zespół Szkół Ogólnokształcących i Zawodowych im. Jarosława Iwaszkiewicza w Ciechanowcu</option>
+<option value="https://bip-biblioteka-ugmielnik.podlaskie.eu">Gminna Biblioteka Publiczna w Mielniku</option>
+<option value="https://bip-cus-ugmielnik.podlaskie.eu">Centrum Usług Społecznych w Mielniku</option>
+<option value="https://bip-zgk-ugmielnik.podlaskie.eu">Zakład Gospodarki Komunalnej w Mielniku</option>
+<option value="https://bip-gok-ugmielnik.podlaskie.eu">Gminny Ośrodek Kultury, Sportu i Rekreacji w Mielniku</option>
+<option value="https://bip-zs-ugmielnik.podlaskie.eu">Zespół Szkół im. Unii Mielnickiej w Mielniku</option>
+<option value="https://bip-ckz-stwysmaz.podlaskie.eu">Centrum Kształcenia Zawodowego w Wysokiem Mazowieckiem</option>
+<option value="https://bip-ugnowydwor.podlaskie.eu">Gmina Nowy Dwór</option>
+<option value="https://bip-gouk-ugbransk.podlaskie.eu">Gminny Ośrodek Upowszechniania Kultury im. Anny Dernowskiej w Kalnicy</option>
+<option value="https://bip-umczarnabialostocka.podlaskie.eu">Urząd Miejski w Czarnej Białostockiej</option>
+<option value="https://bip-biblioteka-ugbransk.podlaskie.eu">Gminna Biblioteka w Kalnicy</option>
+<option value="https://bip-spchojewo-ugbransk.podlaskie.eu">Szkoła Podstawowa im. ks. Stefana Kard. Wyszyńskiego w Chojewie</option>
+<option value="https://bip-mgops-umczarnabialostocka.podlaskie.eu">Miejsko-Gminny Ośrodek Pomocy Społecznej w Czarnej Białostockiej</option>
+<option value="https://bip-kok-umknyszyn.podlaskie.eu">KOK (Knyszyński Ośrodek Kultury)</option>
+<option value="https://bip-zso-umknyszyn.podlaskie.eu">Zespół Szkół Ogólnokształczących w Knyszynie</option>
+<option value="https://bip-zs-umknyszyn.podlaskie.eu">Zespół Szkół w Kalinówce Kościelnej</option>
+<option value="https://bip-zsp-umrajgrod.podlaskie.eu">Zespół Szkolno - Przedszkolny w Rajgrodzie</option>
+<option value="https://bip-mops-umknyszyn.podlaskie.eu">Miejski Ośrodek Pomocy Społecznej w Knyszynie</option>
+<option value="https://bip-mops-umkleszczele.podlaskie.eu">Miejski Ośrodek Pomocy Społecznej w Kleszczelach</option>
+<option value="https://bip-gops-ugdziadkowice.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Dziadkowicach</option>
+<option value="https://bip-mgops-umlipsk.podlaskie.eu">Miejsko - Gminny Ośrodek Pomocy Społecznej w Lipsku</option>
+<option value="https://bip-zgk-umlipsk.podlaskie.eu">Zakład Gospodarki Komunalnej w Lipsku</option>
+<option value="https://bip-zss-umlipsk.podlaskie.eu">Zespół Szkół Samorządowych w Lipsku</option>
+<option value="https://bip-umsuprasl.podlaskie.eu">Urząd Miejski w Supraślu</option>
+<option value="https://bip-gops-ugkolno.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Kolnie</option>
+<option value="https://bip-zopo-ugkolno.podlaskie.eu">Zespół Obsługi Placówek Oświatowych w Kolnie</option>
+<option value="https://bip-spj-ugkolno.podlaskie.eu">Szkoła Podstawowa im.Kardynała Stefana Wyszyńskiego w Janowie</option>
+<option value="https://bip-spc-ugkolno.podlaskie.eu">Szkoła Podstawowa im. marszałka Józefa Piłsudskiego w Czerwonem</option>
+<option value="https://bip-spw-ugkolno.podlaskie.eu">Szkoła Podstawowa im.Orła Białego w Wykowie</option>
+<option value="https://bip-spb-ugkolno.podlaskie.eu">Szkoła Podstawowa im. Papieża Jana Pawła II w Borkowie</option>
+<option value="https://bip-spl-ugkolno.podlaskie.eu">Szkoła Podstawowa w Lachowie</option>
+<option value="https://bip-spz-ugkolno.podlaskie.eu">Szkoła Podstawowa w Zaskrodziu</option>
+<option value="https://bip-gbp-ugkolno.podlaskie.eu">Gminna Biblioteka Publiczna w Kolnie z siedzibą w Czerwonem</option>
+<option value="https://bip-gops-ugtrzcianne.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Trzciannem</option>
+<option value="https://bip-gok-ugtrzcianne.podlaskie.eu">Gminny Ośrodek Kultury w Trzciannem</option>
+<option value="https://bip-bp-ugtrzcianne.podlaskie.eu">Biblioteka Publiczna Gminy Trzcianne</option>
+<option value="https://bip-sp-ugtrzcianne.podlaskie.eu">Szkoła Podstawowa w Trzciannem</option>
+<option value="https://um-suchowola.podlaskie.eu">Urząd Miejski w Suchowoli</option>
+<option value="https://bip-mgops-umsuchowola.podlaskie.eu">Miejsko-Gminny Ośrodek Pomocy Społecznej w Suchowoli</option>
+<option value="https://bip-sps-umsuchowola.podlaskie.eu">Szkoła Podstawowa im. Stanisława Staszica w Suchowoli</option>
+<option value="https://sps-umsuchowola.podlaskie.eu">Szkoła Podstawowa im. Stanisława Staszica w Suchowoli</option>
+<option value="https://bip-umnowogrod.podlaskie.eu">Gmina Nowogród</option>
+<option value="https://bip-zso-ugdubicze.podlaskie.eu">Szkoła Podstawowa w Dubiczach Cerkiewnych</option>
+<option value="https://bip-gops-ugdubicze.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Dubiczach Cerkiewnych</option>
+<option value="https://bip-gbp-ugdubicze.podlaskie.eu">Gminna Biblioteka Publiczna w Dubiczach Cerkiewnych</option>
+<option value="https://bip-goksir-ugdubicze.podlaskie.eu">Gminny Ośrodek Kultury, Sportu i Rekreacji w Dubiczach Cerkiewnych</option>
+<option value="https://bip-stsokolka.podlaskie.eu">Powiat Sokólski</option>
+<option value="https://powiatbialostocki.pl">Starostwo Powiatowe w Białymstoku</option>
+<option value="https://bip-zswczb-stbialystok.podlaskie.eu">Zespół Szkół w Czarnej Białostockiej</option>
+<option value="https://bip-zsmwl-stbialystok.podlaskie.eu">Zespół Szkół Mechanicznych im. Stefana Czarnieckiego w Łapach</option>
+<option value="https://bip-dds-stbialystok.podlaskie.eu">Dom Dziecka w Supraślu</option>
+<option value="https://bip-caopow-stbialystok.podlaskie.eu">Centrum Administracyjne Obsługi Placówek Opiekuńczo - Wychowawczych w Krasnem</option>
+<option value="https://bip-dpsu-stbialystok.podlaskie.eu">Dom Pomocy Społecznej w Uhowie </option>
+<option value="https://bip-dpsch-stbialystok.podlaskie.eu">Dom Pomocy Społecznej "Trzy Dęby" w Choroszczy</option>
+<option value="https://dpsj-stbialystok.podlaskie.eu">Dom Pomocy Społecznej "Jawor" w Jałówce</option>
+<option value="https://bip-dpscz-stbialystok.podlaskie.eu">Dom Pomocy Społecznej w Czerewkach</option>
+<option value="https://bip-dpsj-stbialystok.podlaskie.eu">Dom Pomocy Społecznej "Jawor" w Jałówce</option>
+<option value="https://bip-psdsl-stbialystok.podlaskie.eu">Powiatowy Środowiskowy Dom Samopomocy w Łaźniach</option>
+<option value="https://psdsl-stbialystok.podlaskie.eu">Powiatowy Środowiskowy Dom Samopomocy w Łaźniach</option>
+<option value="https://bip-pzdb-stbialystok.podlaskie.eu">Powiatowy Zarząd Dróg w Białymstoku</option>
+<option value="https://pzdb-stbialystok.podlaskie.eu">Powiatowy Zarząd Dróg w Białymstoku</option>
+<option value="https://bip-pppl-stbialystok.podlaskie.eu">Poradnia Psychologiczno-Pedagogiczna w Łapach</option>
+<option value="https://bip-ppppb-stbialystok.podlaskie.eu">Powiatowa Poradnia Psychologiczno-Pedagogiczna w Białymstoku</option>
+<option value="https://pcprb-stbialystok.podlaskie.eu">Powiatowe Centrum Pomocy Rodzinie w Białymstoku</option>
+<option value="https://bip-ugrutki.podlaskie.eu">Gmina Rutki</option>
+<option value="https://bip-ops-ugrutki.podlaskie.eu">Ośrodek Pomocy Społecznej w Rutkach</option>
+<option value="https://bip-bos-ugrutki.podlaskie.eu">Centrum Usług Wspólnych w Rutkach-Kossakach</option>
+<option value="https://bip-spr-ugrutki.podlaskie.eu">Szkoła Podstawowa im. 2-go Pułku Ułanów Grochowskich w Rutkach</option>
+<option value="https://bip-spk-ugrutki.podlaskie.eu">Szkoła Podstawowa w Kołomyi</option>
+<option value="https://bip-spg-ugrutki.podlaskie.eu">Szkoła Podstawowa im. kpt. Władysława Raginisa w Grądach-Woniecko</option>
+<option value="https://ugnurzec.podlaskie.eu">Urząd Gminy Nurzec-Stacja</option>
+<option value="https://bip-gops-ugnurzec.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej Nurzec-Stacja</option>
+<option value="https://gops-ugnurzec.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej Nurzec-Stacja</option>
+<option value="https://bip-zsp-ugnurzec.podlaskie.eu">Zespół Szkolno -Przedszkolny Nurzec-Stacja</option>
+<option value="https://zsp-ugnurzec.podlaskie.eu">Zespół Szkolno -Przedszkolny Nurzec-Stacja</option>
+<option value="https://bip-ugorla.podlaskie.eu">Gmina Orla</option>
+<option value="https://bip-zs-ugorla.podlaskie.eu">Szkoła Podstawowa z dnjb w Orli</option>
+<option value="https://bip-gops-ugorla.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej Orla</option>
+<option value="https://bip-zsk-ugjuchn-kosc.podlaskie.eu">Zespół Szkół w Kleosinie</option>
+<option value="https://bip-sp-ugjuchn-kosc.podlaskie.eu">Zespół Szkół w Księżynie</option>
+<option value="https://bip-gops-ugjuchn-kosc.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Juchnowcu Kościelnym</option>
+<option value="https://bip-ppp-stbielsk.podlaskie.eu">Poradnia Psychologiczno-Pedagogiczna w Bielsku Podlaskim</option>
+<option value="https://bip-pzd-stbielsk.podlaskie.eu">Powiatowy Zarząd Dróg w Bielsku Podlaskim</option>
+<option value="https://stbielsk.podlaskie.eu">Samorząd Powiatu Bielskiego</option>
+<option value="https://bip-dps-stbielsk.podlaskie.eu">Dom Pomocy Społecznej im. Jana Pawła II w Brańsku</option>
+<option value="https://bip-lo1-stbielsk.podlaskie.eu">I Liceum Ogólnokształcące im. Tadeusza Kościuszki w Bielsku Podlaskim</option>
+<option value="https://bip-lo2-stbielsk.podlaskie.eu">II Liceum Ogólnokształcące z Białoruskim Językiem Nauczania im. Bronisława Taraszkiewicza w Bielsku Podlaskim</option>
+<option value="https://bip-zs1-stbielsk.podlaskie.eu">Zespół Szkół Nr 1 im. Marszałka Józefa Klemensa Piłsudskiego w Bielsku Podlaskim</option>
+<option value="https://bip-zs4-stbielsk.podlaskie.eu">Zespół Szkół Nr 4 im. Ziemi Podlaskiej w Bielsku Podlaskim</option>
+<option value="https://bip-spzoz-umknyszyn.podlaskie.eu">Samodzielny Publiczny Zakład Opieki Zdrowotnej w Knyszynie</option>
+<option value="https://bip-bdk-umbielsk.podlaskie.eu">Bielski Dom Kultury w Bielsku Podlaskim imienia Marszałka Józefa Piłsudskiego</option>
+<option value="https://bip-gops-uggiby.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Gibach</option>
+<option value="https://gops-uggiby.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Gibach</option>
+<option value="https://bip-gok-uggiby.podlaskie.eu">Gminny Ośrodek Kultury w Gibach</option>
+<option value="https://gok-uggiby.podlaskie.eu">Gminny Ośrodek Kultury w Gibach</option>
+<option value="https://bip-gbp-uggiby.podlaskie.eu">Gminna Biblioteka Publiczna w Gibach</option>
+<option value="https://gbp-uggiby.podlaskie.eu">Gminna Biblioteka Publiczna w Gibach</option>
+<option value="https://bip-opsgoniadz.podlaskie.eu">Ośrodek Pomocy Społecznej w Goniądzu</option>
+<option value="https://bip-zukgoniadz.podlaskie.eu">Zakład Usług Komunalych w Goniądzu</option>
+<option value="https://bip-zsp-umgoniadz.podlaskie.eu">Zespół Szkolno-Przedszkolny w Goniądzu</option>
+<option value="https://bip-gokgoniadz.podlaskie.eu">Gminny Ośrodek Kultury w Goniądzu</option>
+<option value="https://sspw.wrotapodlasia.pl">TARRAYA S.A.</option>
+<option value="https://mops.wasilkow.pl">Miejski Ośrodek Pomocy Społecznej w Wasilkowie</option>
+<option value="https://bip-nok-ugnarew.podlaskie.eu">Narwiański Ośrodek Kultury</option>
+<option value="https://bip-pinbpb-stbialystok.podlaskie.eu">Powiatowy Inspektorat Nadzoru Budowlanego w Białymstoku</option>
+<option value="https://bip-ugkuznica.podlaskie.eu">Urząd Gminy Kuźnica</option>
+<option value="https://bip.choroszcz.pl">Urząd Miejski w Choroszczy</option>
+<option value="https://bip-pk-umsiemiatycze.podlaskie.eu">Przedsiębiorstwo Komunalne Spółka z o.o. w Siemiatyczach</option>
+<option value="https://bip-zmk-umsiemiatycze.podlaskie.eu">Zarząd Mienia Komunalnego w Siemiatyczach Sp. z o.o.</option>
+<option value="https://bip-mosir-umsiemiatycze.podlaskie.eu">Miejski Ośrodek Sportu i Rekreacji w Siemiatyczach</option>
+<option value="https://bip-sok-umsiemiatycze.podlaskie.eu">Siemiatycki Ośrodek Kultury</option>
+<option value="https://bip-mops-umsiemiatycze.podlaskie.eu">Miejski Ośrodek Pomocy Społecznej w Siemiatyczach</option>
+<option value="https://bip-mbp-umsiemiatycze.podlaskie.eu">Miejska Biblioteka Publiczna w Siemiatyczach im Ks. Anny Jabłonowskiej</option>
+<option value="https://bip-sp1-umsiemiatycze.podlaskie.eu">Szkoła Podstawowa Nr 1 im. Księżnej Anny z Sapiehów Jabłonowskiej w Siemiatyczach</option>
+<option value="https://bip-sp3-umsiemiatycze.podlaskie.eu">Szkoła Podstawowa Nr 3 im. Jana Pawła II w Siemiatyczach</option>
+<option value="https://bip-sm-umsiemiatycze.podlaskie.eu">Szkoła Muzyczna I St. im. Wojciecha Kilara w Siemiatyczach</option>
+<option value="https://bip-przedszkole3-umsiemiatycze.podlaskie.eu">Przedszkole Nr 3 ,,Wesoła Trójeczka" w Siemiatyczach</option>
+<option value="https://bip-przedszkole5-umsiemiatycze.podlaskie.eu">Przedszkole nr 5 w Siemiatyczach "W zaczarowanym lesie"</option>
+<option value="https://bip-zm-umsiemiatycze.podlaskie.eu">Żłobek Miejski w Siemiatyczach</option>
+<option value="https://bip.zgk.wasilkow.pl">Zakład Gospodarki Komunalnej w Wasilkowie</option>
+<option value="https://zgk.wasilkow.pl">Zakład Gospodarki Komunalnej w Wasilkowie</option>
+<option value="https://bip-zs-uggiby.podlaskie.eu">Szkoła  Podstawowa w Gibach</option>
+<option value="https://zs-uggiby.podlaskie.eu">Szkoła  Podstawowa w Gibach</option>
+<option value="https://bip-pmkl.podlaskie.eu">Podlaskie Muzeum Kultury Ludowej</option>
+<option value="https://bip-pcpr-stkolno.podlaskie.eu">Powiatowe Centrum Pomocy Rodzinie w Kolnie</option>
+<option value="https://bip-mops-umzabludow.podlaskie.eu">MIEJSKI OŚRODEK POMOCY SPOŁECZNEJ W ZABŁUDOWIE</option>
+<option value="https://bip-lo2-staugustow.podlaskie.eu">II Liceum Ogólnokształcące w Augustowie im. Polonii i Polaków na Świecie</option>
+<option value="https://bip-pzd-staugustow.podlaskie.eu">Powiatowy Zarząd Dróg w Augustowie</option>
+<option value="https://bip-pcpr-staugustow.podlaskie.eu">Powiatowe Centrum Pomocy Rodzinie w Augustowie</option>
+<option value="https://bip-spzzod-staugustow.podlaskie.eu">Samodzielny Publiczny Zespół Zakładów Opieki Długoterminowej</option>
+<option value="https://bip-ace-staugustow.podlaskie.eu">Augustowskie Centrum Edukacyjne w Augustowie</option>
+<option value="https://bip-ppp-staugustow.podlaskie.eu">Poradnia Psychologiczno-Pedagogiczna w Augustowie</option>
+<option value="https://bip-zpm-staugustow.podlaskie.eu">Zespół Placówek Młodzieżowych w Augustowie</option>
+<option value="https://bip-zso-staugustow.podlaskie.eu">Zespół Szkół Ogólnokształcących w Augustowie</option>
+<option value="https://bip-zss-staugustow.podlaskie.eu">Zespół Szkół Specjalnych w Augustowie</option>
+<option value="https://ace-staugustow.podlaskie.eu">Augustowskie Centrum Edukacyjne w Augustowie</option>
+<option value="https://bip-spzoz-staugustow.podlaskie.eu">Samodzielny Publiczny Zakład Opieki Zdrowotnej w Augustowie</option>
+<option value="https://bip-gops-uggrodek.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Gródku</option>
+<option value="https://bip-bp-uggrodek.podlaskie.eu">Biblioteka Publiczna w Gródku</option>
+<option value="https://bip-gck-uggrodek.podlaskie.eu">Gminne Centrum Kultury w Gródku</option>
+<option value="https://bip-przedszkole-ugkuznica.podlaskie.eu">Przedszkole w Kuźnicy</option>
+<option value="https://bip-ckb-ugsokoly.podlaskie.eu">Centrum Kulturalno-Biblioteczne w Sokołach</option>
+<option value="https://ckb-ugsokoly.podlaskie.eu">Centrum Kulturalno-Biblioteczne w Sokołach</option>
+<option value="https://bip-z1-umsiemiatycze.podlaskie.eu">Żłobek Nr 1 w Siemiatyczach</option>
+<option value="https://bip-z2-umsiemiatycze.podlaskie.eu">Żłobek Nr 2 w Siemiatyczach</option>
+<option value="https://bip-gops-ugkrypno.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Krypnie</option>
+<option value="https://bip-ugjasionowka.podlaskie.eu">Gmina Jasionówka</option>
+<option value="https://bip-sppt-ugsuwalki.podlaskie.eu">Szkoła Podstawowa im. Lotników Polskich w Płocicznie - Tartak</option>
+<option value="https://bip-stsuwalki.podlaskie.eu">Starostwo Powiatowe w Suwałkach</option>
+<option value="https://bip-sp-ugplaska.podlaskie.eu">Szkoła Podstawowa im. Jana Pawła II w Płaskiej</option>
+<option value="https://bip-moak-umzabludow.podlaskie.eu">MIEJSKI OŚRODEK ANIMACJI KULTURY W ZABŁUDOWIE</option>
+<option value="https://bip-mbp-umkleszczele.podlaskie.eu">Miejska Biblioteka Publiczna w Kleszczelach</option>
+<option value="https://bip-mops-umbielsk.podlaskie.eu">Miejski Ośrodek Pomocy Społecznej Bielsk Podlaski</option>
+<option value="https://bip-sds-umbielsk.podlaskie.eu">Środowiskowy Dom Samopomocy w Bielsku Podlaskim</option>
+<option value="https://bip-sp5-umbielsk.podlaskie.eu">Szkoła Podstawowa Nr 5 im.Szarych Szeregów w Bielsku Podlaskim</option>
+<option value="https://bip-przedszkole-umbielsk.podlaskie.eu">Przedszkole Nr 5 KRASNALA HAŁABAŁY w Bielsku Podlaskim</option>
+<option value="https://bip-gops-ugbocki.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Boćkach</option>
+<option value="https://bip-gok-ugbocki.podlaskie.eu">Gminny Ośrodek Kultury w Boćkach</option>
+<option value="https://bip-gbp-ugbocki.podlaskie.eu">Gminna Biblioteka Publiczna w Boćkach</option>
+<option value="https://bip-spb-ugbocki.podlaskie.eu">Szkoła Podstawowa im. Jana Pawła II w Boćkach</option>
+<option value="https://bip-spa-ugbocki.podlaskie.eu">Szkoła Podstawowa w Andryjankach</option>
+<option value="https://bip-pup-stmonki.podlaskie.eu">Powiatowy Urząd Pracy w Mońkach</option>
+<option value="https://bip-sptajno-ugbarglow.podlaskie.eu">Szkoła Podstawowa im. Zygmunta Augusta w Tajnie Starym</option>
+<option value="https://radny-stkolno.podlaskie.eu">Samorząd Powiatu Kolneńskiego</option>
+<option value="https://zarzad-stkolno.podlaskie.eu">Samorząd Powiatu Kolneńskiego</option>
+<option value="https://bip-pdps-stsiemiatycze.podlaskie.eu">Powiatowy Dom Pomocy Społecznej w Siemiatyczach</option>
+<option value="https://bip-zsro-stsiemiatycze.podlaskie.eu">Zespół Szkół Rolniczych w Ostrożanach</option>
+<option value="https://bip-pzds-stsiemiatycze.podlaskie.eu">Powiatowy Zarząd Dróg w Siemiatyczach</option>
+<option value="https://bip-gops-ugmilejczyce.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Milejczycach</option>
+<option value="https://dpsch-stbialystok.podlaskie.eu">Dom Pomocy Społecznej "Trzy Dęby" w Choroszczy</option>
+<option value="https://wodgik.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-przedszkole3-umbielsk.podlaskie.eu">Przedszkole Nr 3 z Oddziałami Integracyjnymi</option>
+<option value="https://bip-przedszkole7-umbielsk.podlaskie.eu">Przedszkole Nr 7 KUBUSIA PUCHATKA</option>
+<option value="https://bip-przedszkole9-umbielsk.podlaskie.eu">Przedszkole Nr 9 LEŚNA POLANA</option>
+<option value="https://bip-ok-ugsejny.podlaskie.eu">Obsługa Komunalna Gminy Sejny</option>
+<option value="https://bip-gops-ugsejny.podlaskie.eu">Gminny Osrodek Pomocy Społecznej</option>
+<option value="https://bip-sppockuny-ugsejny.podlaskie.eu">Szkoła Podstawowa w Poćkunach</option>
+<option value="https://bip-bpberzniki-ugsejny.podlaskie.eu">Gminna Biblioteka Publiczna w Berżnikach</option>
+<option value="https://bip-wodnik-umbielsk.podlaskie.eu">Pływalnia Miejska WODNIK w Bielsku Podlaskim</option>
+<option value="https://bip-gops-ugsuwalki.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Suwałkach</option>
+<option value="https://bip-gzeas-ugsuwalki.podlaskie.eu">Gminny Zespół Ekonomiczno-Administracyjny Szkół</option>
+<option value="https://bip-gokkrzywe-ugsuwalki.podlaskie.eu">Ośrodek Czytelnictwa i Kultury Gminy Suwałki</option>
+<option value="https://bip-spprzebrodzie-ugsuwalki.podlaskie.eu">Szkoła Podstawowa w Przebrodzie</option>
+<option value="https://bip-spnowawies-ugsuwalki.podlaskie.eu">Szkoła Podstawowa im. Papieża Jana Pawła II w Nowej Wsi, Gmina Suwałki</option>
+<option value="https://bip-spstaryfolwark-ugsuwalki.podlaskie.eu">Szkoła Podstawowa w Starym Folwarku</option>
+<option value="https://lisiagora.wasilkow.pl">Urząd Miejski w Wasilkowie</option>
+<option value="https://bip-oee-ugnarewka.podlaskie.eu">Ośrodek Edukacji Ekologicznej w Siemianówce</option>
+<option value="https://bip-mbp-umbielsk.podlaskie.eu">Miejska Biblioteka Publiczna Bielsk Podlaski</option>
+<option value="https://bip-gzk-wierzbowo-uggrajewo.podlaskie.eu">Gminny Zakład Komunalny w Wierzbowie</option>
+<option value="https://bip-gbp-ruda-uggrajewo.podlaskie.eu">Gminna Biblioteka Publiczna Gminy Grajewo z siedzibą w Rudzie</option>
+<option value="https://bip-sp-bialaszewo-uggrajewo.podlaskie.eu">SZKOŁA PODSTAWOWA POMNIK 1000-LECIA PAŃSTWA POLSKIEGO IM. MARII KONOPNICKIEJ W BIAŁASZEWIE</option>
+<option value="https://bip-sp-danowek-uggrajewo.podlaskie.eu">Szkoła Podstawowa w Danówku</option>
+<option value="https://bip-sp-wierzbowo-uggrajewo.podlaskie.eu">SZKOŁA PODSTAWOWA W WIERZBOWIE</option>
+<option value="https://bip-przedszkole-ruda-uggrajewo.podlaskie.eu">Przedszkole w Rudzie</option>
+<option value="https://pcpl.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-zs-stsiemiatycze.podlaskie.eu">Zespół Szkół w Siemiatyczach</option>
+<option value="https://bip-zstczartajew-stsiemiatycze.podlaskie.eu">Zespół Szkół Technicznych w Czartajewie</option>
+<option value="https://bip-zss-stsiemiatycze.podlaskie.eu">Zespół Szkół Specjalnych w Siemiatyczach</option>
+<option value="https://bip-kumialka-biebrza-ugjanow.podlaskie.eu">Związek Gmin "Kumiałka-Biebrza"</option>
+<option value="https://choroszcz.pl">Urząd Miejski w Choroszczy</option>
+<option value="https://bip-zs-uggrodzisk.podlaskie.eu">Zespół Szkół w Grodzisku</option>
+<option value="https://bip-gops-uggrodzisk.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Grodzisku</option>
+<option value="https://bip-zsp-ugkrypno.podlaskie.eu">Zespół Szkolno-Przedszkolny w Krypnie</option>
+<option value="https://bip-gok-ugkrypno.podlaskie.eu">Gminny Ośrodek Kultury w Krypnie</option>
+<option value="https://bip-bp-ugkrypno.podlaskie.eu">Gminna Biblioteka Publiczna w Krypnie</option>
+<option value="https://bip-cis-ugbocki.podlaskie.eu">Centrum Integracji Społecznej w Boćkach</option>
+<option value="https://bip-zgk-ugjuchn-kosc.podlaskie.eu">Zakład Gospodarki Komunalnej w Juchnowcu Kościelnym</option>
+<option value="https://bip-mgok-umdrohiczyn.podlaskie.eu">Miejsko-Gminny Ośrodek Kultury w Drohiczynie</option>
+<option value="https://spk.podlaskie.eu">Suwalski Park Krajobrazowy</option>
+<option value="https://bip-mops-umsejny.podlaskie.eu">MIEJSKI OŚRODEK POMOCY SPOŁECZNEJ W SEJNACH</option>
+<option value="https://bip-so-stwysmaz.podlaskie.eu">Szpital Ogólny w Wysokiem Mazowieckiem</option>
+<option value="https://szpitalwysmaz.pl">Szpital Ogólny w Wysokiem Mazowieckiem</option>
+<option value="https://ugjanow.podlaskie.eu">Urząd Gminy Janów</option>
+<option value="https://dk-ugposwietne.podlaskie.eu">Dom Kultury w Poświętnem</option>
+<option value="https://bip-ugwasosz.podlaskie.eu">Urząd Gminy Wąsosz</option>
+<option value="https://ugwasosz.podlaskie.eu">Urząd Gminy Wąsosz</option>
+<option value="https://bip-umdabrowabialostocka.podlaskie.eu">Gmina Dąbrowa Białostocka</option>
+<option value="https://bip-sds-ummonki.podlaskie.eu">Środowiskowy Dom Samopomocy "Gama" w Mońkach</option>
+<option value="https://rewitalizacja.podlaskie.eu">Departament Rozwoju Regionalnego - DRR</option>
+<option value="https://bip-gokis-ugkuznica.podlaskie.eu">Gminny Ośrodek Kultury i Sportu w Kuźnicy</option>
+<option value="https://bip-gops-ugkuznica.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Kuźnicy</option>
+<option value="https://bip-zgkim-ugkuznica.podlaskie.eu">Zakład Gospodarki Komunalnej i Mieszkaniowej w Kuźnicy</option>
+<option value="https://bip-rpot.podlaskie.eu">Regionalna Placówka Opiekuńczo-Terapeutyczna w Ignatkach-Osiedle</option>
+<option value="https://bip-ugpiekuty.podlaskie.eu">Gmina Nowe Piekuty</option>
+<option value="https://rpot.podlaskie.eu">Regionalna Placówka Opiekuńczo-Terapeutyczna w Ignatkach-Osiedle</option>
+<option value="https://bip-gbp-ugmilejczyce.podlaskie.eu">Gminna Biblioteka Publiczna w Milejczycach</option>
+<option value="https://bip-gok-ugmilejczyce.podlaskie.eu">Gminny Ośrodek Kultury w Milejczycach</option>
+<option value="https://bip-ops-ugkolaki.podlaskie.eu">Ośrodek Pomocy Społecznej w Kołakach Kościelnych</option>
+<option value="https://bip-bp-ugkolaki.podlaskie.eu">Biblioteka Publiczna Gmina Kołaki Kościelne</option>
+<option value="https://bip-pinb-stmonki.podlaskie.eu">Powiatowy Inspektorat Nadzoru Budowlanego w Mońkach</option>
+<option value="https://bip-bp-ugdziadkowice.podlaskie.eu">Gminna Biblioteka Publiczna w Dziadkowicach</option>
+<option value="https://bip-gok-ugdziadkowice.podlaskie.eu">Lokalne Centrum Aktywności Społeczno - Kulturalnej w Dziadkowicach</option>
+<option value="https://bip-zgk-ugdziadkowice.podlaskie.eu">Zakład Gospodarki Komunalnej Gminy Dziadkowice</option>
+<option value="https://bip-rdd-stbialystok.podlaskie.eu">Rodzinny Dom Dziecka w Supraślu</option>
+<option value="https://bip-rddk-stbialystok.podlaskie.eu">Rodzinny Dom Dziecka w Krasnem</option>
+<option value="https://bip-goks-ugkorycin.podlaskie.eu">Gminny Ośrodek Kultury, Sportu i Turystyki w Korycinie Oraz Biblioteka Publiczna Wchodząca W Skład Ośrodka Kultury</option>
+<option value="https://bip-gops-ugkorycin.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej w Korycinie</option>
+<option value="https://bip-przedszkole-ugkorycin.podlaskie.eu">Przedszkole Jana Pawła II w Korycinie</option>
+<option value="https://bip-gops-ugszudzialowo.podlaskie.eu">Gminny Ośrodek Pomocy Społecznej Szudziałowo</option>
+<option value="https://bip-spzw-umdabrowabialostocka.podlaskie.eu">Szkoła Podstawowa w Zwierzyńcu Wielkim</option>
+<option value="https://bip-zspr-umdabrowabialostocka.podlaskie.eu">Zespół Szkolno -Przedszkolny w Różanymstoku</option>
+<option value="https://bip-sp-umdabrowabialostocka.podlaskie.eu">Szkoła Podstawowa w Dąbrowie Białostockiej</option>
+<option value="https://bip-zm-umdabrowabialostocka.podlaskie.eu">Żłobek Miejski w Dąbrowie Białostockiej</option>
+<option value="https://bip-przedszkole-umdabrowabialostocka.podlaskie.eu">Samorządowe Przedszkole w Dąbrowie Białostockiej</option>
+<option value="https://bip-mgok-umdabrowabialostocka.podlaskie.eu">Miejsko Gminny Ośrodek Kultury w Dąbrowie Białostockiej</option>
+<option value="https://bip-boss-umdabrowabialostocka.podlaskie.eu">Biuro Obsługi Szkół Samorządowych w Dąbrowie Białostockiej</option>
+<option value="https://bip-pgkm-umdabrowabialostocka.podlaskie.eu">Przedsiębiorstwo Gospodarki Komunalnej i Mieszkaniowej w Dąbrowie Białostockiej</option>
+<option value="https://bip-ops-umciechanowiec.podlaskie.eu">Ośrodek Pomocy Społecznej w Ciechanowcu</option>
+<option value="https://bip-prk-umciechanowiec.podlaskie.eu">Przedsiębiorstwo Robót Komunalnych FARE w Ciechanowcu</option>
+<option value="https://bip-coks-umciechanowiec.podlaskie.eu">Ciechanowiecki Ośrodek Kultury i Sportu</option>
+<option value="https://bip-mbp-umciechanowiec.podlaskie.eu">Miejska Biblioteka Publiczna w Ciechanowcu</option>
+<option value="https://bip-przedszkole-umciechanowiec.podlaskie.eu">Przedszkole w Ciechanowcu</option>
+<option value="https://bip-sp-umciechanowiec.podlaskie.eu">Szkoła Podstawowa im. Mikołaja Kopernika w Ciechanowcu</option>
+<option value="https://bip-spl-umciechanowiec.podlaskie.eu">Szkoła Podstawowa w Łempicach</option>
+<option value="https://umkleszczele.podlaskie.eu">Urząd Miejski w Kleszczelach</option>
+<option value="https://podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-spkrasnowo-ugsejny.podlaskie.eu">Szkoła Podstawowa im. Adama Mickiewicza w Krasnowie</option>
+<option value="https://bip-gok-ugpiekuty.podlaskie.eu">Gminny Ośrodek Kultury w Nowych Piekutach</option>
+<option value="https://bip-gokib-ugrutki.podlaskie.eu">Gminny Ośrodek Kultury i Biblioteka w Rutkach-Kossakach</option>
+<option value="https://geoportal.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://sspw.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-gbp-ugjuchn-kosc.podlaskie.eu">Gminna Biblioteka Publiczna w Juchnowcu Kościelnym</option>
+<option value="https://bip-ok-ugjuchn-kosc.podlaskie.eu">Ośrodek Kultury w Gminie Juchnowiec Kościelny</option>
+<option value="https://cms-zero.wrotapodlasia.pl">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://test15test.pl">CENTRUM KULTURY BIAŁORUSKIEJ W BIAŁYMSTOKU</option>
+<option value="https://bip-zaz-stwysmaz.podlaskie.eu">Powiatowy Zakład Aktywności Zawodowej w Krzyżewie</option>
+<option value="https://sds-umzabludow.podlaskie.eu">ŚRODOWISKOWY DOM SAMOPOMOCY W KRYNICKICH</option>
+<option value="https://bip-moksir-umkleszczele.podlaskie.eu">Miejski Ośrodek Kultury, Sportu i Rekreacji w Kleszczelach</option>
+<option value="https://bip-przedszkole-umkleszczele.podlaskie.eu">Przedszkole w Kleszczelach</option>
+<option value="https://bip-szkola-umkleszczele.podlaskie.eu">Szkoła Podstawowa w Kleszczelach</option>
+<option value="https://bip-xylopolis.podlaskie.eu">XYLOPOLIS Centrum Sztuki i Nauki o Drewnie</option>
+<option value="https://xylopolis.podlaskie.eu">XYLOPOLIS Centrum Sztuki i Nauki o Drewnie</option>
+<option value="https://bip-ugkuleszek.podlaskie.eu">Gmina Kulesze Kościelne</option>
+<option value="https://bip-bp-ugkuleszek.podlaskie.eu">Gminna Biblioteka Publiczna w Kuleszach Kościelnych</option>
+<option value="https://bip-skansenkurpiowski.podlaskie.eu">Muzeum - Skansen Kurpiowski im. Adama Chętnika w Nowogrodzie</option>
+<option value="https://bip-ugczeremcha.podlaskie.eu">Gmina Czeremcha</option>
+<option value="https://bip-umkrynki.podlaskie.eu">Gmina Krynki</option>
+<option value="https://bip.wikm.augustow.eu">Wodociągi i Kanalizacje Miejskie Sp.z o.o. w Augustowie</option>
+<option value="https://bip-zk-umkrynki.podlaskie.eu">Zakład Komunalny w Krynkach</option>
+<option value="https://bip-mgops-umkrynki.podlaskie.eu">Miejsko - Gminny Ośrodek Pomocy Społecznej w Krynkach</option>
+<option value="https://bip-bp-umkrynki.podlaskie.eu">Biblioteka Publiczna Gminy Krynki</option>
+<option value="https://bip-gok-umkrynki.podlaskie.eu">GMINNY OŚRODEK KULTURY W KRYNKACH</option>
+<option value="https://bip-zss-umkrynki.podlaskie.eu">Zespół Szkół Samorządowych w Krynkach</option>
+<option value="https://bipzmciechanowiec.podlaskie.eu">Akademia Odkrywców - Żłobek Miejski w Ciechanowcu</option>
+<option value="https://bipcom.podlaskie.eu">Centrum Opiekuńczo-Mieszkalne w Kocach-Schabach</option>
+<option value="https://bip-ckb.podlaskie.eu">CENTRUM KULTURY BIAŁORUSKIEJ W BIAŁYMSTOKU</option>
+<option value="https://zerowkabip.bit-sa.pl">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://podlaskamarka.pl">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://eko.wasilkow.pl">Urząd Miejski w Wasilkowie</option>
+<option value="https://bip-sdslapy.podlaskie.eu">Środowiskowy Dom Samopomocy w Łapach</option>
+<option value="https://bip-spzoz-umlipsk.podlaskie.eu">Samodzielny Publiczny Zakład Opieki Zdrowotnej w Lipsku</option>
+<option value="https://bip-mowirgoniadz.podlaskie.eu">Miejski Ośrodek Wypoczynku i Rekreacji w Goniądzu</option>
+<option value="https://pbpp.podlaskie.eu">Podlaskie Biuro Planowania Przestrzennego w Białymstoku</option>
+<option value="https://bip-gok-ugbarglow.podlaskie.eu">Gminny Ośrodek Kultury w Bargłowie Kościelnym</option>
+<option value="https://bip-bp-ugbarglow.podlaskie.eu">Gminna Biblioteka Publiczna w Bargłowie Kościelnym</option>
+<option value="https://bip-zlobek-ummonki.podlaskie.eu">Żłobek Słoneczny Zakątek w Mońkach</option>
+<option value="https://bip-sp-ugturosl.podlaskie.eu">Szkoła Podstawowa w Turoślu</option>
+<option value="https://bip-comglinki-ugkolno.podlaskie.eu">Centrum Opiekuńczo-Mieszkalne w Glinkach</option>
+<option value="https://bip-ckgk-ugkolno.podlaskie.eu">Centrum Kultury Gminy Kolno w Koźle</option>
+<option value="https://bip-spzabiele-ugkolno.podlaskie.eu">Szkoła Podstawowa w Zabielu</option>
+<option value="https://bip.azm.augustow.eu">Augustowski Związek Międzygminny</option>
+<option value="https://bip.cus.wasilkow.pl">Centrum Usług Społecznych w Wasilkowie</option>
+<option value="https://bip-demo.podlaskie.eu">Urząd Marszałkowski Województwa Podlaskiego</option>
+<option value="https://bip-ckibga-ugaugustow.podlaskie.eu">Centrum Kultury i Biblioteka Gminy Augustów w Żarnowie</option>
+<option value="https://Bip-klubdzieciecy-ugkolno.podlaskie.eu">Klub dziecięcy Małe Żabki w Lachowie</option>
+<option value="https://rpot2.podlaskie.eu">Regionalna Placówka Opiekuńczo-Terapeutyczna w Ignatkach-Osiedle</option>
+<option value="https://bip-spdubiny-ughajnowka.podlaskie.eu">Szkoła Podstawowa w Dubinach</option>
+<option value="https://bip-fb2.podlaskie.eu">Opera i Filharmonia Podlaska - Europejskie Centrum Sztuki w BIałymstoku imienia Stanisława Moniuszki</option></select>                    </div>
+                </div>
+                <!-- archiwum -->
+                                <!-- pliki -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-in_files">
+                        Szukaj w dokumentach:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <div class="checkbox">
+                            <input type="hidden" name="in_files" value="0" style=""><input type="checkbox" name="in_files" id="form-field-in_files" class="" value="1" style=""><span class="lbl"></span>                        </div>
+                    </div>
+                </div>
+                <!-- sortowanie wyników -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-order-field">
+                        Sortuj wg:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <select name="order-field" class="form-control" id="form-field-order-field"><option value="">--- Wybierz ---</option>
+<option value="score">Trafności</option>
+<option value="date_visible_start">Daty publikacji</option>
+<option value="date_modify">Daty modyfikacji</option>
+<option value="title">Tytułu strony</option></select>                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-order-type">
+                        Kolejność:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <select name="order-type" class="form-control" id="form-field-order-type"><option value="">--- Wybierz ---</option>
+<option value="desc">Malejąca</option>
+<option value="asc">Rosnąca</option></select>                    </div>
+
+                </div>
+                <!-- liczba rekordów na stronie -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="form-field-items-Count-Per-Page">
+                        Liczba wyników na stronie:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <select name="itemsCountPerPage" class="form-control" id="form-field-items-Count-Per-Page"><option value="">--- Wybierz ---</option>
+<option value="10">10</option>
+<option value="20">20</option>
+<option value="50">50</option>
+<option value="100">100</option></select>                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-buttons">
+                        <a id="reset" href="#" class="btn btn-default no-border">Wyczyść formularz</a>
+                        <input type="submit" name="submit" class="btn btn-primary" value="Szukaj" style="">                    </div>
+                </div>
+                </form>            </div>
+        </div>
+    </div>
+    <div class="alert alert-info">
+        <h2><strong>Jak szukać informacji?</strong></h2>
+        <p>
+            <span>
+                <strong>Wyszukiwanie proste</strong>
+            </span><br>
+            Wprowadz jedno lub więcej wyszukiwanych haseł
+            (słów  bądz wyrażeń, które najlepiej opisują) w polu wyszukiwania,
+            a następnie naciśnij klawisz Enter lub kliknij przycisk Szukaj        </p>
+        <p>
+            <span>
+                <strong>Wyszukiwanie złożone</strong>
+            </span><br>
+            Pozwala na znacznie precyzyjniejsze poszukiwanie informacji
+            z uwzględnieniem występowania bądź niewystępowania określonych fragmentów
+            tekstów lub ich kombinacji. Poniżej podane są przykłady określania warunków poszukiwania:        </p>
+        <p>
+            <span>
+                <strong>słowo1 AND słowo2 OR słowo3 AND NOT słowo4</strong>
+            </span><br>
+            w wyszukiwanym tekście można łączyć warunki za pomocą
+            operatorów AND (i), OR (lub), NOT (nie). Powyższy przykład wyszuka teksty, które zawierają
+            jednocześnie słowo1 i słowa 2 lub też samo słowo3 i bez słowo4. Użyte operatory nie powinny
+            być obejmowane w znaki cudzysłowia ("słowo1 AND słowo2"). W przypadku gdy chcemy wyszukać
+            całą frazę podajemy ją w cudzysłowie; na przykład jeśli szukamy dokumentów
+            ze zwrotem "Uchwała Nr 111", to w polu wyszukiwarki piszemy zatem: "Uchwała Nr 111"        </p>
+    </div>
+</div>
+</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="bottom-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 bottom-column">
+                <div class="row droppable ui-sortable"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="footer-extra-content">
+                    <div class="row">
+			<div class="component-dynamic-menu hidden-xs">
+    <div class="component-dynamic-menu-full-bg">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="component-content">
+                                    </div>
+            </div>
+        </div>
+    </div>
+</div>                        <div class="component component-copyright">
+    <div class="component-full-bg">
+        <div class="component-wrapper">
+            <div class="component-content">
+
+                <p>© 2026. Urząd Miejski w Wasilkowie. Wszystkie prawa zastrzeżone.</p>
+            </div>
+        </div>
+    </div>
+</div>
+                    </div>
+                </div>
+                <div class="footer-content">
+                    <div class="footer-logo row">
+                        <div class="col-xs-12 col-sm-4 footer-logo-1">
+                            <img src="/projects/bip/img/footer-logo-program.jpg" alt="Program Regionalny Narodowa Strategia Spójności">
+                        </div>
+                        <div class="col-xs-12 col-sm-4 footer-logo-2">
+                            <img src="/projects/bip/img/footer-logo-zubr.jpg" alt="Województwo Podlaskie">
+                        </div>
+                        <div class="col-xs-12 col-sm-4 footer-logo-3">
+                            <img src="/projects/bip/img/footer-logo-unia.jpg" alt="Unia Europejska Funduszu Rozwoju Regionalnego">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="font-fluid" style="font-size: 0.916667em; line-height: 1.42857em;">Projekt współfinansowany przez Unię Europejską z Europejskiego Funduszu Rozwoju Regionalnego w ramach Regionalnego Programu Operacyjnego Województwa Podlaskiego na lata 2007-2013</p>
+                            <p class="font-fluid" style="font-size: 0.916667em; line-height: 1.42857em;">FUNDUSZE EUROPEJSKIE - DLA ROZWOJU WOJEWÓDZTWA PODLASKIEGO</p>
+                            <p class="font-fluid" style="font-size: 0.916667em; line-height: 1.42857em;">Urząd Marszałkowski Województwa Podlaskiego – Instytucja Zarządzająca RPOWP</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div></div><!-- /#wrapper -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/libs/translate-js/dist/translate.min.js"></script>
+<script src="/assets/js/jquery-ui.custom.min.js"></script>
+<script src="/system/js/masonry.pkgd.min.js"></script>
+<script src="/system/js/jquery.touchSwipe.js"></script>
+<script src="/system/js/jquery.cookie.min.js"></script>
+<script src="/system/js/bootbox.min.js"></script>
+<script src="/system/js/jquery.cookiebar.min.js"></script>
+<script src="/system/js/component-pagebreak.min.js"></script>
+<script src="/system/js/component-page-list.min.js"></script>
+<script src="/projects/www_wasilkow/js/index.js"></script>
+<script>
+    //<!--
+        const __moduleHasMCity = false;
+    const __moduleHasTasks = true;
+    //-->
+</script>
+<script src="/app/js/main.documentReady.min.js"></script><script>
+    $(document).ready(function(){
+        $('.component-nav').appendTo('#appendMenu');
+    });
+</script>
+<a href="#" class="facebook-icon">facebook</a>
+<div class="fb-container">
+    <div class="fb-page fb_iframe_widget" data-href="https://www.facebook.com/Urz%C4%85d-Miejski-w-Wasilkowie-879045095449698/" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="false" fb-xfbml-state="rendered" fb-iframe-plugin-query="adapt_container_width=false&amp;app_id=&amp;container_width=0&amp;hide_cover=false&amp;href=https%3A%2F%2Fwww.facebook.com%2FUrz%25C4%2585d-Miejski-w-Wasilkowie-879045095449698%2F&amp;locale=en_US&amp;sdk=joey&amp;show_facepile=false&amp;small_header=false"><span style="vertical-align: bottom; width: 340px; height: 0px;"><iframe name="fed9cc43ebb934766" width="1000px" height="1000px" data-testid="fb:page Facebook Social Plugin" title="fb:page Facebook Social Plugin" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" src="https://www.facebook.com/v2.7/plugins/page.php?adapt_container_width=false&amp;app_id=&amp;channel=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Dff95513d6fe667cac%26domain%3Dwww.wasilkow.pl%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fwww.wasilkow.pl%252Ff20e0092da77410c5%26relation%3Dparent.parent&amp;container_width=0&amp;hide_cover=false&amp;href=https%3A%2F%2Fwww.facebook.com%2FUrz%25C4%2585d-Miejski-w-Wasilkowie-879045095449698%2F&amp;locale=en_US&amp;sdk=joey&amp;show_facepile=false&amp;small_header=false" class="" style="border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: visible; width: 340px; height: 0px;"></iframe></span></div>
+</div>
+<div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; width: 0px; height: 0px;"><div></div></div></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script>
+			$(document).ready(function(){
+				//Check to see if the window is top if not then display button
+				$(window).scroll(function(){
+					if ($(this).scrollTop() > 100) {
+						$('.scrollToTop').fadeIn();
+					} else {
+						$('.scrollToTop').fadeOut();
+					}
+				});
+				
+				//Click event to scroll to top
+				$('.scrollToTop').click(function(){
+					$('html, body').animate({scrollTop : 0},800);
+					return false;
+				});
+				
+			});
+			//$("a[href='#top']").click(function() {
+			//	$("html, body").animate({ scrollTop: 0 }, "slow");
+			//	return false;
+			//});
+		</script>
+		<a href="#top" class="scrollToTop" style="display: none;">		
+			<img src="/projects/www_wasilkow/img/arrow.png">
+		</a>
+		<a href="https://www.youtube.com/channel/UCWdOZ-0_76zQfNOmS7oi6Iw?view_as=subscriber" target="_blank" class="YouTubeLogo">
+			<img src="/projects/www_wasilkow/img/youtube_icon.png">
+		</a>
+
+
+<div class="daterangepicker dropdown-menu show-calendar opensright" style="top: 879.203px; left: 598.156px; right: auto;"><div class="calendar first right"><div class="calendar-date"><table class="table-condensed"><thead><tr><th></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="off disabled" data-title="r0c0">26</td><td class="off disabled" data-title="r0c1">27</td><td class="off disabled" data-title="r0c2">28</td><td class="off disabled" data-title="r0c3">29</td><td class="off disabled" data-title="r0c4">30</td><td class="off disabled" data-title="r0c5">31</td><td class="off disabled" data-title="r0c6">1</td></tr><tr><td class="off disabled" data-title="r1c0">2</td><td class="off disabled" data-title="r1c1">3</td><td class="off disabled" data-title="r1c2">4</td><td class="off disabled" data-title="r1c3">5</td><td class="off disabled" data-title="r1c4">6</td><td class="off disabled" data-title="r1c5">7</td><td class="off disabled" data-title="r1c6">8</td></tr><tr><td class="off disabled" data-title="r2c0">9</td><td class="off disabled" data-title="r2c1">10</td><td class="off disabled" data-title="r2c2">11</td><td class="off disabled" data-title="r2c3">12</td><td class="off disabled" data-title="r2c4">13</td><td class="off disabled" data-title="r2c5">14</td><td class="off disabled" data-title="r2c6">15</td></tr><tr><td class="off disabled" data-title="r3c0">16</td><td class="off disabled" data-title="r3c1">17</td><td class="off disabled" data-title="r3c2">18</td><td class="off disabled" data-title="r3c3">19</td><td class="off disabled" data-title="r3c4">20</td><td class="off disabled" data-title="r3c5">21</td><td class="off disabled" data-title="r3c6">22</td></tr><tr><td class="off disabled" data-title="r4c0">23</td><td class="off disabled" data-title="r4c1">24</td><td class="off disabled" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="calendar second left"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available" title="Poprzedni miesiąc"><span class="sr-only">Poprzedni miesiąc</span><i class="fa fa-arrow-left icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="available off" data-title="r0c0">26</td><td class="available off" data-title="r0c1">27</td><td class="available off" data-title="r0c2">28</td><td class="available off" data-title="r0c3">29</td><td class="available off" data-title="r0c4">30</td><td class="available off" data-title="r0c5">31</td><td class="available" data-title="r0c6">1</td></tr><tr><td class="available" data-title="r1c0">2</td><td class="available" data-title="r1c1">3</td><td class="available" data-title="r1c2">4</td><td class="available" data-title="r1c3">5</td><td class="available" data-title="r1c4">6</td><td class="available" data-title="r1c5">7</td><td class="available" data-title="r1c6">8</td></tr><tr><td class="available" data-title="r2c0">9</td><td class="available" data-title="r2c1">10</td><td class="available" data-title="r2c2">11</td><td class="available" data-title="r2c3">12</td><td class="available" data-title="r2c4">13</td><td class="available" data-title="r2c5">14</td><td class="available" data-title="r2c6">15</td></tr><tr><td class="available" data-title="r3c0">16</td><td class="available" data-title="r3c1">17</td><td class="available" data-title="r3c2">18</td><td class="available" data-title="r3c3">19</td><td class="available" data-title="r3c4">20</td><td class="available" data-title="r3c5">21</td><td class="available" data-title="r3c6">22</td></tr><tr><td class="available" data-title="r4c0">23</td><td class="available" data-title="r4c1">24</td><td class="available" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="ranges"><div class="range_inputs"><div class="daterangepicker_start_input"><label for="daterangepicker_startform-field-date-publish">Od</label><input class="input-mini" type="text" name="daterangepicker_start" id="daterangepicker_startform-field-date-publish" value="" style=""></div><div class="daterangepicker_end_input"><label for="daterangepicker_endform-field-date-publish">Do</label><input class="input-mini" type="text" name="daterangepicker_end" id="daterangepicker_endform-field-date-publish" value="" style=""></div><button class="applyBtn btn btn-small btn-sm btn-success" type="button">Wybierz datę</button>&nbsp;<button class="cancelBtn btn btn-small btn-sm btn-default" type="button">Anuluj</button></div></div></div><div class="daterangepicker dropdown-menu show-calendar opensright" style="top: 933.203px; left: 598.156px; right: auto;"><div class="calendar first right"><div class="calendar-date"><table class="table-condensed"><thead><tr><th></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="off disabled" data-title="r0c0">26</td><td class="off disabled" data-title="r0c1">27</td><td class="off disabled" data-title="r0c2">28</td><td class="off disabled" data-title="r0c3">29</td><td class="off disabled" data-title="r0c4">30</td><td class="off disabled" data-title="r0c5">31</td><td class="off disabled" data-title="r0c6">1</td></tr><tr><td class="off disabled" data-title="r1c0">2</td><td class="off disabled" data-title="r1c1">3</td><td class="off disabled" data-title="r1c2">4</td><td class="off disabled" data-title="r1c3">5</td><td class="off disabled" data-title="r1c4">6</td><td class="off disabled" data-title="r1c5">7</td><td class="off disabled" data-title="r1c6">8</td></tr><tr><td class="off disabled" data-title="r2c0">9</td><td class="off disabled" data-title="r2c1">10</td><td class="off disabled" data-title="r2c2">11</td><td class="off disabled" data-title="r2c3">12</td><td class="off disabled" data-title="r2c4">13</td><td class="off disabled" data-title="r2c5">14</td><td class="off disabled" data-title="r2c6">15</td></tr><tr><td class="off disabled" data-title="r3c0">16</td><td class="off disabled" data-title="r3c1">17</td><td class="off disabled" data-title="r3c2">18</td><td class="off disabled" data-title="r3c3">19</td><td class="off disabled" data-title="r3c4">20</td><td class="off disabled" data-title="r3c5">21</td><td class="off disabled" data-title="r3c6">22</td></tr><tr><td class="off disabled" data-title="r4c0">23</td><td class="off disabled" data-title="r4c1">24</td><td class="off disabled" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="calendar second left"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available" title="Poprzedni miesiąc"><span class="sr-only">Poprzedni miesiąc</span><i class="fa fa-arrow-left icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="available off" data-title="r0c0">26</td><td class="available off" data-title="r0c1">27</td><td class="available off" data-title="r0c2">28</td><td class="available off" data-title="r0c3">29</td><td class="available off" data-title="r0c4">30</td><td class="available off" data-title="r0c5">31</td><td class="available" data-title="r0c6">1</td></tr><tr><td class="available" data-title="r1c0">2</td><td class="available" data-title="r1c1">3</td><td class="available" data-title="r1c2">4</td><td class="available" data-title="r1c3">5</td><td class="available" data-title="r1c4">6</td><td class="available" data-title="r1c5">7</td><td class="available" data-title="r1c6">8</td></tr><tr><td class="available" data-title="r2c0">9</td><td class="available" data-title="r2c1">10</td><td class="available" data-title="r2c2">11</td><td class="available" data-title="r2c3">12</td><td class="available" data-title="r2c4">13</td><td class="available" data-title="r2c5">14</td><td class="available" data-title="r2c6">15</td></tr><tr><td class="available" data-title="r3c0">16</td><td class="available" data-title="r3c1">17</td><td class="available" data-title="r3c2">18</td><td class="available" data-title="r3c3">19</td><td class="available" data-title="r3c4">20</td><td class="available" data-title="r3c5">21</td><td class="available" data-title="r3c6">22</td></tr><tr><td class="available" data-title="r4c0">23</td><td class="available" data-title="r4c1">24</td><td class="available" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="ranges"><div class="range_inputs"><div class="daterangepicker_start_input"><label for="daterangepicker_startform-field-date-create">Od</label><input class="input-mini" type="text" name="daterangepicker_start" id="daterangepicker_startform-field-date-create" value="" style=""></div><div class="daterangepicker_end_input"><label for="daterangepicker_endform-field-date-create">Do</label><input class="input-mini" type="text" name="daterangepicker_end" id="daterangepicker_endform-field-date-create" value="" style=""></div><button class="applyBtn btn btn-small btn-sm btn-success" type="button">Wybierz datę</button>&nbsp;<button class="cancelBtn btn btn-small btn-sm btn-default" type="button">Anuluj</button></div></div></div><div class="daterangepicker dropdown-menu show-calendar opensright" style="top: 987.203px; left: 598.156px; right: auto;"><div class="calendar first right"><div class="calendar-date"><table class="table-condensed"><thead><tr><th></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="off disabled" data-title="r0c0">26</td><td class="off disabled" data-title="r0c1">27</td><td class="off disabled" data-title="r0c2">28</td><td class="off disabled" data-title="r0c3">29</td><td class="off disabled" data-title="r0c4">30</td><td class="off disabled" data-title="r0c5">31</td><td class="off disabled" data-title="r0c6">1</td></tr><tr><td class="off disabled" data-title="r1c0">2</td><td class="off disabled" data-title="r1c1">3</td><td class="off disabled" data-title="r1c2">4</td><td class="off disabled" data-title="r1c3">5</td><td class="off disabled" data-title="r1c4">6</td><td class="off disabled" data-title="r1c5">7</td><td class="off disabled" data-title="r1c6">8</td></tr><tr><td class="off disabled" data-title="r2c0">9</td><td class="off disabled" data-title="r2c1">10</td><td class="off disabled" data-title="r2c2">11</td><td class="off disabled" data-title="r2c3">12</td><td class="off disabled" data-title="r2c4">13</td><td class="off disabled" data-title="r2c5">14</td><td class="off disabled" data-title="r2c6">15</td></tr><tr><td class="off disabled" data-title="r3c0">16</td><td class="off disabled" data-title="r3c1">17</td><td class="off disabled" data-title="r3c2">18</td><td class="off disabled" data-title="r3c3">19</td><td class="off disabled" data-title="r3c4">20</td><td class="off disabled" data-title="r3c5">21</td><td class="off disabled" data-title="r3c6">22</td></tr><tr><td class="off disabled" data-title="r4c0">23</td><td class="off disabled" data-title="r4c1">24</td><td class="off disabled" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="calendar second left"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available" title="Poprzedni miesiąc"><span class="sr-only">Poprzedni miesiąc</span><i class="fa fa-arrow-left icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="available off" data-title="r0c0">26</td><td class="available off" data-title="r0c1">27</td><td class="available off" data-title="r0c2">28</td><td class="available off" data-title="r0c3">29</td><td class="available off" data-title="r0c4">30</td><td class="available off" data-title="r0c5">31</td><td class="available" data-title="r0c6">1</td></tr><tr><td class="available" data-title="r1c0">2</td><td class="available" data-title="r1c1">3</td><td class="available" data-title="r1c2">4</td><td class="available" data-title="r1c3">5</td><td class="available" data-title="r1c4">6</td><td class="available" data-title="r1c5">7</td><td class="available" data-title="r1c6">8</td></tr><tr><td class="available" data-title="r2c0">9</td><td class="available" data-title="r2c1">10</td><td class="available" data-title="r2c2">11</td><td class="available" data-title="r2c3">12</td><td class="available" data-title="r2c4">13</td><td class="available" data-title="r2c5">14</td><td class="available" data-title="r2c6">15</td></tr><tr><td class="available" data-title="r3c0">16</td><td class="available" data-title="r3c1">17</td><td class="available" data-title="r3c2">18</td><td class="available" data-title="r3c3">19</td><td class="available" data-title="r3c4">20</td><td class="available" data-title="r3c5">21</td><td class="available" data-title="r3c6">22</td></tr><tr><td class="available" data-title="r4c0">23</td><td class="available" data-title="r4c1">24</td><td class="available" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="ranges"><div class="range_inputs"><div class="daterangepicker_start_input"><label for="daterangepicker_startform-field-date-modify">Od</label><input class="input-mini" type="text" name="daterangepicker_start" id="daterangepicker_startform-field-date-modify" value="" style=""></div><div class="daterangepicker_end_input"><label for="daterangepicker_endform-field-date-modify">Do</label><input class="input-mini" type="text" name="daterangepicker_end" id="daterangepicker_endform-field-date-modify" value="" style=""></div><button class="applyBtn btn btn-small btn-sm btn-success" type="button">Wybierz datę</button>&nbsp;<button class="cancelBtn btn btn-small btn-sm btn-default" type="button">Anuluj</button></div></div></div><div class="daterangepicker dropdown-menu show-calendar opensright" style="top: 1041.2px; left: 598.156px; right: auto;"><div class="calendar first right"><div class="calendar-date"><table class="table-condensed"><thead><tr><th></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="off disabled" data-title="r0c0">26</td><td class="off disabled" data-title="r0c1">27</td><td class="off disabled" data-title="r0c2">28</td><td class="off disabled" data-title="r0c3">29</td><td class="off disabled" data-title="r0c4">30</td><td class="off disabled" data-title="r0c5">31</td><td class="off disabled" data-title="r0c6">1</td></tr><tr><td class="off disabled" data-title="r1c0">2</td><td class="off disabled" data-title="r1c1">3</td><td class="off disabled" data-title="r1c2">4</td><td class="off disabled" data-title="r1c3">5</td><td class="off disabled" data-title="r1c4">6</td><td class="off disabled" data-title="r1c5">7</td><td class="off disabled" data-title="r1c6">8</td></tr><tr><td class="off disabled" data-title="r2c0">9</td><td class="off disabled" data-title="r2c1">10</td><td class="off disabled" data-title="r2c2">11</td><td class="off disabled" data-title="r2c3">12</td><td class="off disabled" data-title="r2c4">13</td><td class="off disabled" data-title="r2c5">14</td><td class="off disabled" data-title="r2c6">15</td></tr><tr><td class="off disabled" data-title="r3c0">16</td><td class="off disabled" data-title="r3c1">17</td><td class="off disabled" data-title="r3c2">18</td><td class="off disabled" data-title="r3c3">19</td><td class="off disabled" data-title="r3c4">20</td><td class="off disabled" data-title="r3c5">21</td><td class="off disabled" data-title="r3c6">22</td></tr><tr><td class="off disabled" data-title="r4c0">23</td><td class="off disabled" data-title="r4c1">24</td><td class="off disabled" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="calendar second left"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available" title="Poprzedni miesiąc"><span class="sr-only">Poprzedni miesiąc</span><i class="fa fa-arrow-left icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="available off" data-title="r0c0">26</td><td class="available off" data-title="r0c1">27</td><td class="available off" data-title="r0c2">28</td><td class="available off" data-title="r0c3">29</td><td class="available off" data-title="r0c4">30</td><td class="available off" data-title="r0c5">31</td><td class="available" data-title="r0c6">1</td></tr><tr><td class="available" data-title="r1c0">2</td><td class="available" data-title="r1c1">3</td><td class="available" data-title="r1c2">4</td><td class="available" data-title="r1c3">5</td><td class="available" data-title="r1c4">6</td><td class="available" data-title="r1c5">7</td><td class="available" data-title="r1c6">8</td></tr><tr><td class="available" data-title="r2c0">9</td><td class="available" data-title="r2c1">10</td><td class="available" data-title="r2c2">11</td><td class="available" data-title="r2c3">12</td><td class="available" data-title="r2c4">13</td><td class="available" data-title="r2c5">14</td><td class="available" data-title="r2c6">15</td></tr><tr><td class="available" data-title="r3c0">16</td><td class="available" data-title="r3c1">17</td><td class="available" data-title="r3c2">18</td><td class="available" data-title="r3c3">19</td><td class="available" data-title="r3c4">20</td><td class="available" data-title="r3c5">21</td><td class="available" data-title="r3c6">22</td></tr><tr><td class="available" data-title="r4c0">23</td><td class="available" data-title="r4c1">24</td><td class="available" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="ranges"><div class="range_inputs"><div class="daterangepicker_start_input"><label for="daterangepicker_startform-field-date-workout">Od</label><input class="input-mini" type="text" name="daterangepicker_start" id="daterangepicker_startform-field-date-workout" value="" style=""></div><div class="daterangepicker_end_input"><label for="daterangepicker_endform-field-date-workout">Do</label><input class="input-mini" type="text" name="daterangepicker_end" id="daterangepicker_endform-field-date-workout" value="" style=""></div><button class="applyBtn btn btn-small btn-sm btn-success" type="button">Wybierz datę</button>&nbsp;<button class="cancelBtn btn btn-small btn-sm btn-default" type="button">Anuluj</button></div></div></div><div class="daterangepicker dropdown-menu show-calendar opensright" style="top: 1095.2px; left: 598.156px; right: auto;"><div class="calendar first right"><div class="calendar-date"><table class="table-condensed"><thead><tr><th></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="off disabled" data-title="r0c0">26</td><td class="off disabled" data-title="r0c1">27</td><td class="off disabled" data-title="r0c2">28</td><td class="off disabled" data-title="r0c3">29</td><td class="off disabled" data-title="r0c4">30</td><td class="off disabled" data-title="r0c5">31</td><td class="off disabled" data-title="r0c6">1</td></tr><tr><td class="off disabled" data-title="r1c0">2</td><td class="off disabled" data-title="r1c1">3</td><td class="off disabled" data-title="r1c2">4</td><td class="off disabled" data-title="r1c3">5</td><td class="off disabled" data-title="r1c4">6</td><td class="off disabled" data-title="r1c5">7</td><td class="off disabled" data-title="r1c6">8</td></tr><tr><td class="off disabled" data-title="r2c0">9</td><td class="off disabled" data-title="r2c1">10</td><td class="off disabled" data-title="r2c2">11</td><td class="off disabled" data-title="r2c3">12</td><td class="off disabled" data-title="r2c4">13</td><td class="off disabled" data-title="r2c5">14</td><td class="off disabled" data-title="r2c6">15</td></tr><tr><td class="off disabled" data-title="r3c0">16</td><td class="off disabled" data-title="r3c1">17</td><td class="off disabled" data-title="r3c2">18</td><td class="off disabled" data-title="r3c3">19</td><td class="off disabled" data-title="r3c4">20</td><td class="off disabled" data-title="r3c5">21</td><td class="off disabled" data-title="r3c6">22</td></tr><tr><td class="off disabled" data-title="r4c0">23</td><td class="off disabled" data-title="r4c1">24</td><td class="off disabled" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="calendar second left"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available" title="Poprzedni miesiąc"><span class="sr-only">Poprzedni miesiąc</span><i class="fa fa-arrow-left icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th colspan="5" class="month">Nov 2026</th><th class="next available" title="Następny miesiąc"><span class="sr-only">Następny miesiąc</span><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead><tbody><tr><td class="available off" data-title="r0c0">26</td><td class="available off" data-title="r0c1">27</td><td class="available off" data-title="r0c2">28</td><td class="available off" data-title="r0c3">29</td><td class="available off" data-title="r0c4">30</td><td class="available off" data-title="r0c5">31</td><td class="available" data-title="r0c6">1</td></tr><tr><td class="available" data-title="r1c0">2</td><td class="available" data-title="r1c1">3</td><td class="available" data-title="r1c2">4</td><td class="available" data-title="r1c3">5</td><td class="available" data-title="r1c4">6</td><td class="available" data-title="r1c5">7</td><td class="available" data-title="r1c6">8</td></tr><tr><td class="available" data-title="r2c0">9</td><td class="available" data-title="r2c1">10</td><td class="available" data-title="r2c2">11</td><td class="available" data-title="r2c3">12</td><td class="available" data-title="r2c4">13</td><td class="available" data-title="r2c5">14</td><td class="available" data-title="r2c6">15</td></tr><tr><td class="available" data-title="r3c0">16</td><td class="available" data-title="r3c1">17</td><td class="available" data-title="r3c2">18</td><td class="available" data-title="r3c3">19</td><td class="available" data-title="r3c4">20</td><td class="available" data-title="r3c5">21</td><td class="available" data-title="r3c6">22</td></tr><tr><td class="available" data-title="r4c0">23</td><td class="available" data-title="r4c1">24</td><td class="available" data-title="r4c2">25</td><td class="available today active start-date end-date" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="available" data-title="r4c6">29</td></tr><tr><td class="available" data-title="r5c0">30</td><td class="available off" data-title="r5c1">1</td><td class="available off" data-title="r5c2">2</td><td class="available off" data-title="r5c3">3</td><td class="available off" data-title="r5c4">4</td><td class="available off" data-title="r5c5">5</td><td class="available off" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="ranges"><div class="range_inputs"><div class="daterangepicker_start_input"><label for="daterangepicker_startform-field-date-event">Od</label><input class="input-mini" type="text" name="daterangepicker_start" id="daterangepicker_startform-field-date-event" value="" style=""></div><div class="daterangepicker_end_input"><label for="daterangepicker_endform-field-date-event">Do</label><input class="input-mini" type="text" name="daterangepicker_end" id="daterangepicker_endform-field-date-event" value="" style=""></div><button class="applyBtn btn btn-small btn-sm btn-success" type="button">Wybierz datę</button>&nbsp;<button class="cancelBtn btn btn-small btn-sm btn-default" type="button">Anuluj</button></div></div></div><ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front" style="display: none;"></ul><div role="status" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div></body></html>
