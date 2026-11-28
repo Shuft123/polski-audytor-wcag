@@ -78,6 +78,30 @@ alembic upgrade head
 CI uruchamia `alembic check` na PostgreSQL i test `tests/db/test_migracje.py` na SQLite – gdy model
 zmieni się bez migracji, PR się nie zmerguje.
 
+## Jak podpiąć moduł do skanu (kroki workera)
+
+Worker po axe-core na każdej podstronie uruchamia **kroki podstrony**, a po wszystkich podstronach –
+**kroki skanu** (`src/audytor/worker/kroki/`). Każdy moduł ma **swój plik** – edytujesz tylko go, więc
+równoległe PR-y osób 3, 4 i 5 nie kolidują ze sobą ani z `zadania.py`.
+
+| Plik | Osoba | Rodzaj | Co ustawić w kontekście | Gdzie trafia wynik |
+|---|---|---|---|---|
+| `kroki/alt.py` | 3 | podstrona | `ctx.dodaj_problemy([...])` | tabela `problem` + `wynik.json` podstrony |
+| `kroki/fokus.py` | 4 | podstrona (domyślnie tylko startowa) | `ctx.fokus = WynikFokusu.to_dict()` | `wynik_fokusu` (+ jego problemy) |
+| `kroki/deklaracja.py` | 5 | skan | `ctx.deklaracja = DeclarationResult.to_dict()` | `wynik_deklaracji` |
+
+Kontekst podstrony (`KontekstPodstrony`): `ctx.url`, `ctx.wynik` (wynik axe), `ctx.folder` (migawka:
+`dom.html`, `screenshot.jpg`), `ctx.parametry` (z `POST /skany`), `ctx.otworz(url)` – strona na żywo we
+wspólnej przeglądarce z limitem tempa, `ctx.pozostalo_s()` – ile zostało z budżetu skanu (ok. 8 min).
+Kontekst skanu (`KontekstSkanu`): `ctx.url_startowy`, `ctx.podstrony` (sprawdzone), `ctx.folder_skanu`.
+Szkielety z przykładami są w docstringach plików.
+
+Zasady, których pilnuje worker:
+- wyjątek w kroku nie przerywa skanu – trafia do `ostrzezenia` podstrony, wyniki axe zostają;
+- krok nie rusza dla podstron z błędem ani po przekroczeniu budżetu czasu (wtedy ostrzeżenie);
+- krok można wyłączyć dla jednego skanu: `"parametry": {"pomin_kroki": ["fokus"]}`;
+- testy kroku w CI: bez internetu i bez modelu AI (wzór: `tests/backend/test_worker_kroki.py`).
+
 ## CI (`.github/workflows/ci.yml`)
 
 Przy każdym PR do `main` i po merge'u:
