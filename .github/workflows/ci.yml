@@ -113,6 +113,10 @@ jobs:
           done
           test "$status" = zakonczony
           curl -s "http://localhost:8000/skany/$id/wyniki" | jq '.podstrony[0].podsumowanie'
+          # Zrzut ekranu z migawki workera przez API (wspólny wolumen „wyniki”)
+          zrzut=$(curl -s "http://localhost:8000/skany/$id/podstrony" | jq -r '.[0].zrzut')
+          test "$zrzut" != null
+          curl --fail -s -o /tmp/zrzut -w "zrzut: %{content_type}, %{size_download} B\n" "http://localhost:8000$zrzut"
       - name: Logi usług
         if: always()
         run: docker compose logs --no-color

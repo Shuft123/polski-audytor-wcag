@@ -29,10 +29,19 @@ Pełny opis z przykładami: http://localhost:8000/docs (Swagger) albo `/openapi.
 | Metoda i ścieżka | Odpowiedź | Opis |
 |---|---|---|
 | `GET /health` | 200 / 503 | `{"status", "wersja", "baza", "kolejka"}`. 503, gdy baza lub Redis nie działa albo brak tabel (wtedy `baza` podpowiada `alembic upgrade head`). |
-| `POST /skany` | 202 | Body: `{"url": "https://...", "parametry": {}}`. Adres jest normalizowany jak w crawlerze; nie-HTTP(S) → 422. Odpowiedź: skan ze statusem `oczekuje`, nagłówek `Location`. Gdy Redis nie działa → 503, a skan dostaje status `blad`. |
+| `POST /skany` | 202 | Body: `{"url": "https://...", "podstrony": [...], "max_podstron": 20, "pomin_kroki": [], "parametry": {}}` – wszystko poza `url` opcjonalne. Adresy normalizowane jak w crawlerze; nie-HTTP(S), `max_podstron` spoza 1–50 albo nieznany krok (`alt`, `fokus`, `deklaracja`) → 422. Podstrony z innej witryny i ponad limit są pomijane – lista w polu `uwagi`. Odpowiedź: skan ze statusem `oczekuje`, nagłówek `Location`. Gdy Redis nie działa → 503, a skan dostaje status `blad`. |
 | `GET /skany?limit=20` | 200 | Ostatnie skany, od najnowszego. |
-| `GET /skany/{id}` | 200 / 404 | Status skanu, czasy (UTC), `opis_bledu`, `liczba_podstron`, `liczba_problemow`. |
-| `GET /skany/{id}/wyniki` | 200 / 404 | `{"skan": ..., "podstrony": [wynik.json, ...]}` – każda podstrona w formacie `WynikStrony` (kontrakt, sekcja 2), razem z `podsumowanie`. Pusta lista, dopóki skan trwa. |
+| `GET /skany/{id}` | 200 / 404 | Status skanu, czasy (UTC), `opis_bledu`, postęp: `planowane_podstrony` / `liczba_podstron` (przetworzone) / `podstrony_z_bledem`, `liczba_problemow`, `uwagi`. |
+| `GET /skany/{id}/podstrony` | 200 / 404 | Skrót podstron (id, url, `blad`, liczba problemów, `test_fokusu`) ze ścieżkami do `zrzut` i `mapa_fokusu` – lista rośnie w trakcie skanu. |
+| `GET /skany/{id}/wyniki` | 200 / 404 | `{"skan", "podstrony": [...], "deklaracja"}` – podstrony w formacie `WynikStrony` (kontrakt, sekcja 2) plus `id`, `fokus` (wynik testu fokusu albo `null`) i `zrzut`; `deklaracja` – wynik wyszukania i walidacji deklaracji witryny (`null`, dopóki skan trwa albo krok nie działa). |
+| `GET /skany/{id}/podstrony/{pid}/zrzut` | 200 / 404 | Zrzut ekranu podstrony z migawki (JPEG/PNG) – podgląd w dashboardzie i raporcie. |
+| `GET /skany/{id}/podstrony/{pid}/mapa-fokusu` | 200 / 404 | Mapa kolejności fokusu (PNG), gdy test fokusu ją zapisał. |
+
+Przykład – skan trzech podstron bez testu fokusu:
+
+```
+curl -X POST http://localhost:8000/skany -H "Content-Type: application/json" -d "{\"url\": \"https://www.wasilkow.pl/\", \"podstrony\": [\"https://www.wasilkow.pl/kontakt\", \"https://www.wasilkow.pl/deklaracja-dostepnosci\"], \"pomin_kroki\": [\"fokus\"]}"
+```
 
 ## Zmienne środowiskowe
 

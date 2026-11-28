@@ -1,4 +1,7 @@
-"""Szkielet REST API (F21, sprint 1): zdrowie usługi, zlecenie skanu, status i wyniki.
+"""REST API (F21): zdrowie usługi, zlecenie skanu (z podstronami), status, podstrony, wyniki i zrzuty.
+
+Sprint 2: wyniki testu fokusu i deklaracji w odpowiedzi, podgląd zrzutów ekranu i map fokusu,
+walidowane parametry skanu (`podstrony`, `max_podstron`, `pomin_kroki`).
 
 Uruchomienie:
     audytor-api                       # = uvicorn audytor.api.app:create_app --factory
@@ -8,21 +11,31 @@ Dokumentacja interaktywna (Swagger): http://localhost:8000/docs
 from __future__ import annotations
 
 import logging
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Iterable, Iterator
+from pathlib import Path
 from datetime import datetime, timezone
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy import select, text
 from sqlalchemy.exc import DBAPIError, OperationalError, ProgrammingError
 from sqlalchemy.orm import Session, sessionmaker
 
 from audytor import __version__
-from audytor.db import Skan, StatusSkanu, otworz_baze, wynik_podstrony
+from audytor.crawler.snapshot import SCREENSHOT_FILES
+from audytor.db import (
+    Podstrona,
+    Skan,
+    StatusSkanu,
+    otworz_baze,
+    wynik_deklaracji_dict,
+    wynik_fokusu_dict,
+    wynik_podstrony,
+)
 from audytor.ustawienia import Ustawienia
 
-from .schematy import NowySkan, SkanOut, WynikiSkanu, Zdrowie
+from .schematy import NowySkan, PodstronaOut, SkanOut, WynikiSkanu, Zdrowie
 
 log = logging.getLogger(__name__)
 
@@ -44,6 +57,47 @@ def _pobierz_skan(s: Session, skan_id: int) -> Skan:
     if skan is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Nie ma skanu #{skan_id}")
     return skan
+
+
+def _pobierz_podstrone(s: Session, skan_id: int, podstrona_id: int) -> Podstrona:
+    podstrona = s.get(Podstrona, podstrona_id)
+    if podstrona is None or podstrona.skan_id != skan_id:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Nie ma podstrony #{podstrona_id} w skanie #{skan_id}")
+    return podstrona
+
+
+def _plik_w_migawce(ustawienia: Ustawienia, podstrona: Podstrona, nazwy: Iterable[str | None]) -> Path | None:
+    """Pierwszy istniejący plik z `nazwy` w folderze migawki podstrony (None – brak).
+
+    Nazwy folderu i pliku pochodzą z bazy, ale i tak nie pozwalamy wyjść poza folder wyników (`..`, `/`).
+    """
+    if not podstrona.migawka or Path(podstrona.migawka).name != podstrona.migawka:
+        return None
+    baza = (ustawienia.wyniki_dir / f"skan-{podstrona.skan_id}").resolve()
+    folder = (baza / podstrona.migawka).resolve()
+    if folder.parent != baza:
+        return None
+    for nazwa in nazwy:
+        if nazwa and Path(nazwa).name == nazwa and (folder / nazwa).is_file():
+            return folder / nazwa
+    return None
+
+
+def _zrzut(ustawienia: Ustawienia, podstrona: Podstrona) -> Path | None:
+    return _plik_w_migawce(ustawienia, podstrona, SCREENSHOT_FILES.values())
+
+
+def _mapa_fokusu(ustawienia: Ustawienia, podstrona: Podstrona) -> Path | None:
+    mapa = podstrona.fokus.mapa if podstrona.fokus is not None else None
+    return _plik_w_migawce(ustawienia, podstrona, [mapa])
+
+
+def _sciezka_zrzutu(ustawienia: Ustawienia, p: Podstrona) -> str | None:
+    return f"/skany/{p.skan_id}/podstrony/{p.id}/zrzut" if _zrzut(ustawienia, p) else None
+
+
+def _sciezka_mapy(ustawienia: Ustawienia, p: Podstrona) -> str | None:
+    return f"/skany/{p.skan_id}/podstrony/{p.id}/mapa-fokusu" if _mapa_fokusu(ustawienia, p) else None
 
 
 def _kolejka_celery(ustawienia: Ustawienia) -> tuple[Kolejka, SprawdzKolejke]:
@@ -85,6 +139,7 @@ def create_app(
         version=__version__,
         description="Zlecanie skanów dostępności (WCAG 2.1 AA) i pobieranie wyników.",
     )
+    app.state.ustawienia = ustawienia
     app.state.sesje = sesje
     app.state.kolejka = kolejka
     app.state.sprawdz_kolejke = sprawdz_kolejke
@@ -120,7 +175,7 @@ def create_app(
             url_startowy=dane.url,
             status=StatusSkanu.OCZEKUJE,
             utworzono=datetime.now(timezone.utc),
-            parametry=dane.parametry,
+            parametry=dane.do_parametrow(),
         )
         s.add(skan)
         s.commit()
@@ -149,14 +204,49 @@ def create_app(
         """Status skanu: `oczekuje` → `w_trakcie` → `zakonczony` albo `blad` (wtedy `opis_bledu`)."""
         return SkanOut.z_bazy(_pobierz_skan(s, skan_id))
 
+    @app.get("/skany/{skan_id}/podstrony", response_model=list[PodstronaOut], tags=["skany"],
+             responses={404: {"description": "Nie ma takiego skanu"}})
+    def podstrony_skanu(skan_id: int, request: Request, s: SesjaDep):
+        """Podstrony skanu w kolejności sprawdzania – także w trakcie skanu (postęp) i te z błędem."""
+        ust = request.app.state.ustawienia
+        skan = _pobierz_skan(s, skan_id)
+        return [PodstronaOut.z_bazy(p, _sciezka_zrzutu(ust, p), _sciezka_mapy(ust, p)) for p in skan.podstrony]
+
     @app.get("/skany/{skan_id}/wyniki", response_model=WynikiSkanu, tags=["skany"],
              responses={404: {"description": "Nie ma takiego skanu"}})
-    def wyniki_skanu(skan_id: int, s: SesjaDep):
-        """Wyniki skanu w formacie wynik.json (jeden element na podstronę). Pusta lista, dopóki skan trwa."""
+    def wyniki_skanu(skan_id: int, request: Request, s: SesjaDep):
+        """Wyniki skanu: podstrony w formacie wynik.json z wynikiem testu fokusu, deklaracja witryny.
+
+        Lista podstron rośnie w trakcie skanu; `deklaracja` pojawia się po jego zakończeniu.
+        """
+        ust = request.app.state.ustawienia
         skan = _pobierz_skan(s, skan_id)
-        return WynikiSkanu(
-            skan=SkanOut.z_bazy(skan),
-            podstrony=[wynik_podstrony(p).to_dict() for p in skan.podstrony],
-        )
+        podstrony = []
+        for p in skan.podstrony:
+            dane = wynik_podstrony(p).to_dict()
+            dane.update(id=p.id, fokus=wynik_fokusu_dict(p), zrzut=_sciezka_zrzutu(ust, p))
+            podstrony.append(dane)
+        return WynikiSkanu(skan=SkanOut.z_bazy(skan), podstrony=podstrony, deklaracja=wynik_deklaracji_dict(skan))
+
+    @app.get("/skany/{skan_id}/podstrony/{podstrona_id}/zrzut", tags=["zrzuty"], response_class=FileResponse,
+             responses={200: {"content": {"image/jpeg": {}, "image/png": {}}},
+                        404: {"description": "Nie ma podstrony albo jej zrzutu"}})
+    def zrzut_podstrony(skan_id: int, podstrona_id: int, request: Request, s: SesjaDep):
+        """Zrzut ekranu całej podstrony z migawki (JPEG albo PNG)."""
+        plik = _zrzut(request.app.state.ustawienia, _pobierz_podstrone(s, skan_id, podstrona_id))
+        if plik is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Brak zrzutu ekranu tej podstrony")
+        return FileResponse(plik)
+
+    @app.get("/skany/{skan_id}/podstrony/{podstrona_id}/mapa-fokusu", tags=["zrzuty"],
+             response_class=FileResponse,
+             responses={200: {"content": {"image/png": {}}},
+                        404: {"description": "Nie ma podstrony albo mapy fokusu"}})
+    def mapa_fokusu_podstrony(skan_id: int, podstrona_id: int, request: Request, s: SesjaDep):
+        """Zrzut podstrony z ponumerowaną kolejnością fokusu (gdy test fokusu zapisał mapę)."""
+        plik = _mapa_fokusu(request.app.state.ustawienia, _pobierz_podstrone(s, skan_id, podstrona_id))
+        if plik is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Brak mapy fokusu dla tej podstrony")
+        return FileResponse(plik)
 
     return app

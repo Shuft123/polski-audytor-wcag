@@ -42,6 +42,8 @@ log = logging.getLogger(__name__)
 Otwieracz = Callable[[str], AbstractContextManager["OpenedPage"]]
 
 MAX_OSTRZEZENIE = 500
+# Nazwy kroków do `parametry["pomin_kroki"]` – stała, żeby API nie importowało modułów kroków (np. modeli AI).
+NAZWY_KROKOW = ("alt", "fokus", "deklaracja")
 
 
 @dataclass
@@ -175,6 +177,7 @@ __all__ = [
     "KrokPodstrony",
     "KrokSkanu",
     "Kroki",
+    "NAZWY_KROKOW",
     "Otwieracz",
     "domyslne_kroki",
     "uruchom_kroki_podstrony",
