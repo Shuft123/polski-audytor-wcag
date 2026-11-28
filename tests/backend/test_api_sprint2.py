@@ -65,6 +65,14 @@ def skaner(monkeypatch, sesje, ustawienia):
                                         spij=lambda _s: None, kroki=kroki)
 
 
+def test_subpages_in_parametry_still_work(klient):
+    """Zgodność wstecz: podstrony i limit tylko w `parametry` (jak w testach i skryptach ze sprintu 2)."""
+    skan = klient.post("/skany", json={"url": START, "parametry": {
+        "podstrony": [START + "kontakt", START + "galeria"], "max_podstron": 2}}).json()
+    assert skan["parametry"] == {"podstrony": [START + "kontakt", START + "galeria"], "max_podstron": 2}
+    assert skan["planowane_podstrony"] == 2
+
+
 def test_api_step_names_match_worker_steps():
     domyslne = domyslne_kroki()
     assert set(NAZWY_KROKOW) == {k.nazwa for k in [*domyslne.podstrony, *domyslne.skanu]}

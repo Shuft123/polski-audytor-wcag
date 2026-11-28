@@ -12,8 +12,6 @@ from audytor.db import Podstrona, Skan, StatusSkanu
 from audytor.skan.lista import DOMYSLNIE_MAX_PODSTRON, LIMIT_PODSTRON, lista_podstron
 from audytor.worker.kroki import NAZWY_KROKOW
 
-# Klucze `parametry` ustawiane przez pola NowySkan (pierwszeństwo przed tymi z `parametry`).
-POLA_PARAMETROW = ("podstrony", "max_podstron", "pomin_kroki")
 
 
 class NowySkan(BaseModel):
@@ -38,7 +36,8 @@ class NowySkan(BaseModel):
     )
     parametry: dict[str, Any] = Field(
         default_factory=dict,
-        description="Dodatkowe opcje zapisywane razem ze skanem (pola powyżej mają pierwszeństwo).",
+        description="Dodatkowe opcje zapisywane razem ze skanem. Pola powyżej, jeśli podane, mają pierwszeństwo "
+                    "przed tymi samymi kluczami tutaj.",
     )
 
     @field_validator("url")
@@ -66,13 +65,22 @@ class NowySkan(BaseModel):
         return list(dict.fromkeys(kroki))
 
     def do_parametrow(self) -> dict[str, Any]:
-        """Parametry zapisywane w skanie i czytane przez worker (`lista_podstron`, `pomin_kroki`)."""
-        parametry = {k: v for k, v in self.parametry.items() if k not in POLA_PARAMETROW}
-        parametry["max_podstron"] = self.max_podstron
-        if self.podstrony:
+        """Parametry zapisywane w skanie i czytane przez worker (`lista_podstron`, `pomin_kroki`).
+
+        Pola podane jawnie mają pierwszeństwo przed tymi samymi kluczami w `parametry`; pola niepodane
+        nie nadpisują `parametry` (zgodność z klientami ze sprintu 2, które wysyłają tylko `parametry`).
+        """
+        parametry = dict(self.parametry)
+        podane = self.model_fields_set
+        if "max_podstron" in podane or "max_podstron" not in parametry:
+            parametry["max_podstron"] = self.max_podstron
+        if "podstrony" in podane:
             parametry["podstrony"] = self.podstrony
-        if self.pomin_kroki:
+        if "pomin_kroki" in podane:
             parametry["pomin_kroki"] = self.pomin_kroki
+        for klucz in ("podstrony", "pomin_kroki"):
+            if klucz in parametry and not parametry[klucz]:
+                del parametry[klucz]
         return parametry
 
 
