@@ -10,6 +10,9 @@ pauza `AUDYTOR_OPOZNIENIE_S` albo Crawl-delay z robots.txt. Podstrona, której n
 (robots.txt, timeout), jest zapisywana z polem `blad` – skan idzie dalej. Każda podstrona trafia do bazy
 od razu, więc API pokazuje postęp w trakcie skanu.
 
+Po axe-core każdej podstrony worker uruchamia kroki modułów (alt, fokus), a na końcu kroki skanu
+(deklaracja) – punkty podpięcia w `audytor.worker.kroki`, każdy moduł w osobnym pliku.
+
 Migawki i wynik.json lądują w `AUDYTOR_WYNIKI_DIR/skan-<id>/<podstrona>/`, wyniki także w bazie.
 Pełna kolejka z ponawianiem (F4) – sprint 3.
 """
@@ -19,20 +22,35 @@ from __future__ import annotations
 import logging
 import time
 from collections.abc import Callable
-from contextlib import AbstractContextManager
+from contextlib import AbstractContextManager, contextmanager
 from datetime import datetime, timezone
 from functools import lru_cache
 
 from sqlalchemy.orm import Session, sessionmaker
 
 from audytor.crawler.render import Renderer, RenderOptions, RobotsDisallowedError
-from audytor.db import Skan, StatusSkanu, otworz_baze, zapisz_podstrone
+from audytor.db import (
+    Skan,
+    StatusSkanu,
+    otworz_baze,
+    zapisz_podstrone,
+    zapisz_wynik_deklaracji,
+    zapisz_wynik_fokusu,
+)
 from audytor.skan import Ogranicznik, lista_podstron, skanuj_strone
 from audytor.skan.lista import crawl_delay_z_renderera
 from audytor.ustawienia import Ustawienia
-from audytor.wyniki import WynikStrony, teraz_utc
+from audytor.wyniki import WynikStrony, teraz_utc, zapisz_wynik
 
 from .celery_app import ZADANIE_SKANU, app
+from .kroki import (
+    KontekstPodstrony,
+    KontekstSkanu,
+    Kroki,
+    domyslne_kroki,
+    uruchom_kroki_podstrony,
+    uruchom_kroki_skanu,
+)
 
 log = logging.getLogger(__name__)
 
@@ -83,10 +101,12 @@ def wykonaj_skan(
     renderer: Callable[[Ustawienia], AbstractContextManager[Renderer]] = domyslny_renderer,
     budzet_s: float = BUDZET_S,
     spij: Callable[[float], None] = time.sleep,
+    kroki: Kroki | None = None,
 ) -> StatusSkanu | None:
     """Wykonuje skan o podanym id (wszystkie jego podstrony) i zapisuje wyniki w bazie.
 
-    Zwraca końcowy status (None = brak skanu).
+    Po axe-core na każdej podstronie uruchamia kroki podstrony (alt, fokus), a na końcu kroki skanu
+    (deklaracja) – `audytor.worker.kroki`. Zwraca końcowy status (None = brak skanu).
     """
     with sesje() as sesja:
         skan = sesja.get(Skan, skan_id)
@@ -100,26 +120,46 @@ def wykonaj_skan(
         skan.status = StatusSkanu.W_TRAKCIE
         skan.rozpoczeto = _teraz()
         sesja.commit()
-        lista = lista_podstron(skan.url_startowy, skan.parametry)
+        url_startowy = skan.url_startowy
+        parametry = dict(skan.parametry or {})
+        lista = lista_podstron(url_startowy, parametry)
 
+    kroki = (kroki if kroki is not None else domyslne_kroki()).bez(parametry.get("pomin_kroki") or [])
     for uwaga in lista.pominiete:
         log.info("Skan #%s: %s", skan_id, uwaga)
     folder_skanu = ustawienia.wyniki_dir / f"skan-{skan_id}"
     start = time.monotonic()
+
+    def pozostalo_s() -> float:
+        return budzet_s - (time.monotonic() - start)
+
     zapisane: set[str] = set()       # final_url zapisanych podstron (dwa adresy mogą przekierować w to samo miejsce)
-    udane = 0
+    sprawdzone: list[WynikStrony] = []
     pierwszy_blad: str | None = None
+    ctx_skanu: KontekstSkanu | None = None
 
     try:
         with renderer(ustawienia) as r:
             ogranicznik = Ogranicznik(ustawienia.opoznienie_s, crawl_delay_z_renderera(r), spij=spij)
+
+            @contextmanager
+            def otworz(url: str):
+                # Dla kroków: ta sama przeglądarka i ten sam limit tempa co skan podstron.
+                ogranicznik.czekaj(url)
+                try:
+                    with r.open(url) as opened:
+                        yield opened
+                finally:
+                    ogranicznik.odwiedzono(url)
+
             for url in lista.adresy:
-                if time.monotonic() - start > budzet_s:
+                folder = None
+                if pozostalo_s() <= 0:
                     wynik = _nieudana(url, f"Nie sprawdzono – przekroczony czas skanu ({budzet_s:.0f} s)")
                 else:
                     ogranicznik.czekaj(url)
                     try:
-                        wynik, _ = skanuj_strone(r, url, folder_skanu)
+                        wynik, folder = skanuj_strone(r, url, folder_skanu)
                     except Exception as exc:   # jedna zepsuta podstrona nie przerywa skanu
                         log.warning("Skan #%s: podstrona %s nie sprawdzona: %s", skan_id, url, exc)
                         wynik = _nieudana(url, _opis_wyjatku(exc))
@@ -130,13 +170,33 @@ def wykonaj_skan(
                     log.info("Skan #%s: %s to ta sama strona co już sprawdzona (%s)", skan_id, url, wynik.url)
                     continue
                 zapisane.add(wynik.url)
+
+                ctx = None
                 if wynik.blad is None:
-                    udane += 1
+                    ctx = KontekstPodstrony(
+                        skan_id=skan_id, wynik=wynik, folder=folder, jest_startowa=not sprawdzone,
+                        ustawienia=ustawienia, parametry=parametry, otworz=otworz, pozostalo_s=pozostalo_s,
+                    )
+                    uruchom_kroki_podstrony(kroki.podstrony, ctx)
+                    if folder is not None:
+                        zapisz_wynik(wynik, folder)     # wynik.json z problemami dopisanymi przez kroki
+                    sprawdzone.append(wynik)
                 elif pierwszy_blad is None:
                     pierwszy_blad = wynik.blad
+
                 with sesje() as sesja:
-                    zapisz_podstrone(sesja, sesja.get(Skan, skan_id), wynik)
+                    podstrona = zapisz_podstrone(sesja, sesja.get(Skan, skan_id), wynik)
+                    if ctx is not None and ctx.fokus is not None:
+                        zapisz_wynik_fokusu(sesja, podstrona, ctx.fokus,
+                                            limit_krokow=ctx.fokus_limit_krokow, mapa=ctx.fokus_mapa)
                     sesja.commit()
+
+            if sprawdzone and kroki.skanu:
+                ctx_skanu = KontekstSkanu(
+                    skan_id=skan_id, url_startowy=url_startowy, podstrony=sprawdzone, folder_skanu=folder_skanu,
+                    ustawienia=ustawienia, parametry=parametry, otworz=otworz, pozostalo_s=pozostalo_s,
+                )
+                uruchom_kroki_skanu(kroki.skanu, ctx_skanu)
     except BaseException as exc:  # przeglądarka nie wstała, SoftTimeLimitExceeded, KeyboardInterrupt…
         log.exception("Skan #%s zakończony błędem", skan_id)
         _oznacz_blad(sesje, skan_id, _opis_wyjatku(exc))
@@ -144,15 +204,17 @@ def wykonaj_skan(
             raise
         return StatusSkanu.BLAD
 
-    if udane == 0:
+    if not sprawdzone:
         _oznacz_blad(sesje, skan_id, pierwszy_blad or "Nie sprawdzono żadnej podstrony")
         return StatusSkanu.BLAD
     with sesje() as sesja:
         skan = sesja.get(Skan, skan_id)
+        if ctx_skanu is not None and ctx_skanu.deklaracja is not None:
+            zapisz_wynik_deklaracji(sesja, skan, ctx_skanu.deklaracja, sprawdzono=ctx_skanu.deklaracja_sprawdzono)
         skan.status = StatusSkanu.ZAKONCZONY
         skan.zakonczono = _teraz()
         sesja.commit()
-    log.info("Skan #%s zakończony: %d z %d podstron sprawdzonych", skan_id, udane, len(zapisane))
+    log.info("Skan #%s zakończony: %d z %d podstron sprawdzonych", skan_id, len(sprawdzone), len(zapisane))
     return StatusSkanu.ZAKONCZONY
 
 

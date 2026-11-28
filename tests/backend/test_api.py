@@ -60,7 +60,7 @@ def test_create_scan_queues_it(klient, kolejka):
     skan = odp.json()
     assert skan["status"] == "oczekuje"
     assert skan["url_startowy"] == URL            # znormalizowany adres
-    assert skan["parametry"] == {"glebokosc": 1}
+    assert skan["parametry"] == {"glebokosc": 1, "max_podstron": 20}
     assert skan["liczba_podstron"] == 0
     assert odp.headers["Location"] == f"/skany/{skan['id']}"
     assert kolejka.wyslane == [skan["id"]]
