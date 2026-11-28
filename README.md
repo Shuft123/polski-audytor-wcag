@@ -71,6 +71,8 @@ Pull request można zmergować dopiero, gdy CI przejdzie i ktoś z zespołu zatw
 - [Model danych (ERD)](docs/model-danych.md)
 - [Audyt axe-core i skan wielu podstron (F6)](docs/audyt-axe.md)
 - [Rozpoznanie: audyt dostępności PDF](docs/rozpoznanie-pdf.md)
+- [Rozpoznanie: biblioteka do raportu PDF (F22)](docs/rozpoznanie-raport-pdf.md)
+- [Kolejka skanów wielu podstron – propozycja na sprint 3 (F4)](docs/kolejka.md)
 - [Konwencje i zasady współpracy](docs/konwencje.md)
 - [AI: ocena tekstu alternatywnego (F9)](docs/ai-ocena-alt.md)
 - [AI: model wizyjny i test fokusu (F8)](docs/ai-wizja-fokus.md)
